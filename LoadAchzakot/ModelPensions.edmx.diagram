@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c39c9202c5e742288afac80785c1048e" Name="Diagram1">
+        <EntityTypeShape EntityType="PensionsModel.Halvaa" Width="1.5" PointX="5.25" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PensionsModel.HeshbonOPolisa" Width="1.5" PointX="3" PointY="31" IsExpanded="true" />
+        <EntityTypeShape EntityType="PensionsModel.Kupa" Width="1.5" PointX="7.5" PointY="24.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PensionsModel.MeyupeKoach" Width="1.5" PointX="5.25" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PensionsModel.Mitryot" Width="1.5" PointX="5.25" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PensionsModel.Sheer" Width="1.5" PointX="5.25" PointY="16.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PensionsModel.Tvia" Width="1.5" PointX="5.25" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PensionsModel.YitraLefiGilPrisha" Width="1.5" PointX="5.25" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PensionsModel.Kisui" Width="1.5" PointX="5.25" PointY="28.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PensionsModel.Mevutach" Width="1.5" PointX="7.5" PointY="28.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PensionsModel.Miktsoa_Isuk_Tachviv" Width="1.5" PointX="7.5" PointY="31.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PensionsModel.Mutav" Width="1.5" PointX="7.5" PointY="34.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PensionsModel.Tosafot" Width="1.5" PointX="7.5" PointY="38.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PensionsModel.DmeiNihul" Width="1.5" PointX="7.5" PointY="42.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PensionsModel.HafkadaAchrona" Width="1.5" PointX="7.5" PointY="47" IsExpanded="true" />
+        <EntityTypeShape EntityType="PensionsModel.HafkadotMetchilatShana" Width="1.5" PointX="7.5" PointY="50.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PensionsModel.HafrashotLePolisa" Width="1.5" PointX="7.5" PointY="54.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PensionsModel.MasluleiHashkaa" Width="1.5" PointX="7.5" PointY="57.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PensionsModel.PerutHafkadaAchrona" Width="1.5" PointX="9.75" PointY="47.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PensionsModel.PerutYitrot" Width="1.5" PointX="9.75" PointY="61" IsExpanded="true" />
+        <EntityTypeShape EntityType="PensionsModel.PirteiTaktziv" Width="1.5" PointX="5.25" PointY="49.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PensionsModel.YitraLeTkufa" Width="1.5" PointX="9.75" PointY="64.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PensionsModel.Yitrot" Width="1.5" PointX="7.5" PointY="61.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PensionsModel.IshKesherYeshutMetafel" Width="1.5" PointX="12.25" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="PensionsModel.IshKesherYeshutYatzran" Width="1.5" PointX="10" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PensionsModel.Kovetz" Width="1.5" PointX="7.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PensionsModel.YeshutMetafel" Width="1.5" PointX="10" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PensionsModel.IshKesherYeshutMaasik" Width="1.5" PointX="5.25" PointY="68.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PensionsModel.Mutzar" Width="1.5" PointX="0.75" PointY="34.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PensionsModel.YeshutMaasik" Width="1.5" PointX="3" PointY="67.25" IsExpanded="true" />
+        <AssociationConnector Association="PensionsModel.HeshbonOPolisa_Halvaa" ManuallyRouted="false" />
+        <AssociationConnector Association="PensionsModel.HeshbonOPolisa_Kisui" ManuallyRouted="false" />
+        <AssociationConnector Association="PensionsModel.HeshbonOPolisa_MeyupeKoach" ManuallyRouted="false" />
+        <AssociationConnector Association="PensionsModel.HeshbonOPolisa_Mitryot" ManuallyRouted="false" />
+        <AssociationConnector Association="PensionsModel.HeshbonOPolisa_PirteiTaktziv" ManuallyRouted="false" />
+        <AssociationConnector Association="PensionsModel.HeshbonOPolisa_Sheer" ManuallyRouted="false" />
+        <AssociationConnector Association="PensionsModel.HeshbonOPolisa_Tvia" ManuallyRouted="false" />
+        <AssociationConnector Association="PensionsModel.HeshbonOPolisa_YitraLefiGilPrisha" ManuallyRouted="false" />
+        <AssociationConnector Association="PensionsModel.Mutzar_HeshbonOPolisa" ManuallyRouted="false" />
+        <AssociationConnector Association="PensionsModel.YitraLefiGilPrisha_Kupa" ManuallyRouted="false" />
+        <AssociationConnector Association="PensionsModel.Kisui_Mevutach" ManuallyRouted="false" />
+        <AssociationConnector Association="PensionsModel.Kisui_Miktsoa_Isuk_Tachviv" ManuallyRouted="false" />
+        <AssociationConnector Association="PensionsModel.Kisui_Mutav" ManuallyRouted="false" />
+        <AssociationConnector Association="PensionsModel.Kisui_Tosafot" ManuallyRouted="false" />
+        <AssociationConnector Association="PensionsModel.PirteiTaktziv_DmeiNihul" ManuallyRouted="false" />
+        <AssociationConnector Association="PensionsModel.HafkadaAchrona_PerutHafkadaAchrona" ManuallyRouted="false" />
+        <AssociationConnector Association="PensionsModel.PirteiTaktziv_HafkadaAchrona" ManuallyRouted="false" />
+        <AssociationConnector Association="PensionsModel.PirteiTaktziv_HafkadotMetchilatShana" ManuallyRouted="false" />
+        <AssociationConnector Association="PensionsModel.PirteiTaktziv_HafrashotLePolisa" ManuallyRouted="false" />
+        <AssociationConnector Association="PensionsModel.PirteiTaktziv_MasluleiHashkaa" ManuallyRouted="false" />
+        <AssociationConnector Association="PensionsModel.Yitrot_PerutYitrot" ManuallyRouted="false" />
+        <AssociationConnector Association="PensionsModel.PirteiTaktziv_Yitrot" ManuallyRouted="false" />
+        <AssociationConnector Association="PensionsModel.Yitrot_YitraLeTkufa" ManuallyRouted="false" />
+        <AssociationConnector Association="PensionsModel.YeshutMetafel_IshKesherYeshutMetafel" ManuallyRouted="false" />
+        <AssociationConnector Association="PensionsModel.Kovetz_IshKesherYeshutYatzran" ManuallyRouted="false" />
+        <AssociationConnector Association="PensionsModel.Kovetz_YeshutMetafel" ManuallyRouted="false" />
+        <AssociationConnector Association="PensionsModel.YeshutMaasik_IshKesherYeshutMaasik" ManuallyRouted="false" />
+        <AssociationConnector Association="PensionsModel.Mutzar_YeshutMaasik" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

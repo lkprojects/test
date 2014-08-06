@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{192C6750-4AAE-4318-B472-EB69B13AD869}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DAL</RootNamespace>
+    <AssemblyName>DAL</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\MislakaInterface\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Client.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Config.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL.cs" />
+    <Compile Include="DmeiNihul.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Event.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EventHistory.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EventsHistory.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EventsQueue.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FeedbackFile.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FileErrorDetail.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GoremPone.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="HafkadaAchrona.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="HafkadotMetchilatShana.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="HafrashotLePolisa.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Halvaa.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="HeshbonOPolisa.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IshKesherYeshutMaasik.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IshKesherYeshutMetafel.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IshKesherYeshutYatzran.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Kisui.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Kovetz.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Kupa.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LUT.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MasluleiHashkaa.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Mevutach.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MeyupeKoach.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Miktsoa_Isuk_Tachviv.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Mitryot.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelPensions.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelPensions.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelPensions.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelPensions.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelPensions.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Mutav.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Mutzar.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MutzarKovetz.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PerutHafkadaAchrona.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PerutYitrot.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PirteiTaktziv.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Request.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RequestErrorDetail.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RequestPerYatzran.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sheer.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tosafot.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tvia.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YeshutMaasik.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YeshutMetafel.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YitraLefiGilPrisha.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="YitraLeTkufa.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Yitrot.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <EntityDeploy Include="ModelPensions.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ModelPensions.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="ModelPensions.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelPensions.edmx</DependentUpon>
+      <LastGenOutput>ModelPensions.Context.cs</LastGenOutput>
+    </None>
+    <None Include="ModelPensions.edmx.diagram">
+      <DependentUpon>ModelPensions.edmx</DependentUpon>
+    </None>
+    <None Include="ModelPensions.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelPensions.edmx</DependentUpon>
+      <LastGenOutput>ModelPensions.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
