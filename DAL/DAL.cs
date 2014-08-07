@@ -8,7 +8,7 @@ using log4net;
 namespace DAL
 {
     public enum ClientStatus { New = 1, StartEvent, SentEvent, StartFeedback1, EndFeedback1, StartLoadAchzakot, EndLoadAchzakot, };
-
+    
     public class DAL
     {
         private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -76,10 +76,10 @@ namespace DAL
             return dbCtx.Clients.SingleOrDefault(p => p.TeudatZehut == misparZihuy);
         }
         
-        public string ChangeClientStatus(string MisparZihuy, int FromStatus, int ToStatus)
+        public string ChangeClientStatus(string MisparZihuy, int FromStatus, int ToStatus, string FileNumber)
         {
             var ZihuyParameter = new ObjectParameter("MISPAR_ZIHUY", typeof(string));
-            dbCtx.ChangeClientStatus(ZihuyParameter, FromStatus, ToStatus);
+            dbCtx.ChangeClientStatus(ZihuyParameter, FromStatus, ToStatus, FileNumber);
             return ZihuyParameter.Value.ToString();
         }
 
@@ -178,6 +178,7 @@ namespace DAL
             }
 
         }
+
 
         public string GetConfigParam(string paramName)
         {
