@@ -58,7 +58,7 @@
     <Compile Include="Common.cs" />
     <Compile Include="HandleEvents.cs" />
     <Compile Include="HandleFeedback.cs" />
-    <Compile Include="MislakaFileHandler.cs" />
+    <Compile Include="MislakaDataFlow.cs" />
     <Compile Include="MislakaFileName.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

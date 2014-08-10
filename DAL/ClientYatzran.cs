@@ -12,12 +12,10 @@ namespace DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class EventHistory
+    public partial class ClientYatzran
     {
-        public int EventsHistory_Id { get; set; }
-        public Nullable<int> Client_Id { get; set; }
-        public Nullable<int> KOD_MEZAHE_YATZRAN { get; set; }
-        public Nullable<int> Status_Id { get; set; }
-        public Nullable<System.DateTime> DateInserted { get; set; }
+        public int Client_Id { get; set; }
+        public int KOD_MEZAHE_YAZRAN { get; set; }
+        public Nullable<bool> HasData { get; set; }
     }
 }

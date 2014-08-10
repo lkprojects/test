@@ -54,6 +54,12 @@
     <Compile Include="Client.cs">
       <DependentUpon>ModelPensions.tt</DependentUpon>
     </Compile>
+    <Compile Include="ClientStatusHistory.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ClientYatzran.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
     <Compile Include="Config.cs">
       <DependentUpon>ModelPensions.tt</DependentUpon>
     </Compile>
@@ -62,12 +68,6 @@
       <DependentUpon>ModelPensions.tt</DependentUpon>
     </Compile>
     <Compile Include="Event.cs">
-      <DependentUpon>ModelPensions.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EventHistory.cs">
-      <DependentUpon>ModelPensions.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EventsHistory.cs">
       <DependentUpon>ModelPensions.tt</DependentUpon>
     </Compile>
     <Compile Include="EventsQueue.cs">
@@ -183,6 +183,9 @@
       <DependentUpon>ModelPensions.tt</DependentUpon>
     </Compile>
     <Compile Include="Tvia.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Yatzran.cs">
       <DependentUpon>ModelPensions.tt</DependentUpon>
     </Compile>
     <Compile Include="YeshutMaasik.cs">

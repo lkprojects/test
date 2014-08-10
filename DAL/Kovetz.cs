@@ -19,6 +19,7 @@ namespace DAL
             this.IshKesherYeshutYatzrans = new HashSet<IshKesherYeshutYatzran>();
             this.YeshutMetafels = new HashSet<YeshutMetafel>();
             this.MutzarKovetzs = new HashSet<MutzarKovetz>();
+            this.Clients = new HashSet<Client>();
         }
     
         public int Kovetz_Id { get; set; }
@@ -43,9 +44,12 @@ namespace DAL
         public int Sgira_MISPAR_YESHUYUT_LAKOACH_BAKOVETZ { get; set; }
         public int Sgira_KAMUT_POLISOT { get; set; }
         public string Ahzakot { get; set; }
+        public string FileName { get; set; }
+        public System.DateTime LoadDate { get; set; }
     
         public virtual ICollection<IshKesherYeshutYatzran> IshKesherYeshutYatzrans { get; set; }
         public virtual ICollection<YeshutMetafel> YeshutMetafels { get; set; }
         public virtual ICollection<MutzarKovetz> MutzarKovetzs { get; set; }
+        public virtual ICollection<Client> Clients { get; set; }
     }
 }

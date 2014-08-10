@@ -7,11 +7,12 @@ namespace MislakaInterface
     class Program
     {
         private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private static MislakaFileHandler mislakaFileHandler = new MislakaFileHandler();
+        private static MislakaDataFlow mislakaFileHandler = new MislakaDataFlow();
         static void Main(string[] args)
         {
             log4net.Config.XmlConfigurator.Configure();
 
+            log.Info("************************************************************************************************************");
             log.Info("Start Mislaka Interface");
 
             while (true)

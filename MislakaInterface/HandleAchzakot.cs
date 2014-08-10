@@ -133,7 +133,7 @@ namespace MislakaInterface
 
             for (int i = 0; i < mimshak.Mutzarim.Length; i++)
             {
-                ParseMutzar(out mutzar, mimshak.Mutzarim[i]);
+                ParseMutzar(out mutzar, mimshak.Mutzarim[i], kovetz.Kovetz_Id);
 
                 mutzarKovetz = new MutzarKovetz();
                 mutzarKovetz.Kovetz = kovetz;
@@ -152,7 +152,7 @@ namespace MislakaInterface
             Dal.SaveChanges();
         }
 
-        public void ParseMutzar(out Mutzar mutzar, Achzakot.MimshakMutzar mimshak)
+        public void ParseMutzar(out Mutzar mutzar, Achzakot.MimshakMutzar mimshak, int Kovetz_Id)
         {
             string misparZihuy = mimshak.NetuneiMutzar.YeshutLakoach.MISPARZIHUYLAKOACH;
             int Sug = mimshak.NetuneiMutzar.YeshutLakoach.SUGMEZAHELAKOACH;
@@ -200,8 +200,7 @@ namespace MislakaInterface
             mutzar.Lakoach_TAARICH_LEYDA = Common.ConvertDate(mimshak.NetuneiMutzar.YeshutLakoach.TAARICHLEYDA);
             mutzar.Lakoach_TAARICH_PTIRA = Common.ConvertDate(mimshak.NetuneiMutzar.YeshutLakoach.TAARICHPTIRA);
 
-            Dal.ChangeClientStatus(mutzar.Lakoach_MISPAR_ZIHUY_LAKOACH, (int)ClientStatus.New, (int)ClientStatus.StartLoadAchzakot);
-
+            Dal.ChangeClientStatus(mutzar.Lakoach_MISPAR_ZIHUY_LAKOACH, (int)ClientStatus.EndFeedback1, (int)ClientStatus.StartLoadAchzakot, null);
 
             if (mimshak.NetuneiMutzar.YeshutMaasik != null)
                 ParseYeshutMaasik(mutzar, mimshak.NetuneiMutzar.YeshutMaasik);
@@ -213,7 +212,7 @@ namespace MislakaInterface
 
             Dal.Add(mutzar);
 
-            Dal.ChangeClientStatus(mutzar.Lakoach_MISPAR_ZIHUY_LAKOACH, (int)ClientStatus.StartLoadAchzakot, (int)ClientStatus.EndLoadAchzakot);
+            Dal.ChangeClientStatus(mutzar.Lakoach_MISPAR_ZIHUY_LAKOACH, (int)ClientStatus.StartLoadAchzakot, (int)ClientStatus.EndLoadAchzakot, Kovetz_Id);
         }
 
         private void ParseYeshutMaasik(Mutzar mutzar, Achzakot.MimshakMutzarNetuneiMutzarYeshutMaasik[] mimshakYeshutMaasik)

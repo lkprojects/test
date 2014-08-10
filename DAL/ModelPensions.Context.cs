@@ -40,10 +40,8 @@ namespace DAL
         public virtual DbSet<Miktsoa_Isuk_Tachviv> Miktsoa_Isuk_Tachviv { get; set; }
         public virtual DbSet<Mutav> Mutavs { get; set; }
         public virtual DbSet<Tosafot> Tosafots { get; set; }
-        public virtual DbSet<Client> Clients { get; set; }
         public virtual DbSet<Config> Configs { get; set; }
         public virtual DbSet<Event> Events { get; set; }
-        public virtual DbSet<EventHistory> EventHistories { get; set; }
         public virtual DbSet<EventsQueue> EventsQueues { get; set; }
         public virtual DbSet<LUT> LUTs { get; set; }
         public virtual DbSet<DmeiNihul> DmeiNihuls { get; set; }
@@ -69,8 +67,11 @@ namespace DAL
         public virtual DbSet<IshKesherYeshutMaasik> IshKesherYeshutMaasiks { get; set; }
         public virtual DbSet<Mutzar> Mutzars { get; set; }
         public virtual DbSet<YeshutMaasik> YeshutMaasiks { get; set; }
-        public virtual DbSet<EventsHistory> EventsHistories { get; set; }
         public virtual DbSet<MutzarKovetz> MutzarKovetzs { get; set; }
+        public virtual DbSet<ClientYatzran> ClientYatzrans { get; set; }
+        public virtual DbSet<Yatzran> Yatzrans { get; set; }
+        public virtual DbSet<Client> Clients { get; set; }
+        public virtual DbSet<ClientStatusHistory> ClientStatusHistories { get; set; }
     
         public virtual int DeleteMutzar(Nullable<int> mutzar_Id)
         {
@@ -100,7 +101,7 @@ namespace DAL
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("InsertKovetzTest");
         }
     
-        public virtual int ChangeClientStatus(ObjectParameter mISPAR_ZIHUY, Nullable<int> fromStatus, Nullable<int> toStatus)
+        public virtual int ChangeClientStatus(ObjectParameter mISPAR_ZIHUY, Nullable<int> fromStatus, Nullable<int> toStatus, Nullable<int> kovetz_id)
         {
             var fromStatusParameter = fromStatus.HasValue ?
                 new ObjectParameter("FromStatus", fromStatus) :
@@ -110,7 +111,11 @@ namespace DAL
                 new ObjectParameter("ToStatus", toStatus) :
                 new ObjectParameter("ToStatus", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ChangeClientStatus", mISPAR_ZIHUY, fromStatusParameter, toStatusParameter);
+            var kovetz_idParameter = kovetz_id.HasValue ?
+                new ObjectParameter("kovetz_id", kovetz_id) :
+                new ObjectParameter("kovetz_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ChangeClientStatus", mISPAR_ZIHUY, fromStatusParameter, toStatusParameter, kovetz_idParameter);
         }
     
         public virtual int DeleteKovetz(Nullable<int> kovetz_Id)
@@ -120,6 +125,28 @@ namespace DAL
                 new ObjectParameter("Kovetz_Id", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteKovetz", kovetz_IdParameter);
+        }
+    
+        public virtual int DeleteKovetzAndMutzar(Nullable<int> kovetz_Id)
+        {
+            var kovetz_IdParameter = kovetz_Id.HasValue ?
+                new ObjectParameter("Kovetz_Id", kovetz_Id) :
+                new ObjectParameter("Kovetz_Id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteKovetzAndMutzar", kovetz_IdParameter);
+        }
+    
+        public virtual int ChangeClientStatusByFileNumber(string misparKovetz, Nullable<int> newStatus)
+        {
+            var misparKovetzParameter = misparKovetz != null ?
+                new ObjectParameter("MisparKovetz", misparKovetz) :
+                new ObjectParameter("MisparKovetz", typeof(string));
+    
+            var newStatusParameter = newStatus.HasValue ?
+                new ObjectParameter("NewStatus", newStatus) :
+                new ObjectParameter("NewStatus", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ChangeClientStatusByFileNumber", misparKovetzParameter, newStatusParameter);
         }
     }
 }

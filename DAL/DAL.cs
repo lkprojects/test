@@ -71,15 +71,26 @@ namespace DAL
 
         }
 
+        public Client GetClientByStatus(int status)
+        {
+            Client client = new Client();
+            
+            client = (from c in dbCtx.Clients
+                      where c.Status == status
+                      select c).FirstOrDefault();
+
+            return client;
+        }
+
         public Client GetClient(string misparZihuy)
         {
             return dbCtx.Clients.SingleOrDefault(p => p.TeudatZehut == misparZihuy);
         }
         
-        public string ChangeClientStatus(string MisparZihuy, int FromStatus, int ToStatus, string FileNumber)
+        public string ChangeClientStatus(string MisparZihuy, int FromStatus, int ToStatus, int? KovetzId)
         {
             var ZihuyParameter = new ObjectParameter("MISPAR_ZIHUY", typeof(string));
-            dbCtx.ChangeClientStatus(ZihuyParameter, FromStatus, ToStatus, FileNumber);
+            dbCtx.ChangeClientStatus(ZihuyParameter, FromStatus, ToStatus, KovetzId);
             return ZihuyParameter.Value.ToString();
         }
 
@@ -100,13 +111,12 @@ namespace DAL
                 foreach (var eve in e.EntityValidationErrors)
                 {
                     rs = string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:", eve.Entry.Entity.GetType().Name, eve.Entry.State);
-                    Console.WriteLine(rs);
-
                     foreach (var ve in eve.ValidationErrors)
                     {
-                        rs += "<br />" + string.Format("- Property: \"{0}\", Error: \"{1}\"", ve.PropertyName, ve.ErrorMessage);
+                        rs += "\n" + string.Format("- Property: \"{0}\", Error: \"{1}\"", ve.PropertyName, ve.ErrorMessage);
                     }
                     Console.WriteLine(rs);
+                    log.Error(rs);
                 }
                 // throw new Exception(rs);
             }
@@ -115,6 +125,7 @@ namespace DAL
                 string rs = ex.Message;
                 rs += "\n" + ex.InnerException.InnerException.ToString();
                 Console.WriteLine(rs);
+                log.Error(rs);
 
                 // throw new Exception(rs);
             }
@@ -131,6 +142,11 @@ namespace DAL
                 
             }
         }
+        
+        public void GetDatabaseValues(object entity)
+        {
+            dbCtx.Entry(entity).GetDatabaseValues();
+        }
 
         public void DeleteKovetz(int KovetzId)
         {
@@ -142,6 +158,20 @@ namespace DAL
             {
 
             }
+        }
+
+        public bool CheckIfFileExists(string MisparKovetz)
+        {
+            int? id = dbCtx.Kovetzs.SingleOrDefault(p => p.MISPAR_HAKOVETZ == MisparKovetz).Kovetz_Id;
+            if (id != null)
+                return true;
+            else
+                return false;
+        }
+
+        public void ChangeClientStatusByFileNumber (string MisparKovetz, int NewStatus)
+        {
+            dbCtx.ChangeClientStatusByFileNumber(MisparKovetz, NewStatus);
         }
 
         public void SaveFeedback(FeedbackFile feedback)
@@ -190,6 +220,7 @@ namespace DAL
             }
             catch (Exception ex)
             {
+                log.Error("Error getting configuration parameter", ex);
                 return null;
             }
         }
