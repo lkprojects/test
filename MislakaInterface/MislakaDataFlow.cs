@@ -16,23 +16,26 @@ namespace MislakaInterface
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private MislakaFileName mislakaFileName;
-        private DAL.DAL Dal = new DAL.DAL("MislakaInterface");
+        private static DAL.DAL Dal = new DAL.DAL("MislakaInterface");
         private FileTypes svivatAvoda;
-        private string directory;
+        private string incomingDir;
+        private string outgoingDir;
+
+        private FileTypes Environment = (FileTypes)Enum.Parse(typeof(FileTypes), Dal.GetConfigParam("SVIVAT-AVODA")); // 1= Test, 2=Production
 
         public void ProcessCycle()
         {
             // Checking if there are files to process ("Achzakot" or "Feedbacks")
             string MisparKovetz;
-            directory = Dal.GetConfigParam("MislakaFolder");
+            incomingDir = Dal.GetConfigParam("MislakaFolder");
+            outgoingDir = Dal.GetConfigParam("MislakaFolder");
 
             log.Info("Start Process Cycle");
 
-            FileTypes fileType = (FileTypes)Enum.Parse(typeof(FileTypes), Dal.GetConfigParam("SVIVAT-AVODA")); // 1= Test, 2=Production
-            ProduceEvents();
+            //ProduceEvents();
 
             //Read all incoming files
-            foreach (string file in Directory.GetFiles(directory))
+            foreach (string file in Directory.GetFiles(incomingDir))
             {
                 string filename = file.Substring(file.LastIndexOf('\\') + 1);
                 mislakaFileName = new MislakaFileName(filename);
@@ -47,7 +50,7 @@ namespace MislakaInterface
                         // Update the status
                         if (MisparKovetz != null)
                         {
-                            SendSuccessFeedback(directory, MisparKovetz, file, 20 /*Feedback type*/);
+                            SendFeedback(outgoingDir, MisparKovetz, file, 20 /*Feedback type*/, true);
                         }
                         else
                             SendErrorFeedback(); // Error status
@@ -65,7 +68,6 @@ namespace MislakaInterface
                 }
             }
             log.Info("End Process Cycle");
-
         }
         
         public MislakaDataFlow (FileTypes SvivatAvoda)
@@ -103,7 +105,7 @@ namespace MislakaInterface
             }
             fs.Close();
 
-            achzakotParser.ParseKovetz(mimshak);
+            achzakotParser.ParseKovetz(mimshak, filename);
 
             try
             {
@@ -112,39 +114,39 @@ namespace MislakaInterface
 
                 return mimshak.KoteretKovetz.MISPARHAKOVETZ;
             }
-                catch (System.Data.Entity.Validation.DbEntityValidationException e)
+            catch (System.Data.Entity.Validation.DbEntityValidationException e)
+            {
+                string rs = "";
+                foreach (var eve in e.EntityValidationErrors)
                 {
-                    string rs = "";
-                    foreach (var eve in e.EntityValidationErrors)
+                    rs = string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:", eve.Entry.Entity.GetType().Name, eve.Entry.State);
+
+                    foreach (var ve in eve.ValidationErrors)
                     {
-                        rs = string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:", eve.Entry.Entity.GetType().Name, eve.Entry.State);
-
-                        foreach (var ve in eve.ValidationErrors)
-                        {
-                            rs += "\n" + string.Format("- Property: \"{0}\", Error: \"{1}\"", ve.PropertyName, ve.ErrorMessage);
-                        }
-                        Console.WriteLine(rs);
-                        log.Error(rs, e);
+                        rs += "\n" + string.Format("- Property: \"{0}\", Error: \"{1}\"", ve.PropertyName, ve.ErrorMessage);
                     }
-                    return null;
-                    // throw new Exception(rs);
-                }
-                catch (System.Data.Entity.Infrastructure.DbUpdateException ex)
-                {
-                    string rs = ex.Message;
-                    rs += "\n" + ex.InnerException.InnerException.ToString();
                     Console.WriteLine(rs);
-                    log.Error(rs, ex);
-
-                    return null;
-                    // throw new Exception(rs);
-
+                    log.Error(rs, e);
                 }
-                catch (Exception e)
-                {
-                    log.Error("Error Found", e);
-                    return null;
-                }
+                return null;
+                // throw new Exception(rs);
+            }
+            catch (System.Data.Entity.Infrastructure.DbUpdateException ex)
+            {
+                string rs = ex.Message;
+                rs += "\n" + ex.InnerException.InnerException.ToString();
+                Console.WriteLine(rs);
+                log.Error(rs, ex);
+
+                return null;
+                // throw new Exception(rs);
+
+            }
+            catch (Exception e)
+            {
+                log.Error("Error Found", e);
+                return null;
+            }
 
         }
         /// <summary>
@@ -154,23 +156,25 @@ namespace MislakaInterface
         /// <param name="MisparHakovetz">As defined inside the XML of the file received</param>
         /// <param name="ShemHakovetz">The file name that was receieved</param>
         /// <param name="SugMimshak">1=Achzakot, 2=Trom Yeutz, 3=Achzakot+Trom Yeutz etc.</param>
-        private void SendSuccessFeedback(string MislakaFolder, 
-                                         string MisparHakovetz,
-                                         string FileName, 
-                                         int    SugMimshak)
+        private void SendFeedback(string MisparHakovetz,
+                                  string FileName, 
+                                  int    SugMimshak,
+                                  bool   isSuccess)
         {
             log.Info("Start Send Success Feedback");
             Feedback.Mimshak mimshak = new Feedback.Mimshak();
             MislakaFileName mislakaFileName;
             HandleFeedback handleFeedback = new HandleFeedback(mimshak);
 
-            mislakaFileName = handleFeedback.ProduceSuccessFeedback(svivatAvoda, MisparHakovetz, FileName, SugMimshak, mimshak);
+            mislakaFileName = handleFeedback.ProduceFeedback(svivatAvoda, MisparHakovetz, FileName, SugMimshak, isSuccess);
             
             System.Xml.Serialization.XmlSerializer writer = new System.Xml.Serialization.XmlSerializer(typeof(Feedback.Mimshak));
-            string fileName = MislakaFolder + "\\" + mislakaFileName.GetMislakaFileName();
+            string fileName = outgoingDir + "\\" + mislakaFileName.GetMislakaFileName();
             System.IO.StreamWriter file = new System.IO.StreamWriter(fileName);
             writer.Serialize(file, mimshak);
             file.Close();
+            handleFeedback.CreateFeedbackKovetzRecord(fileName, MisparHakovetz);
+
             log.Info("End Send Success Feedback - file:" + mislakaFileName.GetMislakaFileName());
         }
 
@@ -204,7 +208,7 @@ namespace MislakaInterface
 
                 // Write the events to a file
                 System.Xml.Serialization.XmlSerializer writer = new System.Xml.Serialization.XmlSerializer(typeof(Events.Mimshak));
-                fileName = directory + "\\" + mislakaFileName.GetMislakaFileName();
+                fileName = incomingDir + "\\" + mislakaFileName.GetMislakaFileName();
                 System.IO.StreamWriter file = new System.IO.StreamWriter(fileName);
                 try 
                 {
@@ -233,8 +237,9 @@ namespace MislakaInterface
                 kovetz.KIVUN_MIMSHAK_XML = 5;
 
                 Dal.Add(kovetz);
+                Dal.UpdateClientStatus(client, (int)ClientStatus.SentEvent);
                 Dal.SaveChanges();
-                Dal.ChangeClientStatus(client.TeudatZehut, (int)ClientStatus.New, (int)ClientStatus.SentEvent, kovetz.Kovetz_Id);
+                //Dal.ChangeClientStatus(client.TeudatZehut, (int)ClientStatus.New, (int)ClientStatus.SentEvent, kovetz.Kovetz_Id);
                 log.Info("Finished producing event successfully for client - TZ #" + client.TeudatZehut);
                 // Get the next Client TZ.
                 client = Dal.GetClientByStatus((int)ClientStatus.New);
@@ -248,11 +253,13 @@ namespace MislakaInterface
 
         private void LoadFeedback(string file)
         {
+            string MisparZehut;
+
             // Read the XML file into "Mimshak" object
             log.Info("Start processing feedback file " + file);
             XmlSerializer serializer = new XmlSerializer(typeof(Feedback.Mimshak));
             Stream fs = File.OpenRead(file);
-            HandleFeedback feedback;
+            HandleFeedback feedback = new HandleFeedback();
             try
             {
                 feedback = new HandleFeedback(serializer.Deserialize(fs) as Feedback.Mimshak);
@@ -265,68 +272,97 @@ namespace MislakaInterface
                 return;
             }
             fs.Close();
-            FeedbackFile feedbackFile;
+            //FeedbackFile feedbackFile = new FeedbackFile();
+            MislakaFileName mislakaFileName;
             try
             {
-                //ChangeStatus 
-                feedbackFile = feedback.ParseFeedback();
+                // feedbackFile = feedback.ParseFeedback();
+
+                feedback.CreateFeedbackKovetzRecord(file, feedback.Mimshak.KoteretKovetz.MISPARHAKOVETZ);
+                // Check if there is NO DATA from the Yatzran.
+
                 Dal.SaveFeedback(feedbackFile);
+                AnalyzeFeedback(file, feedback.Mimshak);
 
-                Kovetz kovetz = new Kovetz();
-                kovetz.MISPAR_GIRSAT_XML = feedback.Mimshak.KoteretKovetz.MISPARGIRSATXML.ToString().Replace("Item","");
-                kovetz.MISPAR_HAKOVETZ = feedback.Mimshak.KoteretKovetz.MISPARHAKOVETZ;
-                kovetz.KOD_SVIVAT_AVODA = feedback.Mimshak.KoteretKovetz.KODSVIVATAVODA;
-                kovetz.SUG_MIMSHAK = feedback.Mimshak.KoteretKovetz.SUGMIMSHAK;
-                kovetz.TAARICH_BITZUA = Common.ConvertDatetime(feedback.Mimshak.KoteretKovetz.TAARICHBITZUA);
-                kovetz.MISPAR_GIRSAT_XML = "001";
-                kovetz.SHEM_SHOLEACH = "Feedback";
-                kovetz.FileName = file;
-                kovetz.MEZAHE_HAAVARA = mislakaFileName.GetMislakaFileName();
-                kovetz.Yatzran_SHEM_YATZRAN = feedback.Mimshak.KoteretKovetz.NetuneiGoremSholech.SHEMGOREMSHOLECH;
-                kovetz.LoadDate = DateTime.Now;
-                kovetz.KIVUN_MIMSHAK_XML = 5;
-                Dal.Add(kovetz);
-                Dal.SaveChanges();
-
-                for (int i = 0; i < feedback.Mimshak.GufHamimshak.Length; i++)
-                {
-                    Dal.ChangeClientStatusByFileNumber(feedback.Mimshak.GufHamimshak[i].SugMashov.MISPARHAKOVETZ,
-                                                        (int)ClientStatus.EndFeedback1);
-                }
                 log.Info("Finished processing feedback file " + file);
             }
-            catch (System.Data.Entity.Validation.DbEntityValidationException e)
-            {
-                string rs = "";
-                foreach (var eve in e.EntityValidationErrors)
-                {
-                    rs = string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:", eve.Entry.Entity.GetType().Name, eve.Entry.State);
-
-                    foreach (var ve in eve.ValidationErrors)
-                    {
-                        rs += "\n" + string.Format("- Property: \"{0}\", Error: \"{1}\"", ve.PropertyName, ve.ErrorMessage);
-                    }
-                    Console.WriteLine(rs);
-                    log.Error(rs, e);
-                }
-                return;
-                // throw new Exception(rs);
-            }
-            catch (System.Data.Entity.Infrastructure.DbUpdateException ex)
-            {
-                string rs = ex.Message;
-                rs += "\n" + ex.InnerException.InnerException.ToString();
-                Console.WriteLine(rs);
-                log.Error(rs, ex);
-                return;
-
-            }
+           
             catch (Exception e)
             {
                 log.Error("Error Found", e);
                 return;
             }
 
+        }
+
+        private void AnalyzeFeedback(string file, Feedback.Mimshak feedback)
+        {
+            string MisparZehut;
+
+            for (int i = 0; i < feedback.GufHamimshak.Length; i++)
+            {
+                // Check for error on file level
+                if (feedback.GufHamimshak[i].SugMashov.RAMATMASHOV == 1 &&
+                    feedback.GufHamimshak[i].SugMashov.MashovBeramatKovetz.KODSHGIHA != null)
+                {
+                    Dal.ChangeClientStatusByFileNumber(feedback.GufHamimshak[i].SugMashov.MISPARHAKOVETZ,
+                                                       (int)ClientStatus.EventFeedbackFileError);
+
+                    SendFeedback(feedback.KoteretKovetz.MISPARHAKOVETZ, Common.RemovePath(file), feedback.KoteretKovetz.SUGMIMSHAK, false);
+                }
+                else if (feedback.GufHamimshak[i].SugMashov.RAMATMASHOV == 2) // Mashov on Records
+                {
+                    MisparZehut = AnalyzeFeedbackRecords(file, feedback.GufHamimshak[i].SugMashov.MISPARHAKOVETZ, feedback.GufHamimshak[i]);
+                    Dal.ChangeClientStatusByFileNumber(feedback.GufHamimshak[i].SugMashov.MISPARHAKOVETZ, (int)ClientStatus.NoData);
+                    Dal.SetClientYatzran(feedback.GufHamimshak[i].SugMashov.MISPARHAKOVETZ,
+                                         feedback.GufHamimshak[i].MISPARMEZAHEPONE, // "Pone" is the Yatzran
+                                         0);
+                }
+            }
+        }
+
+        private string AnalyzeFeedbackRecords(string file, string misparHakovetz, Feedback.MimshakYeshutGoremPoneLemislaka mimshakRec)
+        {
+            string MisparZehut;
+            // Iterate over each record (client)
+            for (int j = 0; j < mimshakRec.SugMashov.MashovBeramatReshuma.Length; j++)
+            {
+                // The 16 character from offset 27 holds the client TZ.
+                MisparZehut = mimshakRec.SugMashov.MashovBeramatReshuma[j].MISPARMEZAHERESHUMA.Substring(27, 16);
+                // Check if received feedback from Mislaka "Mashov A"
+                if (mimshakRec.SugMashov.SUGMASHOV == 1)
+                {
+                    // Check the record is not valid
+                    if (mimshakRec.SugMashov.MashovBeramatReshuma[j].STATUSRESHUMA !=
+                              Feedback.MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatReshumaSTATUSRESHUMA.Item1) // Status 1 = OK 
+                    {
+                        // Error in record from the Mislaka
+                        // The 16 character from offset 27 holds the client TZ.
+                        Dal.ChangeClientStatus(MisparZehut, ClientStatus.EventFeedbackRecordError);
+                        // Need to ask if the feedback from mefitz to the error on record should be like "success".
+                        SendFeedback(misparHakovetz, file, 20, true);
+                    }
+                    else // Success from Mislaka
+                    {
+                        Dal.ChangeClientStatus(MisparZehut, ClientStatus.EventFeedbackSuccess);
+                        // Need to ask if the feedback from mefitz to the error on record should be like "success".
+                        SendFeedback(misparHakovetz, file, 20, true);
+
+                    }
+                }
+                else // Received Mashov B - from Yatzran - there must be an error from the Yatzran
+                {
+                    // Check the record is not valid
+                    if (mimshakRec.SugMashov.MashovBeramatReshuma[j].MaaneMiYazran[0].MAANEBERAMATRESHUMA != null)
+                    {
+                        // Error in record from the Yatzran
+                        Dal.ChangeClientStatus(MisparZehut, ClientStatus.NoData);
+                        // Need to ask if the feedback from Yatzran to the error on record should be like "success".
+                        SendFeedback(misparHakovetz, file, 20, true);
+                    }
+                }
+            }
+            return MisparZehut;
         }
 
     }

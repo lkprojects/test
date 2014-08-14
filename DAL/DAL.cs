@@ -5,9 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using log4net;
+using System.Data.Entity;
 namespace DAL
 {
-    public enum ClientStatus { New = 1, StartEvent, SentEvent, StartFeedback1, EndFeedback1, StartLoadAchzakot, EndLoadAchzakot, };
+    public enum ClientStatus { New = 1, EventSent, EventFeedbackSuccess, EventFeedbackFileError, EventFeedbackRecordError, DataLoaded, NoData};
     
     public class DAL
     {
@@ -86,12 +87,18 @@ namespace DAL
         {
             return dbCtx.Clients.SingleOrDefault(p => p.TeudatZehut == misparZihuy);
         }
-        
-        public string ChangeClientStatus(string MisparZihuy, int FromStatus, int ToStatus, int? KovetzId)
+
+        public void ChangeClientStatus(string MisparZihuy, ClientStatus ToStatus)
         {
-            var ZihuyParameter = new ObjectParameter("MISPAR_ZIHUY", typeof(string));
-            dbCtx.ChangeClientStatus(ZihuyParameter, FromStatus, ToStatus, KovetzId);
-            return ZihuyParameter.Value.ToString();
+            Client client = new Client();
+
+            client = (from c in dbCtx.Clients
+                      where c.TeudatZehut == MisparZihuy
+                      select c).FirstOrDefault();
+            client.ModifyDate = DateTime.Now;
+            client.Status = (byte)ToStatus;
+            dbCtx.Entry(client).State = EntityState.Modified;
+
         }
 
         public void DequeueEvent(string misparZihuy)
@@ -206,9 +213,7 @@ namespace DAL
                 // throw new Exception(rs);
 
             }
-
         }
-
 
         public string GetConfigParam(string paramName)
         {
@@ -258,11 +263,6 @@ namespace DAL
 
         }
 
-        public void SetUpdateMode(Kovetz kovetz)
-        {
-            dbCtx.Entry(kovetz).State = System.Data.Entity.EntityState.Modified;
-        }
-
         public void Add(Kovetz kovetz)
         {
             dbCtx.Kovetzs.Add(kovetz);
@@ -273,6 +273,18 @@ namespace DAL
             dbCtx.Mutzars.Add(mutzar);
         }
 
-    
+        public void UpdateClientStatus(Client client, byte status)
+        {
+            client.Status = status;
+            dbCtx.Entry(client).State = EntityState.Modified;
+        }
+
+        public void SetClientYatzran(string MisparKovetz, string Yatzran, bool DataExists)
+        {
+            int? id = dbCtx.ClientYatzrans.SingleOrDefault(p => p. == MisparKovetz).Kovetz_Id;
+            if (id != null)
+
+            ClientYatzran clientYatzran = new(clientYatzran);
+        }
     }
 }

@@ -16,9 +16,9 @@ namespace MislakaInterface
         private enum DataMode { Insert, Update };
         private DAL.DAL Dal = new DAL.DAL();
 
-        public void ParseKovetz(Achzakot.Mimshak mimshak_in)
+        public void ParseKovetz(Achzakot.Mimshak mimshak_in, string filename)
         {
-            log.Info("Start Parsing Achzakot file #" + mimshak.KoteretKovetz.MISPARHAKOVETZ);
+            log.Info("Start Parsing Achzakot file #" + mimshak_in.KoteretKovetz.MISPARHAKOVETZ);
 
             mimshak = mimshak_in;
             Kovetz kovetz;
@@ -53,7 +53,8 @@ namespace MislakaInterface
             kovetz.TAARICH_BITZUA = Common.ConvertDatetime(mimshak.KoteretKovetz.TAARICHBITZUA);
             kovetz.Yatzran_SHEM_YATZRAN = mimshak.YeshutYatzran.SHEMYATZRAN;
             kovetz.Yatzran_KOD_MEZAHE_YATZRAN = mimshak.YeshutYatzran.KODMEZAHEYATZRAN;
-
+            kovetz.LoadDate = DateTime.Now;
+            kovetz.FileName = filename;
 
             IshKesherYeshutYatzran ishKesherYeshutYatzran;
             if (mimshak.YeshutYatzran.IshKesherYeshutYatzran != null && dataMode == DataMode.Insert)
@@ -200,7 +201,7 @@ namespace MislakaInterface
             mutzar.Lakoach_TAARICH_LEYDA = Common.ConvertDate(mimshak.NetuneiMutzar.YeshutLakoach.TAARICHLEYDA);
             mutzar.Lakoach_TAARICH_PTIRA = Common.ConvertDate(mimshak.NetuneiMutzar.YeshutLakoach.TAARICHPTIRA);
 
-            Dal.ChangeClientStatus(mutzar.Lakoach_MISPAR_ZIHUY_LAKOACH, (int)ClientStatus.EndFeedback1, (int)ClientStatus.StartLoadAchzakot, null);
+            Client client = Dal.GetClient(mutzar.Lakoach_MISPAR_ZIHUY_LAKOACH);
 
             if (mimshak.NetuneiMutzar.YeshutMaasik != null)
                 ParseYeshutMaasik(mutzar, mimshak.NetuneiMutzar.YeshutMaasik);
@@ -211,8 +212,7 @@ namespace MislakaInterface
             }
 
             Dal.Add(mutzar);
-
-            Dal.ChangeClientStatus(mutzar.Lakoach_MISPAR_ZIHUY_LAKOACH, (int)ClientStatus.StartLoadAchzakot, (int)ClientStatus.EndLoadAchzakot, Kovetz_Id);
+            Dal.UpdateClientStatus(client, (int)ClientStatus.DataLoaded);
         }
 
         private void ParseYeshutMaasik(Mutzar mutzar, Achzakot.MimshakMutzarNetuneiMutzarYeshutMaasik[] mimshakYeshutMaasik)
@@ -902,5 +902,10 @@ namespace MislakaInterface
             }
         }
 
+
+        public void SetClientStatuses()
+        {
+
+        }
     }
 }

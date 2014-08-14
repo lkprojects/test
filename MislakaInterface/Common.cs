@@ -37,5 +37,11 @@ namespace MislakaInterface
                 return null;
         }
 
+        public static string RemovePath(string filename)
+        {
+            return filename.Substring(filename.LastIndexOf('\\') + 1);
+        }
+
+
     }
 }
