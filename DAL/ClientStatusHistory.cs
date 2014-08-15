@@ -16,7 +16,7 @@ namespace DAL
     {
         public int EventsHistory_Id { get; set; }
         public Nullable<int> Client_Id { get; set; }
-        public Nullable<int> KOD_MEZAHE_YATZRAN { get; set; }
+        public Nullable<int> KodYatzran { get; set; }
         public Nullable<int> Status_Id { get; set; }
         public Nullable<System.DateTime> DateInserted { get; set; }
         public Nullable<int> kovetz_id { get; set; }

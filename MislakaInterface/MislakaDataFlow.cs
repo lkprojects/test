@@ -27,8 +27,8 @@ namespace MislakaInterface
         {
             // Checking if there are files to process ("Achzakot" or "Feedbacks")
             string MisparKovetz;
-            incomingDir = Dal.GetConfigParam("MislakaFolder");
-            outgoingDir = Dal.GetConfigParam("MislakaFolder");
+            incomingDir = Dal.GetConfigParam("MislakaIncomingFolder");
+            outgoingDir = Dal.GetConfigParam("MislakaOutgoingFolder");
 
             log.Info("Start Process Cycle");
 
@@ -50,7 +50,7 @@ namespace MislakaInterface
                         // Update the status
                         if (MisparKovetz != null)
                         {
-                            SendFeedback(outgoingDir, MisparKovetz, file, 20 /*Feedback type*/, true);
+                            SendFeedback(MisparKovetz, file, 20 /*Feedback type*/, true);
                         }
                         else
                             SendErrorFeedback(); // Error status
@@ -162,16 +162,14 @@ namespace MislakaInterface
                                   bool   isSuccess)
         {
             log.Info("Start Send Success Feedback");
-            Feedback.Mimshak mimshak = new Feedback.Mimshak();
-            MislakaFileName mislakaFileName;
-            HandleFeedback handleFeedback = new HandleFeedback(mimshak);
+            HandleFeedback handleFeedback = new HandleFeedback();
 
-            mislakaFileName = handleFeedback.ProduceFeedback(svivatAvoda, MisparHakovetz, FileName, SugMimshak, isSuccess);
+            handleFeedback.ProduceFeedback(svivatAvoda, MisparHakovetz, FileName, isSuccess);
             
             System.Xml.Serialization.XmlSerializer writer = new System.Xml.Serialization.XmlSerializer(typeof(Feedback.Mimshak));
-            string fileName = outgoingDir + "\\" + mislakaFileName.GetMislakaFileName();
+            string fileName = outgoingDir + "\\" + handleFeedback.MislakaFilename.GetMislakaFileName();
             System.IO.StreamWriter file = new System.IO.StreamWriter(fileName);
-            writer.Serialize(file, mimshak);
+            writer.Serialize(file, handleFeedback.Mimshak);
             file.Close();
             handleFeedback.CreateFeedbackKovetzRecord(fileName, MisparHakovetz);
 
@@ -237,7 +235,7 @@ namespace MislakaInterface
                 kovetz.KIVUN_MIMSHAK_XML = 5;
 
                 Dal.Add(kovetz);
-                Dal.UpdateClientStatus(client, (int)ClientStatus.SentEvent);
+                Dal.UpdateClientStatus(client, ClientStatus.EventSent);
                 Dal.SaveChanges();
                 //Dal.ChangeClientStatus(client.TeudatZehut, (int)ClientStatus.New, (int)ClientStatus.SentEvent, kovetz.Kovetz_Id);
                 log.Info("Finished producing event successfully for client - TZ #" + client.TeudatZehut);
@@ -253,8 +251,6 @@ namespace MislakaInterface
 
         private void LoadFeedback(string file)
         {
-            string MisparZehut;
-
             // Read the XML file into "Mimshak" object
             log.Info("Start processing feedback file " + file);
             XmlSerializer serializer = new XmlSerializer(typeof(Feedback.Mimshak));
@@ -273,15 +269,15 @@ namespace MislakaInterface
             }
             fs.Close();
             //FeedbackFile feedbackFile = new FeedbackFile();
-            MislakaFileName mislakaFileName;
+            //MislakaFileName mislakaFileName;
             try
             {
                 // feedbackFile = feedback.ParseFeedback();
 
                 feedback.CreateFeedbackKovetzRecord(file, feedback.Mimshak.KoteretKovetz.MISPARHAKOVETZ);
                 // Check if there is NO DATA from the Yatzran.
-
-                Dal.SaveFeedback(feedbackFile);
+                Dal.SaveChanges();
+                //Dal.SaveFeedback(feedbackFile);
                 AnalyzeFeedback(file, feedback.Mimshak);
 
                 log.Info("Finished processing feedback file " + file);
@@ -297,8 +293,6 @@ namespace MislakaInterface
 
         private void AnalyzeFeedback(string file, Feedback.Mimshak feedback)
         {
-            string MisparZehut;
-
             for (int i = 0; i < feedback.GufHamimshak.Length; i++)
             {
                 // Check for error on file level
@@ -306,24 +300,22 @@ namespace MislakaInterface
                     feedback.GufHamimshak[i].SugMashov.MashovBeramatKovetz.KODSHGIHA != null)
                 {
                     Dal.ChangeClientStatusByFileNumber(feedback.GufHamimshak[i].SugMashov.MISPARHAKOVETZ,
-                                                       (int)ClientStatus.EventFeedbackFileError);
+                                                       ClientStatus.EventFeedbackFileError);
 
                     SendFeedback(feedback.KoteretKovetz.MISPARHAKOVETZ, Common.RemovePath(file), feedback.KoteretKovetz.SUGMIMSHAK, false);
                 }
                 else if (feedback.GufHamimshak[i].SugMashov.RAMATMASHOV == 2) // Mashov on Records
                 {
-                    MisparZehut = AnalyzeFeedbackRecords(file, feedback.GufHamimshak[i].SugMashov.MISPARHAKOVETZ, feedback.GufHamimshak[i]);
-                    Dal.ChangeClientStatusByFileNumber(feedback.GufHamimshak[i].SugMashov.MISPARHAKOVETZ, (int)ClientStatus.NoData);
-                    Dal.SetClientYatzran(feedback.GufHamimshak[i].SugMashov.MISPARHAKOVETZ,
-                                         feedback.GufHamimshak[i].MISPARMEZAHEPONE, // "Pone" is the Yatzran
-                                         0);
+                     AnalyzeFeedbackRecords(file, 
+                                            feedback.KoteretKovetz.NetuneiGoremSholech.MISPARZIHUISHOLECH, 
+                                            feedback.GufHamimshak[i].SugMashov.MISPARHAKOVETZ, feedback.GufHamimshak[i]);
                 }
             }
         }
 
-        private string AnalyzeFeedbackRecords(string file, string misparHakovetz, Feedback.MimshakYeshutGoremPoneLemislaka mimshakRec)
+        private void AnalyzeFeedbackRecords(string file, string misparHakovetz, string misparZihuySholeach, Feedback.MimshakYeshutGoremPoneLemislaka mimshakRec)
         {
-            string MisparZehut;
+            string MisparZehut = "";
             // Iterate over each record (client)
             for (int j = 0; j < mimshakRec.SugMashov.MashovBeramatReshuma.Length; j++)
             {
@@ -336,8 +328,7 @@ namespace MislakaInterface
                     if (mimshakRec.SugMashov.MashovBeramatReshuma[j].STATUSRESHUMA !=
                               Feedback.MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatReshumaSTATUSRESHUMA.Item1) // Status 1 = OK 
                     {
-                        // Error in record from the Mislaka
-                        // The 16 character from offset 27 holds the client TZ.
+                        // Error in record from the Mislaka 
                         Dal.ChangeClientStatus(MisparZehut, ClientStatus.EventFeedbackRecordError);
                         // Need to ask if the feedback from mefitz to the error on record should be like "success".
                         SendFeedback(misparHakovetz, file, 20, true);
@@ -347,7 +338,7 @@ namespace MislakaInterface
                         Dal.ChangeClientStatus(MisparZehut, ClientStatus.EventFeedbackSuccess);
                         // Need to ask if the feedback from mefitz to the error on record should be like "success".
                         SendFeedback(misparHakovetz, file, 20, true);
-
+                        Dal.SetClientYatzran(MisparZehut, misparZihuySholeach, true);
                     }
                 }
                 else // Received Mashov B - from Yatzran - there must be an error from the Yatzran
@@ -355,16 +346,15 @@ namespace MislakaInterface
                     // Check the record is not valid
                     if (mimshakRec.SugMashov.MashovBeramatReshuma[j].MaaneMiYazran[0].MAANEBERAMATRESHUMA != null)
                     {
-                        // Error in record from the Yatzran
+                        // Error in record from the Yatzran (can't supply client data for some reason)
                         Dal.ChangeClientStatus(MisparZehut, ClientStatus.NoData);
                         // Need to ask if the feedback from Yatzran to the error on record should be like "success".
                         SendFeedback(misparHakovetz, file, 20, true);
+                        Dal.SetClientYatzran(MisparZehut, misparZihuySholeach, false);
                     }
                 }
             }
-            return MisparZehut;
         }
-
     }
 }
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 

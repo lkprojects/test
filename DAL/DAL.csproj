@@ -67,12 +67,6 @@
     <Compile Include="DmeiNihul.cs">
       <DependentUpon>ModelPensions.tt</DependentUpon>
     </Compile>
-    <Compile Include="Event.cs">
-      <DependentUpon>ModelPensions.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EventsQueue.cs">
-      <DependentUpon>ModelPensions.tt</DependentUpon>
-    </Compile>
     <Compile Include="FeedbackFile.cs">
       <DependentUpon>ModelPensions.tt</DependentUpon>
     </Compile>

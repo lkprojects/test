@@ -11,6 +11,7 @@ namespace MislakaInterface
     class HandleFeedback
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private int SugMimshak = 20;
 
         private Feedback.Mimshak mimshak;
         public Feedback.Mimshak Mimshak
@@ -18,7 +19,16 @@ namespace MislakaInterface
             get { return mimshak; }
             set { mimshak = value; }
         }
+
+        private MislakaFileName mislakaFileName;
+
+        public MislakaFileName MislakaFilename
+        {
+            get { return mislakaFileName; }
+            set { mislakaFileName = value; }
+        }
         
+
         // constructor
         public HandleFeedback(Feedback.Mimshak feedback)
         {
@@ -26,13 +36,13 @@ namespace MislakaInterface
         }
         public HandleFeedback()
         {
+            mimshak = new Feedback.Mimshak();
         }
 
-        public MislakaFileName ProduceFeedback(FileTypes SvivatAvoda, string MisparHakovetz, string ShemHakovetz, int SugMimshak, bool isSuccess)
+        public void ProduceFeedback(FileTypes SvivatAvoda, string MisparHakovetz, string ShemHakovetz, bool isSuccess)
         {
             DAL.DAL Dal = new DAL.DAL("Events");
             int numerator = Dal.GetFileNumerator();
-            mimshak = new Feedback.Mimshak();
             mimshak.KoteretKovetz = new Feedback.MimshakKoteretKovetz();
 
             mimshak.KoteretKovetz.KODSVIVATAVODA = (int)SvivatAvoda;
@@ -68,15 +78,14 @@ namespace MislakaInterface
             }
             mimshak.GufHamimshak = GufHamimshak;
 
-            MislakaFileName mislakaFileName = new MislakaFileName("001" /*Mefitz to Mislaka*/,
-                                                                  Dal.GetConfigParam("MISPAR-MEZAHE-METAFEL"),
-                                                                  ServiceTypes.FEDBKA,
-                                                                  ProductTypes.NotRelevant,
-                                                                  Dal.GetConfigParam("VERSION"),
-                                                                  DateTime.Now, numerator,
-                                                                  SvivatAvoda
-                                                                  );
-            return mislakaFileName;
+            mislakaFileName = new MislakaFileName("001" /*Mefitz to Mislaka*/,
+                                                    Dal.GetConfigParam("MISPAR-MEZAHE-METAFEL"),
+                                                    ServiceTypes.FEDBKA,
+                                                    ProductTypes.NotRelevant,
+                                                    Dal.GetConfigParam("VERSION"),
+                                                    DateTime.Now, numerator,
+                                                    SvivatAvoda
+                                                    );
         }
 
         public FeedbackFile ParseFeedback()

@@ -15,7 +15,8 @@ namespace DAL
     public partial class ClientYatzran
     {
         public int Client_Id { get; set; }
-        public int KOD_MEZAHE_YAZRAN { get; set; }
+        public string KodYatzran { get; set; }
         public Nullable<bool> HasData { get; set; }
+        public Nullable<System.DateTime> LastDataUpdate { get; set; }
     }
 }

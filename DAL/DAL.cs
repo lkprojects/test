@@ -176,9 +176,9 @@ namespace DAL
                 return false;
         }
 
-        public void ChangeClientStatusByFileNumber (string MisparKovetz, int NewStatus)
+        public void ChangeClientStatusByFileNumber (string MisparKovetz, ClientStatus NewStatus)
         {
-            dbCtx.ChangeClientStatusByFileNumber(MisparKovetz, NewStatus);
+            dbCtx.ChangeClientStatusByFileNumber(MisparKovetz, (int)NewStatus);
         }
 
         public void SaveFeedback(FeedbackFile feedback)
@@ -273,18 +273,42 @@ namespace DAL
             dbCtx.Mutzars.Add(mutzar);
         }
 
-        public void UpdateClientStatus(Client client, byte status)
+        public void UpdateClientStatus(Client client, ClientStatus status)
         {
-            client.Status = status;
+            client.Status = (byte)status;
             dbCtx.Entry(client).State = EntityState.Modified;
         }
 
-        public void SetClientYatzran(string MisparKovetz, string Yatzran, bool DataExists)
+        public void SetClientYatzran(string kodYatzran, string MisparZihuy, bool hasData)
         {
-            int? id = dbCtx.ClientYatzrans.SingleOrDefault(p => p. == MisparKovetz).Kovetz_Id;
-            if (id != null)
+            // Check if the Client-Yatzran correlation already exists
+            ClientYatzran clientYatzran =  
+                (from cy in dbCtx.ClientYatzrans
+                 join c in dbCtx.Clients on cy.Client_Id equals c.Client_Id
+                 where c.TeudatZehut == MisparZihuy && cy.KodYatzran == kodYatzran
+                 select cy).FirstOrDefault();
+            
+            // If record does not exist - add a new client-Yatran correlation
+            if (clientYatzran == null)
+            {
+                // Get the client id that matches the "Teudat Zehut"
+                int clientId =
+                    (from c in dbCtx.Clients
+                     where c.TeudatZehut == MisparZihuy 
+                     select c.Client_Id).FirstOrDefault();
 
-            ClientYatzran clientYatzran = new(clientYatzran);
+                clientYatzran = new ClientYatzran();
+                clientYatzran.KodYatzran = kodYatzran;
+                clientYatzran.Client_Id = clientId;
+                clientYatzran.HasData = hasData;
+                dbCtx.ClientYatzrans.Add(clientYatzran);
+            }
+            // If record does exists - change the "hasData" indicator if necessary
+            else if (clientYatzran.HasData != hasData)
+            {
+                clientYatzran.HasData = hasData;
+                dbCtx.Entry(clientYatzran).State = EntityState.Modified;
+            }
         }
     }
 }
