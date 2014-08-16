@@ -1,5 +1,6 @@
 ﻿using DAL;
 using Events;
+using MislakaInterface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,31 @@ class HandleEvents
     private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
     private DAL.DAL DALobj = new DAL.DAL("Events");
-    private Client clientRec = new Client();
-    private Events.Mimshak EventObj = new Events.Mimshak();
+    private List<Client> clientList = new List<Client>();
+    private Events.Mimshak mimshakEvent = new Events.Mimshak();
+    private Kovetz fileRecord = new Kovetz();
+
+    public Kovetz FileRecord 
+    {
+        get { return fileRecord; }
+    }
+
+    private int kodEirua;
 
     private int numerator;
+
+    public Events.Mimshak MimshakEvent
+    {
+        get { return mimshakEvent; }
+        set { mimshakEvent = value; }
+    }
+
+    public List<Client> ClientList
+    {
+        get { return clientList; }
+        set { clientList = value; }
+    }
+
 
     public int Numerator
     {
@@ -32,32 +54,27 @@ class HandleEvents
     }
         
     // constructor
+    public HandleEvents(int fileNumerator)
+    {
+        numerator = fileNumerator;
+    }
+
+    // constructor
     public HandleEvents(Events.Mimshak eruim, int fileNumerator)
     {
         mimshak = eruim;
         numerator = fileNumerator;
     }
-    public HandleEvents()
-    {
-    }
 
-    public Events.Mimshak PrepareEventObject(Client clientRecord, int fileNumerator)
+    public void PrepareEventObject(List<Client> clientList)
     {
-        numerator = fileNumerator;
-        PrepareEventObject(clientRecord);
-        return EventObj;
-    }
-
-    public Events.Mimshak PrepareEventObject(Client clientRecord)
-    {
-        clientRec = clientRecord;
-        EventObj = new Events.Mimshak();
-        EventObj.KoteretKovetz = new MimshakKoteretKovetz();
-        SetKoteretKovetz(EventObj.KoteretKovetz, numerator);
-        EventObj.GufHamimshak = new MimshakYeshutGoremPoneLemislaka[100];
-        SetGufMimshak(EventObj.GufHamimshak);
-        SetReshumatSgira(EventObj.ReshumatSgira);
-        return EventObj;
+        this.clientList = clientList;
+        mimshakEvent = new Events.Mimshak();
+        mimshakEvent.KoteretKovetz = new MimshakKoteretKovetz();
+        SetKoteretKovetz(mimshakEvent.KoteretKovetz);
+        mimshakEvent.GufHamimshak = new MimshakYeshutGoremPoneLemislaka[100];
+        SetGufMimshak(mimshakEvent.GufHamimshak);
+        SetReshumatSgira(mimshakEvent.ReshumatSgira);
     }
 
     private void SetReshumatSgira(MimshakReshumatSgira ReshumatSgira)
@@ -87,35 +104,43 @@ class HandleEvents
 
     private void SetLakoach(MimshakYeshutGoremPoneLemislakaYeshutLakoachMeidaBsisi[] Lakoach)
     {
-        int i = 0;
-        Lakoach[i] = new MimshakYeshutGoremPoneLemislakaYeshutLakoachMeidaBsisi();
+        for (int i = 0; i < clientList.Count; i++)
+        {
+            
+            Lakoach[i] = new MimshakYeshutGoremPoneLemislakaYeshutLakoachMeidaBsisi();
 
-        // Need to retrieve Lakoach information from the DB into lakoachRec
-        Lakoach[i].KODMEDINA = "0"; // What is this?
-        Lakoach[i].MISPARMEZAHELAKOACH = clientRec.TeudatZehut;
+            // Need to retrieve Lakoach information from the DB into lakoachRec
+            Lakoach[i].KODMEDINA = "0"; // What is this?
+            Lakoach[i].MISPARMEZAHELAKOACH = clientList[i].TeudatZehut;
+            log.Info("Producing event for client - TZ #" + clientList[i].TeudatZehut);
 
-        //Lakoach[i].SHEMMAASIK = lakoachRec.YeshutMaasiks.Last().SHEM_MAASIK; // Get latest employer.
-        Lakoach[i].SHEMMISHPACHALAKOACH = clientRec.LastName;
-        Lakoach[i].SHEMPRATILAKOACH = clientRec.FirstName;
-        Lakoach[i].SUGMEZAHELAKOACH = 3; // Identify by "teudat zehut".
-        Lakoach[i].SUGLAKOACH = 1; // 1= Amit/Mevutach ;  2= Maasik
-        Lakoach[i].Eirua = new MimshakYeshutGoremPoneLemislakaYeshutLakoachMeidaBsisiEirua[100];
-        SetEirua(Lakoach[i].Eirua);
+            //Lakoach[i].SHEMMAASIK = lakoachRec.YeshutMaasiks.Last().SHEM_MAASIK; // Get latest employer.
+            Lakoach[i].SHEMMISHPACHALAKOACH = clientList[i].LastName;
+            Lakoach[i].SHEMPRATILAKOACH = clientList[i].FirstName;
+            Lakoach[i].SUGMEZAHELAKOACH = 3; // Identify by "teudat zehut".
+            Lakoach[i].SUGLAKOACH = 1; // 1= Amit/Mevutach ;  2= Maasik
+            Lakoach[i].Eirua = new MimshakYeshutGoremPoneLemislakaYeshutLakoachMeidaBsisiEirua[100];
+            SetEirua(Lakoach[i].Eirua, i);
+        }
     }
 
-    private void SetEirua(MimshakYeshutGoremPoneLemislakaYeshutLakoachMeidaBsisiEirua[] Eirua)
+    private void SetEirua(MimshakYeshutGoremPoneLemislakaYeshutLakoachMeidaBsisiEirua[] Eirua, int clientNo)
     {
         int i = 0;
-        int fileNumber = 123;
+        string fileNumber = DateTime.Now.ToString("yyyyMMddHHmmss") + DALobj.GetConfigParam("MISPAR-ZIHUI-SHOLECH").PadLeft(9,'0') + numerator.ToString("0000");
         Eirua[i] = new MimshakYeshutGoremPoneLemislakaYeshutLakoachMeidaBsisiEirua();
         Eirua[i].KodEirua = new MimshakYeshutGoremPoneLemislakaYeshutLakoachMeidaBsisiEiruaKodEirua();
 
-        Eirua[i].KodEirua.KODEIRUA = 9100; // Request for information from ALL the Mosdi'im.
-        Eirua[i].KodEirua.MISPARMEZAHERESHUMA = fileNumber.ToString("000000000000000000000000000") +
-                                                clientRec.TeudatZehut.PadLeft(16, '0') +
+        Eirua[i].KodEirua.KODEIRUA = (int)clientList[clientNo].LastKodEirua;
+        Eirua[i].KodEirua.MISPARMEZAHERESHUMA = fileNumber +
+                                                clientList[clientNo].TeudatZehut.PadLeft(16, '0') +
                                                 "0000000000000000" + // Will have the employee in case the event is 9300.
                                                 Eirua[i].KodEirua.KODEIRUA.ToString("0000") +
-                                                numerator.ToString("0000");
+                                                clientNo.ToString("0000");
+        clientList[clientNo].LastStatus = (byte)ClientStatus.EventSent;
+        clientList[clientNo].LastRecordNumber = Eirua[i].KodEirua.MISPARMEZAHERESHUMA;
+        log.Debug(clientList[clientNo].LastStatus.ToString());
+        log.Debug(clientList[clientNo].LastRecordNumber);
 
         Eirua[i].KodEirua.MISPARMISLAKA = "00000000-0000-0000-0000-000000000000";
         Eirua[i].KodEirua.MISPARMISLAKALPNIIYACHOZORET = "00000000-0000-0000-0000-000000000000";
@@ -148,17 +173,17 @@ class HandleEvents
         Eirua[i].KodEirua.YipuiKoach.BakashatMefitzLeinianYipuiKoach.SUGBAKASHATMEFITZLEEINIANYIPUIKOACH = 1;
 
         Eirua[i].KodEirua.YipuiKoach.BakashatMefitzLeinianYipuiKoach.KAYAMMUTZARMUCHRAG = 2; // 1= Yes ; 2= No
-        Eirua[i].KodEirua.YipuiKoach.BakashatMefitzLeinianYipuiKoach.TAARICHCHTIMALAKOACH = clientRec.InsertDate.ToString("yyyyMMdd");
+        Eirua[i].KodEirua.YipuiKoach.BakashatMefitzLeinianYipuiKoach.TAARICHCHTIMALAKOACH = clientList[clientNo].InsertDate.ToString("yyyyMMdd");
 
 
     }
 
-    private void SetKoteretKovetz(MimshakKoteretKovetz koteret, int numerator)
+    private void SetKoteretKovetz(MimshakKoteretKovetz koteret)
     {
         koteret.SUGMIMSHAK = 6;
         koteret.KODSVIVATAVODA = Convert.ToInt32(DALobj.GetConfigParam("KOD-SVIVAT-AVODA"));
         numerator = numerator % 10000;
-        koteret.MISPARHAKOVETZ = DateTime.Now.ToString("yyyyMMddHHmmss") + DALobj.GetConfigParam("MISPAR-ZIHUI-SHOLECH") + numerator.ToString("0000");
+        koteret.MISPARHAKOVETZ = DateTime.Now.ToString("yyyyMMddHHmmss") + DALobj.GetConfigParam("MISPAR-ZIHUI-SHOLECH").PadLeft(9, '0') + numerator.ToString("0000");
         koteret.MISPARSIDURI = numerator;
         koteret.TAARICHBITZUA = DateTime.Now.ToString("yyyyMMddHHmmss");
 
@@ -179,5 +204,46 @@ class HandleEvents
         koteret.NetuneiGoremNimaan.MISPARZIHUINIMAAN = DALobj.GetConfigParam("MISPAR-ZIHUI-NIMAAN");
         koteret.NetuneiGoremNimaan.SUGMEZAHENIMAAN = Convert.ToInt32(DALobj.GetConfigParam("SUG-MEZAHE-NIMAAN"));
 
+    }
+
+    internal void SerializeToFile(string fileName)
+    {
+
+        // Write the events to a file
+        System.Xml.Serialization.XmlSerializer writer = new System.Xml.Serialization.XmlSerializer(typeof(Events.Mimshak));
+        System.IO.StreamWriter file = new System.IO.StreamWriter(fileName);
+        try
+        {
+            writer.Serialize(file, mimshakEvent);
+        }
+        catch (InvalidOperationException ex)
+        {
+            Console.WriteLine(ex.InnerException.Message);
+            log.Error(ex.InnerException.Message, ex);
+            file.Close();
+            return;
+        }
+        file.Close();
+    }
+
+    internal void SaveKovetzRecord(string fileName, MislakaFileName mislakaFileName)
+    {
+        fileRecord.MISPAR_GIRSAT_XML = mimshakEvent.KoteretKovetz.MISPARGIRSATXML.ToString();
+        fileRecord.MISPAR_HAKOVETZ = mimshakEvent.KoteretKovetz.MISPARHAKOVETZ;
+        fileRecord.KOD_SVIVAT_AVODA = mimshakEvent.KoteretKovetz.KODSVIVATAVODA;
+        fileRecord.SUG_MIMSHAK = mimshakEvent.KoteretKovetz.SUGMIMSHAK;
+        fileRecord.TAARICH_BITZUA = Common.ConvertDatetime(mimshakEvent.KoteretKovetz.TAARICHBITZUA);
+        fileRecord.MISPAR_GIRSAT_XML = "001";
+        fileRecord.SHEM_SHOLEACH = "Events 9100";
+        fileRecord.FileName = fileName;
+        fileRecord.MEZAHE_HAAVARA = mislakaFileName.GetMislakaFileName();
+        fileRecord.Yatzran_SHEM_YATZRAN = "All";
+        fileRecord.LoadDate = DateTime.Now;
+        fileRecord.KIVUN_MIMSHAK_XML = 5;
+
+        for (int i=0; i< clientList.Count ;i++)
+        {
+            clientList[i].LastFileNumber = fileRecord.MISPAR_HAKOVETZ;
+        }
     }
 }

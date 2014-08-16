@@ -54,7 +54,7 @@
     <Compile Include="Client.cs">
       <DependentUpon>ModelPensions.tt</DependentUpon>
     </Compile>
-    <Compile Include="ClientStatusHistory.cs">
+    <Compile Include="ClientHistory.cs">
       <DependentUpon>ModelPensions.tt</DependentUpon>
     </Compile>
     <Compile Include="ClientYatzran.cs">

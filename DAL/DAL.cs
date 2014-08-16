@@ -72,15 +72,13 @@ namespace DAL
 
         }
 
-        public Client GetClientByStatus(int status)
+        public List<Client> GetClientsByStatus(int status)
         {
-            Client client = new Client();
-            
-            client = (from c in dbCtx.Clients
-                      where c.Status == status
-                      select c).FirstOrDefault();
+            List<Client> clients = (from c in dbCtx.Clients
+                                    where c.LastStatus == status
+                                    select c).ToList<Client>();
 
-            return client;
+            return clients;
         }
 
         public Client GetClient(string misparZihuy)
@@ -96,7 +94,7 @@ namespace DAL
                       where c.TeudatZehut == MisparZihuy
                       select c).FirstOrDefault();
             client.ModifyDate = DateTime.Now;
-            client.Status = (byte)ToStatus;
+            client.LastStatus = (byte)ToStatus;
             dbCtx.Entry(client).State = EntityState.Modified;
 
         }
@@ -273,11 +271,18 @@ namespace DAL
             dbCtx.Mutzars.Add(mutzar);
         }
 
-        public void UpdateClientStatus(Client client, ClientStatus status)
+        public void UpdateClients(List<Client> clients)
         {
-            client.Status = (byte)status;
+            for (int i = 0; i < clients.Count; i++)
+            {
+                dbCtx.Entry(clients[i]).State = EntityState.Modified;
+            }
+        }
+        public void UpdateClient(Client client)
+        {
             dbCtx.Entry(client).State = EntityState.Modified;
         }
+
 
         public void SetClientYatzran(string kodYatzran, string MisparZihuy, bool hasData)
         {
@@ -310,5 +315,6 @@ namespace DAL
                 dbCtx.Entry(clientYatzran).State = EntityState.Modified;
             }
         }
+
     }
 }

@@ -15,6 +15,10 @@ namespace DAL
     public partial class Client
     {
         public int Client_Id { get; set; }
+        public byte LastStatus { get; set; }
+        public string LastFileNumber { get; set; }
+        public string LastRecordNumber { get; set; }
+        public Nullable<int> LastKodEirua { get; set; }
         public string TeudatZehut { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -28,9 +32,5 @@ namespace DAL
         public Nullable<byte> Gender { get; set; }
         public System.DateTime InsertDate { get; set; }
         public System.DateTime ModifyDate { get; set; }
-        public byte Status { get; set; }
-        public Nullable<int> Kovetz_Id { get; set; }
-    
-        public virtual Kovetz Kovetz { get; set; }
     }
 }

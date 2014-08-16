@@ -32,7 +32,7 @@ namespace MislakaInterface
 
             log.Info("Start Process Cycle");
 
-            //ProduceEvents();
+            ProduceEvents();
 
             //Read all incoming files
             foreach (string file in Directory.GetFiles(incomingDir))
@@ -192,56 +192,30 @@ namespace MislakaInterface
             Mutzar lakoachRec = new Mutzar();
             string Version = Events.MimshakKoteretKovetzMISPARGIRSATXML.Item001.ToString().Replace("Item","");
 
-            // Get Mispar Zihuy and change the status from "New" to "Start event"
-            Client client = Dal.GetClientByStatus((int)ClientStatus.New);
-            while (client != null)
+            // Get a list of clients for which to produce an events file.
+            List<Client> clientList = Dal.GetClientsByStatus((int)ClientStatus.New);
+            if (clientList.Count > 0)
             {
-                mislakaFileName = new MislakaFileName("001" /*Mefitz to mislaka*/, client.TeudatZehut, ServiceTypes.EVENTS, 
+                mislakaFileName = new MislakaFileName("001" /*Mefitz to mislaka*/, Dal.GetConfigParam("MISPAR-MEZAHE-PONE"), ServiceTypes.EVENTS,
                                                       ProductTypes.NotRelevant, Version, DateTime.Now, numerator, svivatAvoda);
-                log.Info("Producing event for client - TZ #" + client.TeudatZehut);
 
                 // Read the client data 
-                handleEvents = new HandleEvents();
-                EventObj = handleEvents.PrepareEventObject(client, numerator);
+                handleEvents = new HandleEvents(numerator);
+                handleEvents.PrepareEventObject(clientList);
+                fileName = outgoingDir + "\\" + mislakaFileName.GetMislakaFileName();
+                handleEvents.SerializeToFile(fileName);
 
-                // Write the events to a file
-                System.Xml.Serialization.XmlSerializer writer = new System.Xml.Serialization.XmlSerializer(typeof(Events.Mimshak));
-                fileName = incomingDir + "\\" + mislakaFileName.GetMislakaFileName();
-                System.IO.StreamWriter file = new System.IO.StreamWriter(fileName);
-                try 
-                {
-                    writer.Serialize(file, EventObj);
-                }
-                catch (InvalidOperationException ex)
-                {
-                    Console.WriteLine(ex.InnerException.Message);
-                    log.Error(ex.InnerException.Message, ex);
-                    file.Close();
-                    return;
-                }
-                file.Close();
-                Kovetz kovetz = new Kovetz();
-                kovetz.MISPAR_GIRSAT_XML = EventObj.KoteretKovetz.MISPARGIRSATXML.ToString();
-                kovetz.MISPAR_HAKOVETZ = EventObj.KoteretKovetz.MISPARHAKOVETZ;
-                kovetz.KOD_SVIVAT_AVODA = EventObj.KoteretKovetz.KODSVIVATAVODA;
-                kovetz.SUG_MIMSHAK = EventObj.KoteretKovetz.SUGMIMSHAK;
-                kovetz.TAARICH_BITZUA = Common.ConvertDatetime(EventObj.KoteretKovetz.TAARICHBITZUA);
-                kovetz.MISPAR_GIRSAT_XML = "001";
-                kovetz.SHEM_SHOLEACH = "Events 9100";
-                kovetz.FileName = fileName;
-                kovetz.MEZAHE_HAAVARA = mislakaFileName.GetMislakaFileName();
-                kovetz.Yatzran_SHEM_YATZRAN = "All";
-                kovetz.LoadDate = DateTime.Now;
-                kovetz.KIVUN_MIMSHAK_XML = 5;
-
-                Dal.Add(kovetz);
-                Dal.UpdateClientStatus(client, ClientStatus.EventSent);
+                handleEvents.SaveKovetzRecord(fileName, mislakaFileName);
+                Dal.Add(handleEvents.FileRecord);
+                Dal.UpdateClients(handleEvents.ClientList);
                 Dal.SaveChanges();
+
+
                 //Dal.ChangeClientStatus(client.TeudatZehut, (int)ClientStatus.New, (int)ClientStatus.SentEvent, kovetz.Kovetz_Id);
-                log.Info("Finished producing event successfully for client - TZ #" + client.TeudatZehut);
                 // Get the next Client TZ.
-                client = Dal.GetClientByStatus((int)ClientStatus.New);
             }
+            log.Info("Finished producing events");
+
         }
       
         private void SendErrorFeedback()
@@ -276,7 +250,7 @@ namespace MislakaInterface
 
                 feedback.CreateFeedbackKovetzRecord(file, feedback.Mimshak.KoteretKovetz.MISPARHAKOVETZ);
                 // Check if there is NO DATA from the Yatzran.
-                Dal.SaveChanges();
+                //Dal.SaveChanges();
                 //Dal.SaveFeedback(feedbackFile);
                 AnalyzeFeedback(file, feedback.Mimshak);
 

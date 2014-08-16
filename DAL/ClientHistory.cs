@@ -12,13 +12,14 @@ namespace DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class ClientStatusHistory
+    public partial class ClientHistory
     {
         public int EventsHistory_Id { get; set; }
         public Nullable<int> Client_Id { get; set; }
-        public Nullable<int> KodYatzran { get; set; }
-        public Nullable<int> Status_Id { get; set; }
-        public Nullable<System.DateTime> DateInserted { get; set; }
-        public Nullable<int> kovetz_id { get; set; }
+        public Nullable<int> Status { get; set; }
+        public string FileNumber { get; set; }
+        public string RecordNumber { get; set; }
+        public Nullable<int> KodEirua { get; set; }
+        public Nullable<System.DateTime> InsertDate { get; set; }
     }
 }

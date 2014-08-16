@@ -19,7 +19,6 @@ namespace DAL
             this.IshKesherYeshutYatzrans = new HashSet<IshKesherYeshutYatzran>();
             this.YeshutMetafels = new HashSet<YeshutMetafel>();
             this.MutzarKovetzs = new HashSet<MutzarKovetz>();
-            this.Clients = new HashSet<Client>();
         }
     
         public int Kovetz_Id { get; set; }
@@ -50,6 +49,5 @@ namespace DAL
         public virtual ICollection<IshKesherYeshutYatzran> IshKesherYeshutYatzrans { get; set; }
         public virtual ICollection<YeshutMetafel> YeshutMetafels { get; set; }
         public virtual ICollection<MutzarKovetz> MutzarKovetzs { get; set; }
-        public virtual ICollection<Client> Clients { get; set; }
     }
 }

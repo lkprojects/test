@@ -212,7 +212,8 @@ namespace MislakaInterface
             }
 
             Dal.Add(mutzar);
-            Dal.UpdateClientStatus(client, ClientStatus.DataLoaded);
+            client.LastStatus = (byte)ClientStatus.DataLoaded;
+            Dal.UpdateClient(client);
         }
 
         private void ParseYeshutMaasik(Mutzar mutzar, Achzakot.MimshakMutzarNetuneiMutzarYeshutMaasik[] mimshakYeshutMaasik)

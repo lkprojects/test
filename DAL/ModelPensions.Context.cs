@@ -67,9 +67,9 @@ namespace DAL
         public virtual DbSet<YeshutMaasik> YeshutMaasiks { get; set; }
         public virtual DbSet<MutzarKovetz> MutzarKovetzs { get; set; }
         public virtual DbSet<Yatzran> Yatzrans { get; set; }
-        public virtual DbSet<Client> Clients { get; set; }
-        public virtual DbSet<ClientStatusHistory> ClientStatusHistories { get; set; }
         public virtual DbSet<ClientYatzran> ClientYatzrans { get; set; }
+        public virtual DbSet<Client> Clients { get; set; }
+        public virtual DbSet<ClientHistory> ClientHistories { get; set; }
     
         public virtual int DeleteMutzar(Nullable<int> mutzar_Id)
         {

@@ -261,6 +261,10 @@
             <PropertyRef Name="Client_Id" />
           </Key>
           <Property Name="Client_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LastStatus" Type="tinyint" Nullable="false" />
+          <Property Name="LastFileNumber" Type="varchar" MaxLength="27" />
+          <Property Name="LastRecordNumber" Type="varchar" MaxLength="70" />
+          <Property Name="LastKodEirua" Type="int" />
           <Property Name="TeudatZehut" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
@@ -274,19 +278,18 @@
           <Property Name="Gender" Type="tinyint" />
           <Property Name="InsertDate" Type="datetime" Nullable="false" />
           <Property Name="ModifyDate" Type="datetime" Nullable="false" />
-          <Property Name="Status" Type="tinyint" Nullable="false" />
-          <Property Name="Kovetz_Id" Type="int" />
         </EntityType>
-        <EntityType Name="ClientStatusHistory">
+        <EntityType Name="ClientHistory">
           <Key>
             <PropertyRef Name="EventsHistory_Id" />
           </Key>
           <Property Name="EventsHistory_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Client_Id" Type="int" />
-          <Property Name="KodYatzran" Type="int" />
-          <Property Name="Status_Id" Type="int" />
-          <Property Name="DateInserted" Type="datetime" />
-          <Property Name="kovetz_id" Type="int" />
+          <Property Name="Status" Type="int" />
+          <Property Name="FileNumber" Type="varchar" MaxLength="27" />
+          <Property Name="RecordNumber" Type="varchar" MaxLength="67" />
+          <Property Name="KodEirua" Type="int" />
+          <Property Name="InsertDate" Type="datetime" />
         </EntityType>
         <EntityType Name="ClientYatzran">
           <Key>
@@ -643,7 +646,7 @@
           <Property Name="KOD-MEZAHE-METAFEL" Type="int" />
           <Property Name="SHEM-METAFEL" Type="varchar" MaxLength="50" />
           <Property Name="MEZAHE-HAAVARA" Type="varchar" MaxLength="62" Nullable="false" />
-          <Property Name="MISPAR-HAKOVETZ" Type="varchar" MaxLength="23" />
+          <Property Name="MISPAR-HAKOVETZ" Type="varchar" MaxLength="27" />
           <Property Name="Yatzran_KOD-MEZAHE-YATZRAN" Type="int" Nullable="false" />
           <Property Name="Yatzran_SHEM-YATZRAN" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Sgira_KAMUT-YATZRANIM" Type="int" Nullable="false" />
@@ -759,18 +762,6 @@
             </Principal>
             <Dependent Role="FileErrorDetail">
               <PropertyRef Name="GoremPone_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Client_Kovetz">
-          <End Role="Kovetz" Type="Self.Kovetz" Multiplicity="0..1" />
-          <End Role="Client" Type="Self.Client" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Kovetz">
-              <PropertyRef Name="Kovetz_Id" />
-            </Principal>
-            <Dependent Role="Client">
-              <PropertyRef Name="Kovetz_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1223,7 +1214,7 @@
           <EntitySet Name="Mutav" EntityType="Self.Mutav" Schema="Cover" store:Type="Tables" />
           <EntitySet Name="Tosafot" EntityType="Self.Tosafot" Schema="Cover" store:Type="Tables" />
           <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ClientStatusHistory" EntityType="Self.ClientStatusHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClientHistory" EntityType="Self.ClientHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ClientYatzran" EntityType="Self.ClientYatzran" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Config" EntityType="Self.Config" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LUT" EntityType="Self.LUT" Schema="dbo" store:Type="Tables" />
@@ -1255,10 +1246,6 @@
           <AssociationSet Name="FileErrorDetail_GoremPone" Association="Self.FileErrorDetail_GoremPone">
             <End Role="GoremPone" EntitySet="GoremPone" />
             <End Role="FileErrorDetail" EntitySet="FileErrorDetail" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Client_Kovetz" Association="Self.FK_Client_Kovetz">
-            <End Role="Kovetz" EntitySet="Kovetz" />
-            <End Role="Client" EntitySet="Client" />
           </AssociationSet>
           <AssociationSet Name="GoremPone_FeedbackFile" Association="Self.GoremPone_FeedbackFile">
             <End Role="FeedbackFile" EntitySet="FeedbackFile" />
@@ -2045,7 +2032,7 @@
           <Property Name="KOD_MEZAHE_METAFEL" Type="Int32" />
           <Property Name="SHEM_METAFEL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="MEZAHE_HAAVARA" Type="String" MaxLength="62" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="MISPAR_HAKOVETZ" Type="String" MaxLength="23" FixedLength="false" Unicode="false" />
+          <Property Name="MISPAR_HAKOVETZ" Type="String" MaxLength="27" FixedLength="false" Unicode="false" />
           <Property Name="Yatzran_KOD_MEZAHE_YATZRAN" Type="Int32" Nullable="false" />
           <Property Name="Yatzran_SHEM_YATZRAN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Sgira_KAMUT_YATZRANIM" Type="Int32" Nullable="false" />
@@ -2061,8 +2048,7 @@
           <NavigationProperty Name="MutzarKovetzs" Relationship="PensionsModel.MutzarKovetz_Kovetz" FromRole="Kovetz" ToRole="MutzarKovetz" />
           <Property Name="FileName" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <Property Name="LoadDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Clients" Relationship="PensionsModel.FK_Client_Kovetz" FromRole="Kovetz" ToRole="Client" />
-        </EntityType>
+          </EntityType>
         <EntityType Name="YeshutMetafel">
           <Key>
             <PropertyRef Name="YeshutMetafel_Id" />
@@ -2756,18 +2742,14 @@
           <Parameter Name="Kovetz_Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="Yatzrans" EntityType="PensionsModel.Yatzran" />
-          <EntitySet Name="Clients" EntityType="PensionsModel.Client" />
-          <AssociationSet Name="FK_Client_Kovetz" Association="PensionsModel.FK_Client_Kovetz">
-            <End Role="Kovetz" EntitySet="Kovetzs" />
-            <End Role="Client" EntitySet="Clients" />
-          </AssociationSet>
           <FunctionImport Name="ChangeClientStatusByFileNumber">
             <Parameter Name="MisparKovetz" Mode="In" Type="String" />
             <Parameter Name="NewStatus" Mode="In" Type="Int32" />
           </FunctionImport>
-          <EntitySet Name="ClientStatusHistories" EntityType="PensionsModel.ClientStatusHistory" />
           <EntitySet Name="ClientYatzrans" EntityType="PensionsModel.ClientYatzran" />
-        </EntityContainer>
+          <EntitySet Name="Clients" EntityType="PensionsModel.Client" />
+          <EntitySet Name="ClientHistories" EntityType="PensionsModel.ClientHistory" />
+          </EntityContainer>
         <EntityType Name="MutzarKovetz">
           <Key>
             <PropertyRef Name="Kovetz_Id" />
@@ -2810,11 +2792,25 @@
           <Property Name="KOD_MEZAHE_YATZRAN" Type="Int32" Nullable="false" />
           <Property Name="SHEM_YATZRAN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="ClientYatzran">
+          <Key>
+            <PropertyRef Name="Client_Id" />
+            <PropertyRef Name="KodYatzran" />
+          </Key>
+          <Property Name="Client_Id" Type="Int32" Nullable="false" />
+          <Property Name="KodYatzran" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="HasData" Type="Boolean" />
+          <Property Name="LastDataUpdate" Type="DateTime" Precision="3" />
+        </EntityType>
         <EntityType Name="Client">
           <Key>
             <PropertyRef Name="Client_Id" />
           </Key>
           <Property Name="Client_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LastStatus" Type="Byte" Nullable="false" />
+          <Property Name="LastFileNumber" Type="String" MaxLength="27" FixedLength="false" Unicode="false" />
+          <Property Name="LastRecordNumber" Type="String" MaxLength="70" FixedLength="false" Unicode="false" />
+          <Property Name="LastKodEirua" Type="Int32" />
           <Property Name="TeudatZehut" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -2828,44 +2824,20 @@
           <Property Name="Gender" Type="Byte" />
           <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifyDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Status" Type="Byte" Nullable="false" />
-          <Property Name="Kovetz_Id" Type="Int32" />
-          <NavigationProperty Name="Kovetz" Relationship="PensionsModel.FK_Client_Kovetz" FromRole="Client" ToRole="Kovetz" />
         </EntityType>
-        <Association Name="FK_Client_Kovetz">
-          <End Type="PensionsModel.Kovetz" Role="Kovetz" Multiplicity="0..1" />
-          <End Type="PensionsModel.Client" Role="Client" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Kovetz">
-              <PropertyRef Name="Kovetz_Id" />
-            </Principal>
-            <Dependent Role="Client">
-              <PropertyRef Name="Kovetz_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="ClientStatusHistory">
+        <EntityType Name="ClientHistory">
           <Key>
             <PropertyRef Name="EventsHistory_Id" />
           </Key>
           <Property Name="EventsHistory_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Client_Id" Type="Int32" />
-          <Property Name="KodYatzran" Type="Int32" />
-          <Property Name="Status_Id" Type="Int32" />
-          <Property Name="DateInserted" Type="DateTime" Precision="3" />
-          <Property Name="kovetz_id" Type="Int32" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="FileNumber" Type="String" MaxLength="27" FixedLength="false" Unicode="false" />
+          <Property Name="RecordNumber" Type="String" MaxLength="67" FixedLength="false" Unicode="false" />
+          <Property Name="KodEirua" Type="Int32" />
+          <Property Name="InsertDate" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="ClientYatzran">
-          <Key>
-            <PropertyRef Name="Client_Id" />
-            <PropertyRef Name="KodYatzran" />
-          </Key>
-          <Property Name="Client_Id" Type="Int32" Nullable="false" />
-          <Property Name="KodYatzran" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="HasData" Type="Boolean" />
-          <Property Name="LastDataUpdate" Type="DateTime" Precision="3" />
-        </EntityType>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -3617,11 +3589,20 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ChangeClientStatusByFileNumber" FunctionName="PensionsModel.Store.ChangeClientStatusByFileNumber" />
+          <EntitySetMapping Name="ClientYatzrans">
+            <EntityTypeMapping TypeName="PensionsModel.ClientYatzran">
+              <MappingFragment StoreEntitySet="ClientYatzran">
+                <ScalarProperty Name="LastDataUpdate" ColumnName="LastDataUpdate" />
+                <ScalarProperty Name="HasData" ColumnName="HasData" />
+                <ScalarProperty Name="KodYatzran" ColumnName="KodYatzran" />
+                <ScalarProperty Name="Client_Id" ColumnName="Client_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Clients">
             <EntityTypeMapping TypeName="PensionsModel.Client">
               <MappingFragment StoreEntitySet="Client">
-                <ScalarProperty Name="Kovetz_Id" ColumnName="Kovetz_Id" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
                 <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
                 <ScalarProperty Name="Gender" ColumnName="Gender" />
@@ -3635,30 +3616,24 @@
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="TeudatZehut" ColumnName="TeudatZehut" />
+                <ScalarProperty Name="LastKodEirua" ColumnName="LastKodEirua" />
+                <ScalarProperty Name="LastRecordNumber" ColumnName="LastRecordNumber" />
+                <ScalarProperty Name="LastFileNumber" ColumnName="LastFileNumber" />
+                <ScalarProperty Name="LastStatus" ColumnName="LastStatus" />
                 <ScalarProperty Name="Client_Id" ColumnName="Client_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="ChangeClientStatusByFileNumber" FunctionName="PensionsModel.Store.ChangeClientStatusByFileNumber" />
-          <EntitySetMapping Name="ClientStatusHistories">
-            <EntityTypeMapping TypeName="PensionsModel.ClientStatusHistory">
-              <MappingFragment StoreEntitySet="ClientStatusHistory">
-                <ScalarProperty Name="kovetz_id" ColumnName="kovetz_id" />
-                <ScalarProperty Name="DateInserted" ColumnName="DateInserted" />
-                <ScalarProperty Name="Status_Id" ColumnName="Status_Id" />
-                <ScalarProperty Name="KodYatzran" ColumnName="KodYatzran" />
+          <EntitySetMapping Name="ClientHistories">
+            <EntityTypeMapping TypeName="PensionsModel.ClientHistory">
+              <MappingFragment StoreEntitySet="ClientHistory">
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="KodEirua" ColumnName="KodEirua" />
+                <ScalarProperty Name="RecordNumber" ColumnName="RecordNumber" />
+                <ScalarProperty Name="FileNumber" ColumnName="FileNumber" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Client_Id" ColumnName="Client_Id" />
                 <ScalarProperty Name="EventsHistory_Id" ColumnName="EventsHistory_Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ClientYatzrans">
-            <EntityTypeMapping TypeName="PensionsModel.ClientYatzran">
-              <MappingFragment StoreEntitySet="ClientYatzran">
-                <ScalarProperty Name="LastDataUpdate" ColumnName="LastDataUpdate" />
-                <ScalarProperty Name="HasData" ColumnName="HasData" />
-                <ScalarProperty Name="KodYatzran" ColumnName="KodYatzran" />
-                <ScalarProperty Name="Client_Id" ColumnName="Client_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

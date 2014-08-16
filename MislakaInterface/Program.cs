@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using log4net;
+using System;
 
 namespace MislakaInterface
 {
@@ -11,6 +12,10 @@ namespace MislakaInterface
         static void Main(string[] args)
         {
             log4net.Config.XmlConfigurator.Configure();
+
+            Console.WindowHeight = 40;
+            Console.WindowWidth = 150;
+
 
             log.Info("************************************************************************************************************");
             log.Info("Start Mislaka Interface");
