@@ -8,22 +8,20 @@ namespace MislakaInterface
     class Program
     {
         private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private static MislakaDataFlow mislakaFileHandler = new MislakaDataFlow();
         static void Main(string[] args)
         {
             log4net.Config.XmlConfigurator.Configure();
 
             Console.WindowHeight = 40;
             Console.WindowWidth = 150;
-
+            int CycleInterval = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["CycleInterval"]);
 
             log.Info("************************************************************************************************************");
             log.Info("Start Mislaka Interface");
-
             while (true)
             {
-                mislakaFileHandler.ProcessCycle();
-                Thread.Sleep(60000); // 1 minute sleep 
+                MislakaDataFlow.ProcessCycle();
+                Thread.Sleep(CycleInterval); // 1 minute sleep 
             }
             // log.Info("End Mislaka Interface");
         }

@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace MislakaInterface
 {
-    public class HandleAchzakot
+    public class Achzakot
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger (System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private Achzakot.Mimshak mimshak { get; set; }
+        private AchzakotInterface.Mimshak mimshak { get; set; }
 
         private enum DataMode { Insert, Update };
         private DAL.DAL Dal = new DAL.DAL();
 
-        public void ParseKovetz(Achzakot.Mimshak mimshak_in, string filename)
+        public void ParseKovetz(AchzakotInterface.Mimshak mimshak_in, string filename)
         {
             log.Info("Start Parsing Achzakot file #" + mimshak_in.KoteretKovetz.MISPARHAKOVETZ);
 
@@ -153,7 +153,7 @@ namespace MislakaInterface
             Dal.SaveChanges();
         }
 
-        public void ParseMutzar(out Mutzar mutzar, Achzakot.MimshakMutzar mimshak, int Kovetz_Id)
+        public void ParseMutzar(out Mutzar mutzar, AchzakotInterface.MimshakMutzar mimshak, int Kovetz_Id)
         {
             string misparZihuy = mimshak.NetuneiMutzar.YeshutLakoach.MISPARZIHUYLAKOACH;
             int Sug = mimshak.NetuneiMutzar.YeshutLakoach.SUGMEZAHELAKOACH;
@@ -216,7 +216,7 @@ namespace MislakaInterface
             Dal.UpdateClient(client);
         }
 
-        private void ParseYeshutMaasik(Mutzar mutzar, Achzakot.MimshakMutzarNetuneiMutzarYeshutMaasik[] mimshakYeshutMaasik)
+        private void ParseYeshutMaasik(Mutzar mutzar, AchzakotInterface.MimshakMutzarNetuneiMutzarYeshutMaasik[] mimshakYeshutMaasik)
         {
             YeshutMaasik yeshutMaasik;
             for (int i = 0; i < mimshakYeshutMaasik.Length; i++)
@@ -248,7 +248,7 @@ namespace MislakaInterface
             }
         }
 
-        private void ParseIshKesherYeshutMaasik(YeshutMaasik yeshutMaasik, Achzakot.MimshakMutzarNetuneiMutzarYeshutMaasikIshKesherYeshutMaasik[] mimshakIshKesherYeshutMaasik)
+        private void ParseIshKesherYeshutMaasik(YeshutMaasik yeshutMaasik, AchzakotInterface.MimshakMutzarNetuneiMutzarYeshutMaasikIshKesherYeshutMaasik[] mimshakIshKesherYeshutMaasik)
         {
             IshKesherYeshutMaasik ishKesherYeshutMaasik;
 
@@ -267,7 +267,7 @@ namespace MislakaInterface
             }
         }
 
-        private void ParseHeshbonOPolisa(Mutzar mutzar, Achzakot.MimshakMutzarHeshbonOPolisa mimshakMutzarHeshbonOPolisa)
+        private void ParseHeshbonOPolisa(Mutzar mutzar, AchzakotInterface.MimshakMutzarHeshbonOPolisa mimshakMutzarHeshbonOPolisa)
         {
             HeshbonOPolisa heshbonOPolisa = new HeshbonOPolisa();
 
@@ -328,7 +328,7 @@ namespace MislakaInterface
             mutzar.HeshbonOPolisas.Add(heshbonOPolisa);
         }
 
-        private void ParseTaktziv(HeshbonOPolisa heshbonOPolisa, Achzakot.MimshakMutzarHeshbonOPolisaPirteiTaktziv[] mimshakMutzarHeshbonOPolisaPirteiTaktziv)
+        private void ParseTaktziv(HeshbonOPolisa heshbonOPolisa, AchzakotInterface.MimshakMutzarHeshbonOPolisaPirteiTaktziv[] mimshakMutzarHeshbonOPolisaPirteiTaktziv)
         {
             PirteiTaktziv taktziv;
 
@@ -407,7 +407,7 @@ namespace MislakaInterface
             }
         }
 
-        private void ParseItrot(PirteiTaktziv taktziv, Achzakot.MimshakMutzarHeshbonOPolisaPirteiTaktzivYitrot[] mimshakYitrot)
+        private void ParseItrot(PirteiTaktziv taktziv, AchzakotInterface.MimshakMutzarHeshbonOPolisaPirteiTaktzivYitrot[] mimshakYitrot)
         {
             Yitrot yitrot;
             if (mimshakYitrot != null)
@@ -435,7 +435,7 @@ namespace MislakaInterface
             }
         }
 
-        private void ParsePerutYitrot(Yitrot yitrot, Achzakot.MimshakMutzarHeshbonOPolisaPirteiTaktzivYitrotPerutYitrot[] mimshakPerutYitrot)
+        private void ParsePerutYitrot(Yitrot yitrot, AchzakotInterface.MimshakMutzarHeshbonOPolisaPirteiTaktzivYitrotPerutYitrot[] mimshakPerutYitrot)
         {
             PerutYitrot perutYitrot;
             if (mimshakPerutYitrot != null)
@@ -452,7 +452,7 @@ namespace MislakaInterface
             }
         }
 
-        private void ParseYitraLeTkufa(Yitrot yitrot, Achzakot.MimshakMutzarHeshbonOPolisaPirteiTaktzivYitrotPerutYitraLeTkufa[] mimshakPerutYitraLeTkufa)
+        private void ParseYitraLeTkufa(Yitrot yitrot, AchzakotInterface.MimshakMutzarHeshbonOPolisaPirteiTaktzivYitrotPerutYitraLeTkufa[] mimshakPerutYitraLeTkufa)
         {
             YitraLeTkufa yitraLeTkufa;
             if (mimshakPerutYitraLeTkufa != null)
@@ -469,7 +469,7 @@ namespace MislakaInterface
             }
         }
 
-        private void ParseHafkadotMetchilatShana(PirteiTaktziv taktziv, Achzakot.MimshakMutzarHeshbonOPolisaPirteiTaktzivPerutHafkadotMetchilatShana[] mimshakHafkadotMetchilatShana)
+        private void ParseHafkadotMetchilatShana(PirteiTaktziv taktziv, AchzakotInterface.MimshakMutzarHeshbonOPolisaPirteiTaktzivPerutHafkadotMetchilatShana[] mimshakHafkadotMetchilatShana)
         {
             HafkadotMetchilatShana hafkadotMetchilatShana;
             if (mimshakHafkadotMetchilatShana != null)
@@ -490,7 +490,7 @@ namespace MislakaInterface
             }
         }
 
-        private void ParseHafkadaAchrona(PirteiTaktziv taktziv, Achzakot.MimshakMutzarHeshbonOPolisaPirteiTaktzivPerutPirteiHafkadaAchrona[] mimshakHafkadaAchrona)
+        private void ParseHafkadaAchrona(PirteiTaktziv taktziv, AchzakotInterface.MimshakMutzarHeshbonOPolisaPirteiTaktzivPerutPirteiHafkadaAchrona[] mimshakHafkadaAchrona)
         {
             HafkadaAchrona hafkadaAchrona;
 
@@ -510,7 +510,7 @@ namespace MislakaInterface
             }
         }
 
-        private void ParsePerutHafkadaAchrona(HafkadaAchrona hafkadaAchrona, Achzakot.MimshakMutzarHeshbonOPolisaPirteiTaktzivPerutPirteiHafkadaAchronaPerutHafkadaAchrona[] mimshakPerutHafkadaAchrona)
+        private void ParsePerutHafkadaAchrona(HafkadaAchrona hafkadaAchrona, AchzakotInterface.MimshakMutzarHeshbonOPolisaPirteiTaktzivPerutPirteiHafkadaAchronaPerutHafkadaAchrona[] mimshakPerutHafkadaAchrona)
         {
             PerutHafkadaAchrona perutHafkadaAchrona;
             if (mimshakPerutHafkadaAchrona != null)
@@ -529,7 +529,7 @@ namespace MislakaInterface
 
         }
 
-        private void ParseMasluleiHashkaa(PirteiTaktziv taktziv, Achzakot.MimshakMutzarHeshbonOPolisaPirteiTaktzivPerutMasluleiHashkaa[] mimshakMutzarHeshbonOPolisaPirteiTaktzivPerutMasluleiHashkaa)
+        private void ParseMasluleiHashkaa(PirteiTaktziv taktziv, AchzakotInterface.MimshakMutzarHeshbonOPolisaPirteiTaktzivPerutMasluleiHashkaa[] mimshakMutzarHeshbonOPolisaPirteiTaktzivPerutMasluleiHashkaa)
         {
             MasluleiHashkaa masluleiHashkaa;
             if (mimshakMutzarHeshbonOPolisaPirteiTaktzivPerutMasluleiHashkaa != null)
@@ -548,7 +548,7 @@ namespace MislakaInterface
             }
         }
 
-        private void ParseDmeiNihul(PirteiTaktziv taktziv, Achzakot.MimshakMutzarHeshbonOPolisaPirteiTaktzivPerutHotzaotPerutMivneDmeiNihul[] mimshakDmeiNihul)
+        private void ParseDmeiNihul(PirteiTaktziv taktziv, AchzakotInterface.MimshakMutzarHeshbonOPolisaPirteiTaktzivPerutHotzaotPerutMivneDmeiNihul[] mimshakDmeiNihul)
         {
             DmeiNihul dmeiNihul;
             if (mimshakDmeiNihul != null)
@@ -575,7 +575,7 @@ namespace MislakaInterface
             }
         }
 
-        private void ParseHafrashot(PirteiTaktziv taktziv, Achzakot.MimshakMutzarHeshbonOPolisaPirteiTaktzivPerutHafrashotLePolisa[] mimshakHafrashotLePolisa)
+        private void ParseHafrashot(PirteiTaktziv taktziv, AchzakotInterface.MimshakMutzarHeshbonOPolisaPirteiTaktzivPerutHafrashotLePolisa[] mimshakHafrashotLePolisa)
         {
             HafrashotLePolisa hafrashot;
             if (mimshakHafrashotLePolisa != null)
@@ -593,7 +593,7 @@ namespace MislakaInterface
             }
         }
 
-        private void ParseKisuim(HeshbonOPolisa heshbonOPolisa, Achzakot.MimshakMutzarHeshbonOPolisaKisuim[] mimshakMutzarHeshbonOPolisaKisuim)
+        private void ParseKisuim(HeshbonOPolisa heshbonOPolisa, AchzakotInterface.MimshakMutzarHeshbonOPolisaKisuim[] mimshakMutzarHeshbonOPolisaKisuim)
         {
             Kisui kisui;
             for (int i = 0; i < mimshakMutzarHeshbonOPolisaKisuim.Length; i++)
@@ -676,7 +676,7 @@ namespace MislakaInterface
             }
         }
 
-        private void ParseMiktsoaIsukTachviv(Kisui kisui, Achzakot.MimshakMutzarHeshbonOPolisaKisuimZihuiKisuiMiktsoaIsukTachviv[] mimshakMutzarHeshbonOPolisaKisuimZihuiKisuiMiktsoaIsukTachviv)
+        private void ParseMiktsoaIsukTachviv(Kisui kisui, AchzakotInterface.MimshakMutzarHeshbonOPolisaKisuimZihuiKisuiMiktsoaIsukTachviv[] mimshakMutzarHeshbonOPolisaKisuimZihuiKisuiMiktsoaIsukTachviv)
         {
             Miktsoa_Isuk_Tachviv miktsoa_Isuk_Tachviv;
             if (mimshakMutzarHeshbonOPolisaKisuimZihuiKisuiMiktsoaIsukTachviv != null)
@@ -692,7 +692,7 @@ namespace MislakaInterface
             }
         }
 
-        private void ParseMutav(Kisui kisui, Achzakot.MimshakMutzarHeshbonOPolisaKisuimZihuiKisuiMutav[] mimshakKisuiMutav)
+        private void ParseMutav(Kisui kisui, AchzakotInterface.MimshakMutzarHeshbonOPolisaKisuimZihuiKisuiMutav[] mimshakKisuiMutav)
         {
             Mutav mutav;
             if (mimshakKisuiMutav != null)
@@ -715,7 +715,7 @@ namespace MislakaInterface
             }
         }
 
-        private void ParseTosafot(Kisui kisui, Achzakot.MimshakMutzarHeshbonOPolisaKisuimZihuiKisuiPirteiTosafot[] mimshakKisuiPirteiTosafot)
+        private void ParseTosafot(Kisui kisui, AchzakotInterface.MimshakMutzarHeshbonOPolisaKisuimZihuiKisuiPirteiTosafot[] mimshakKisuiPirteiTosafot)
         {
             Tosafot tosafot;
             if (mimshakKisuiPirteiTosafot != null) 
@@ -734,7 +734,7 @@ namespace MislakaInterface
             }
         }
 
-        private void ParseMevutach(Kisui kisui, Achzakot.MimshakMutzarHeshbonOPolisaKisuimZihuiKisuiPirteiMevutach[] mimshakKisuiPirteiMevutach)
+        private void ParseMevutach(Kisui kisui, AchzakotInterface.MimshakMutzarHeshbonOPolisaKisuimZihuiKisuiPirteiMevutach[] mimshakKisuiPirteiMevutach)
         {
             Mevutach mevutach;
             if (mimshakKisuiPirteiMevutach != null)
@@ -749,7 +749,7 @@ namespace MislakaInterface
             }
         }
 
-        private void ParseMeyupeKoach(HeshbonOPolisa heshbonOPolisa, Achzakot.MimshakMutzarHeshbonOPolisaPerutMeyupeKoach[] mimshakPerutMeyupeKoach)
+        private void ParseMeyupeKoach(HeshbonOPolisa heshbonOPolisa, AchzakotInterface.MimshakMutzarHeshbonOPolisaPerutMeyupeKoach[] mimshakPerutMeyupeKoach)
         {
             MeyupeKoach meyupeKoach;
             if (mimshakPerutMeyupeKoach != null)
@@ -766,7 +766,7 @@ namespace MislakaInterface
             }
         }
 
-        private void ParseYitraLefiGilPrisha(HeshbonOPolisa heshbonOPolisa, Achzakot.MimshakMutzarHeshbonOPolisaYitraLefiGilPrisha[] mimshakYitraLefiGilPrisha)
+        private void ParseYitraLefiGilPrisha(HeshbonOPolisa heshbonOPolisa, AchzakotInterface.MimshakMutzarHeshbonOPolisaYitraLefiGilPrisha[] mimshakYitraLefiGilPrisha)
         {
             YitraLefiGilPrisha yitraLefiGilPrisha;
             if (mimshakYitraLefiGilPrisha != null)
@@ -785,7 +785,7 @@ namespace MislakaInterface
 
         }
 
-        private void ParseKupot(YitraLefiGilPrisha yitraLefiGilPrisha, Achzakot.MimshakMutzarHeshbonOPolisaYitraLefiGilPrishaKupa[] mimshakYitraLefiGilPrishaKupa)
+        private void ParseKupot(YitraLefiGilPrisha yitraLefiGilPrisha, AchzakotInterface.MimshakMutzarHeshbonOPolisaYitraLefiGilPrishaKupa[] mimshakYitraLefiGilPrishaKupa)
         {
             Kupa kupa;
             if (mimshakYitraLefiGilPrishaKupa != null)
@@ -806,7 +806,7 @@ namespace MislakaInterface
             }
         }
 
-        private void ParseMitriyot(HeshbonOPolisa heshbonOPolisa, Achzakot.MimshakMutzarHeshbonOPolisaPerutMitryot[] mimshakPerutMitryot)
+        private void ParseMitriyot(HeshbonOPolisa heshbonOPolisa, AchzakotInterface.MimshakMutzarHeshbonOPolisaPerutMitryot[] mimshakPerutMitryot)
         {
             Mitryot mitriot;
             if (mimshakPerutMitryot != null)
@@ -831,7 +831,7 @@ namespace MislakaInterface
             }
         }
 
-        private void ParseHalvaa(HeshbonOPolisa heshbonOPolisa, Achzakot.MimshakMutzarHeshbonOPolisaHalvaa[] mimshakMutzarHeshbonOPolisaHalvaa)
+        private void ParseHalvaa(HeshbonOPolisa heshbonOPolisa, AchzakotInterface.MimshakMutzarHeshbonOPolisaHalvaa[] mimshakMutzarHeshbonOPolisaHalvaa)
         {
             Halvaa halvaa;
             if (mimshakMutzarHeshbonOPolisaHalvaa != null)
@@ -859,7 +859,7 @@ namespace MislakaInterface
             }
         }
 
-        private void ParseTvia(HeshbonOPolisa heshbonOPolisa, Achzakot.MimshakMutzarHeshbonOPolisaPirteyTvia[] mimshakPirteyTvia)
+        private void ParseTvia(HeshbonOPolisa heshbonOPolisa, AchzakotInterface.MimshakMutzarHeshbonOPolisaPirteyTvia[] mimshakPirteyTvia)
         {
             Tvia tvia;
             if (mimshakPirteyTvia != null)
@@ -885,7 +885,7 @@ namespace MislakaInterface
             }
         }
 
-        private void ParseSheerim(HeshbonOPolisa heshbonOPolisa, Achzakot.MimshakMutzarHeshbonOPolisaSheer[] mimshakMutzarHeshbonOPolisaSheer)
+        private void ParseSheerim(HeshbonOPolisa heshbonOPolisa, AchzakotInterface.MimshakMutzarHeshbonOPolisaSheer[] mimshakMutzarHeshbonOPolisaSheer)
         {
             Sheer sheer;
             if (mimshakMutzarHeshbonOPolisaSheer != null)

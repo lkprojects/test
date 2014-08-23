@@ -86,17 +86,25 @@ namespace DAL
             return dbCtx.Clients.SingleOrDefault(p => p.TeudatZehut == misparZihuy);
         }
 
-        public void ChangeClientStatus(string MisparZihuy, ClientStatus ToStatus)
+        public bool ChangeClientStatus(string MisparZihuy, ClientStatus ToStatus)
         {
             Client client = new Client();
-
+            MisparZihuy = MisparZihuy.Trim('0');
             client = (from c in dbCtx.Clients
                       where c.TeudatZehut == MisparZihuy
                       select c).FirstOrDefault();
-            client.ModifyDate = DateTime.Now;
-            client.LastStatus = (byte)ToStatus;
-            dbCtx.Entry(client).State = EntityState.Modified;
-
+            if (client != null)
+            {
+                client.ModifyDate = DateTime.Now;
+                client.LastStatus = (byte)ToStatus;
+                dbCtx.Entry(client).State = EntityState.Modified;
+                return true;
+            }
+            else
+            {
+                log.Error("Can't find a client with identification ID: " + MisparZihuy);
+                return false;
+            }
         }
 
         public void DequeueEvent(string misparZihuy)
@@ -173,10 +181,14 @@ namespace DAL
             else
                 return false;
         }
-
-        public void ChangeClientStatusByFileNumber (string MisparKovetz, ClientStatus NewStatus)
+        /// <summary>
+        /// Changes the status of all the clients that are referenced in the file with the given file identifier.
+        /// </summary>
+        /// <param name="FileIdentifier">The number that uniquely identifies the file (Mispar Kovetz)</param>
+        /// <param name="NewStatus">The new status for the clients referenced in the file.</param>
+        public void ChangeClientStatusByFileNumber (string FileIdentifier, ClientStatus NewStatus)
         {
-            dbCtx.ChangeClientStatusByFileNumber(MisparKovetz, (int)NewStatus);
+            dbCtx.ChangeClientStatusByFileNumber(FileIdentifier, (int)NewStatus);
         }
 
         public void SaveFeedback(FeedbackFile feedback)

@@ -10,25 +10,31 @@ using System.Xml.Serialization;
 namespace MislakaInterface
 {
 
-    public class MislakaDataFlow
+    public static class MislakaDataFlow
     {
         
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private MislakaFileName mislakaFileName;
+        private static MislakaFileName mislakaFileName;
         private static DAL.DAL Dal = new DAL.DAL("MislakaInterface");
-        private FileTypes svivatAvoda;
-        private string incomingDir;
-        private string outgoingDir;
+        
+        private static string incomingDir;
+        private static string outgoingDir;
+        private static string incomingDirHistory;
+        private static string outgoingDirHistory;
 
-        private FileTypes Environment = (FileTypes)Enum.Parse(typeof(FileTypes), Dal.GetConfigParam("SVIVAT-AVODA")); // 1= Test, 2=Production
 
-        public void ProcessCycle()
+        private static FileTypes Environment = (FileTypes)Enum.Parse(typeof(FileTypes), Dal.GetConfigParam("Environment")); // 1= Test, 2=Production
+
+        public static void ProcessCycle()
         {
+
             // Checking if there are files to process ("Achzakot" or "Feedbacks")
             string MisparKovetz;
             incomingDir = Dal.GetConfigParam("MislakaIncomingFolder");
             outgoingDir = Dal.GetConfigParam("MislakaOutgoingFolder");
+            incomingDirHistory = Dal.GetConfigParam("MislakaIncomingFolderHistory");
+            outgoingDirHistory = Dal.GetConfigParam("MislakaOutgoingFolderHistory");
 
             log.Info("Start Process Cycle");
 
@@ -39,45 +45,26 @@ namespace MislakaInterface
             {
                 string filename = file.Substring(file.LastIndexOf('\\') + 1);
                 mislakaFileName = new MislakaFileName(filename);
-                if (mislakaFileName != null)
-                {
+                // Check that the file type matches the environment (test or production). If not - ignore the file.
+                if (mislakaFileName.FileType == Environment)
+                { 
+                    // Check for "pre consulting" or holdings data.
                     if (mislakaFileName.Service == ServiceTypes.HOLDNG || mislakaFileName.Service == ServiceTypes.CONSLT)
                     {
                         // If it is "Achzakot" = Load Achzakot.
                         log.Info("Loading Achzakot file " + filename);
                         MisparKovetz = LoadAchzakot(file);
 
-                        // Update the status
-                        if (MisparKovetz != null)
-                        {
-                            SendFeedback(MisparKovetz, file, 20 /*Feedback type*/, true);
-                        }
-                        else
-                            SendErrorFeedback(); // Error status
+                        SendFeedback(MisparKovetz, file, true);
                     }
                     //If it is a feedback - process feedback
                     if (mislakaFileName.Service == ServiceTypes.FEDBKA || mislakaFileName.Service == ServiceTypes.FEDBKB)
                     {
                         LoadFeedback(file);
-                        //update status
                     }
-                }
-                else
-                {
-                    SendErrorFeedback(); // Error feedback
                 }
             }
             log.Info("End Process Cycle");
-        }
-        
-        public MislakaDataFlow (FileTypes SvivatAvoda)
-        {
-            svivatAvoda = SvivatAvoda;
-        }
-
-        public MislakaDataFlow()
-        {
-            svivatAvoda = FileTypes.TST;
         }
 
         /// <summary>
@@ -85,16 +72,16 @@ namespace MislakaInterface
         /// </summary>
         /// <param name="filename">XML file containing achzakot</param>
         /// <returns>MIPAR-KOVETZ node from the achzakot XML file</returns>
-        private string LoadAchzakot(string filename)
+        private static string LoadAchzakot(string filename)
         {
             log.Info("Start Load Achzakot file " + filename);
-            Achzakot.Mimshak mimshak = new Achzakot.Mimshak();
-            HandleAchzakot achzakotParser = new HandleAchzakot();
-            XmlSerializer serializer = new XmlSerializer(typeof(Achzakot.Mimshak));
+            AchzakotInterface.Mimshak mimshak = new AchzakotInterface.Mimshak();
+            Achzakot achzakotParser = new Achzakot();
+            XmlSerializer serializer = new XmlSerializer(typeof(AchzakotInterface.Mimshak));
             Stream fs = File.OpenRead(filename);
             try
             {
-                mimshak = serializer.Deserialize(fs) as Achzakot.Mimshak;
+                mimshak = serializer.Deserialize(fs) as AchzakotInterface.Mimshak;
             }
             catch (InvalidOperationException ex)
             {
@@ -152,26 +139,21 @@ namespace MislakaInterface
         /// <summary>
         /// Sends a success feedback file for a received file.
         /// </summary>
-        /// <param name="SvivatAvoda">1=Test; 2=Production</param>
-        /// <param name="MisparHakovetz">As defined inside the XML of the file received</param>
-        /// <param name="ShemHakovetz">The file name that was receieved</param>
-        /// <param name="SugMimshak">1=Achzakot, 2=Trom Yeutz, 3=Achzakot+Trom Yeutz etc.</param>
-        private void SendFeedback(string MisparHakovetz,
-                                  string FileName, 
-                                  int    SugMimshak,
-                                  bool   isSuccess)
+        private static void SendFeedback (string MisparHakovetz,
+                                          string FileName, 
+                                          bool   isSuccess)
         {
             log.Info("Start Send Success Feedback");
-            HandleFeedback handleFeedback = new HandleFeedback();
+            Feedback handleFeedback = new Feedback();
 
-            handleFeedback.ProduceFeedback(svivatAvoda, MisparHakovetz, FileName, isSuccess);
-            
-            System.Xml.Serialization.XmlSerializer writer = new System.Xml.Serialization.XmlSerializer(typeof(Feedback.Mimshak));
+            handleFeedback.ProduceFeedback(Environment, MisparHakovetz, FileName, isSuccess);
+
+            System.Xml.Serialization.XmlSerializer writer = new System.Xml.Serialization.XmlSerializer(typeof(FeedbackInterface.Mimshak));
             string fileName = outgoingDir + "\\" + handleFeedback.MislakaFilename.GetMislakaFileName();
             System.IO.StreamWriter file = new System.IO.StreamWriter(fileName);
             writer.Serialize(file, handleFeedback.Mimshak);
             file.Close();
-            handleFeedback.CreateFeedbackKovetzRecord(fileName, MisparHakovetz);
+            handleFeedback.CreateFeedbackKovetzRecord(MisparHakovetz);
 
             log.Info("End Send Success Feedback - file:" + mislakaFileName.GetMislakaFileName());
         }
@@ -179,60 +161,52 @@ namespace MislakaInterface
         /// <summary>
         /// Produce "9100" event which 
         /// </summary>
-        public void ProduceEvents()
+        public static void ProduceEvents()
         {
             log.Info("Start producing events");
 
             string fileName;
-            HandleEvents handleEvents;
+            Event handleEvents;
             MislakaFileName mislakaFileName;
-            Events.Mimshak EventObj = new Events.Mimshak();
+            EventsInterface.Mimshak EventObj = new EventsInterface.Mimshak();
 
             int numerator = Dal.GetFileNumerator();
             Mutzar lakoachRec = new Mutzar();
-            string Version = Events.MimshakKoteretKovetzMISPARGIRSATXML.Item001.ToString().Replace("Item","");
+            string Version = EventsInterface.MimshakKoteretKovetzMISPARGIRSATXML.Item001.ToString().Replace("Item","");
 
             // Get a list of clients for which to produce an events file.
             List<Client> clientList = Dal.GetClientsByStatus((int)ClientStatus.New);
             if (clientList.Count > 0)
             {
                 mislakaFileName = new MislakaFileName("001" /*Mefitz to mislaka*/, Dal.GetConfigParam("MISPAR-MEZAHE-PONE"), ServiceTypes.EVENTS,
-                                                      ProductTypes.NotRelevant, Version, DateTime.Now, numerator, svivatAvoda);
+                                                      ProductTypes.NotRelevant, Version, DateTime.Now, numerator, Environment);
 
                 // Read the client data 
-                handleEvents = new HandleEvents(numerator);
+                handleEvents = new Event(numerator, Environment);
                 handleEvents.PrepareEventObject(clientList);
                 fileName = outgoingDir + "\\" + mislakaFileName.GetMislakaFileName();
                 handleEvents.SerializeToFile(fileName);
 
                 handleEvents.SaveKovetzRecord(fileName, mislakaFileName);
-                Dal.Add(handleEvents.FileRecord);
-                Dal.UpdateClients(handleEvents.ClientList);
-                Dal.SaveChanges();
-
-
-                //Dal.ChangeClientStatus(client.TeudatZehut, (int)ClientStatus.New, (int)ClientStatus.SentEvent, kovetz.Kovetz_Id);
-                // Get the next Client TZ.
+                handleEvents.UpdateClientsRecords();
             }
-            log.Info("Finished producing events");
-
-        }
-      
-        private void SendErrorFeedback()
-        {
-            throw new NotImplementedException();
+            if (clientList.Count > 0) 
+                log.Info("Finished producing " + clientList.Count.ToString() + "events");
+            else
+                log.Info("No events to process");
         }
 
-        private void LoadFeedback(string file)
+
+        private static void LoadFeedback(string file)
         {
             // Read the XML file into "Mimshak" object
             log.Info("Start processing feedback file " + file);
-            XmlSerializer serializer = new XmlSerializer(typeof(Feedback.Mimshak));
+            XmlSerializer serializer = new XmlSerializer(typeof(FeedbackInterface.Mimshak));
             Stream fs = File.OpenRead(file);
-            HandleFeedback feedback = new HandleFeedback();
+            Feedback feedback = new Feedback();
             try
             {
-                feedback = new HandleFeedback(serializer.Deserialize(fs) as Feedback.Mimshak);
+                feedback = new Feedback(serializer.Deserialize(fs) as FeedbackInterface.Mimshak);
             }
             catch (InvalidOperationException ex)
             {
@@ -242,16 +216,11 @@ namespace MislakaInterface
                 return;
             }
             fs.Close();
-            //FeedbackFile feedbackFile = new FeedbackFile();
-            //MislakaFileName mislakaFileName;
+
+            //Analyze the feedback object
             try
             {
-                // feedbackFile = feedback.ParseFeedback();
-
-                feedback.CreateFeedbackKovetzRecord(file, feedback.Mimshak.KoteretKovetz.MISPARHAKOVETZ);
-                // Check if there is NO DATA from the Yatzran.
-                //Dal.SaveChanges();
-                //Dal.SaveFeedback(feedbackFile);
+                feedback.CreateFeedbackKovetzRecord(Common.RemovePath(file));
                 AnalyzeFeedback(file, feedback.Mimshak);
 
                 log.Info("Finished processing feedback file " + file);
@@ -265,18 +234,19 @@ namespace MislakaInterface
 
         }
 
-        private void AnalyzeFeedback(string file, Feedback.Mimshak feedback)
+        private static void AnalyzeFeedback(string file, FeedbackInterface.Mimshak feedback)
         {
             for (int i = 0; i < feedback.GufHamimshak.Length; i++)
             {
                 // Check for error on file level
                 if (feedback.GufHamimshak[i].SugMashov.RAMATMASHOV == 1 &&
-                    feedback.GufHamimshak[i].SugMashov.MashovBeramatKovetz.KODSHGIHA != null)
+                    feedback.GufHamimshak[i].SugMashov.MashovBeramatKovetz != null &&
+                    feedback.GufHamimshak[i].SugMashov.MashovBeramatKovetz.KODSHGIHA > 0)
                 {
                     Dal.ChangeClientStatusByFileNumber(feedback.GufHamimshak[i].SugMashov.MISPARHAKOVETZ,
                                                        ClientStatus.EventFeedbackFileError);
 
-                    SendFeedback(feedback.KoteretKovetz.MISPARHAKOVETZ, Common.RemovePath(file), feedback.KoteretKovetz.SUGMIMSHAK, false);
+                    SendFeedback(feedback.KoteretKovetz.MISPARHAKOVETZ, Common.RemovePath(file), false);
                 }
                 else if (feedback.GufHamimshak[i].SugMashov.RAMATMASHOV == 2) // Mashov on Records
                 {
@@ -287,43 +257,50 @@ namespace MislakaInterface
             }
         }
 
-        private void AnalyzeFeedbackRecords(string file, string misparHakovetz, string misparZihuySholeach, Feedback.MimshakYeshutGoremPoneLemislaka mimshakRec)
+        private static void AnalyzeFeedbackRecords(string file, string misparHakovetz, string misparZihuySholeach, FeedbackInterface.MimshakYeshutGoremPoneLemislaka mimshakRec)
         {
             string MisparZehut = "";
+            bool errorsFound = false;
+
             // Iterate over each record (client)
             for (int j = 0; j < mimshakRec.SugMashov.MashovBeramatReshuma.Length; j++)
             {
                 // The 16 character from offset 27 holds the client TZ.
-                MisparZehut = mimshakRec.SugMashov.MashovBeramatReshuma[j].MISPARMEZAHERESHUMA.Substring(27, 16);
+                MisparZehut = mimshakRec.SugMashov.MashovBeramatReshuma[j].MISPARMEZAHERESHUMA.Substring(26, 16);
                 // Check if received feedback from Mislaka "Mashov A"
                 if (mimshakRec.SugMashov.SUGMASHOV == 1)
                 {
                     // Check the record is not valid
                     if (mimshakRec.SugMashov.MashovBeramatReshuma[j].STATUSRESHUMA !=
-                              Feedback.MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatReshumaSTATUSRESHUMA.Item1) // Status 1 = OK 
+                              FeedbackInterface.MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatReshumaSTATUSRESHUMA.Item1) // Status 1 = OK 
                     {
                         // Error in record from the Mislaka 
-                        Dal.ChangeClientStatus(MisparZehut, ClientStatus.EventFeedbackRecordError);
-                        // Need to ask if the feedback from mefitz to the error on record should be like "success".
-                        SendFeedback(misparHakovetz, file, 20, true);
+                        
+                        if (Dal.ChangeClientStatus(MisparZehut, ClientStatus.EventFeedbackRecordError))
+                            if (!errorsFound)
+                            {
+                                SendFeedback(misparHakovetz, file, true);
+                                errorsFound = true;
+                            }
                     }
                     else // Success from Mislaka
                     {
                         Dal.ChangeClientStatus(MisparZehut, ClientStatus.EventFeedbackSuccess);
                         // Need to ask if the feedback from mefitz to the error on record should be like "success".
-                        SendFeedback(misparHakovetz, file, 20, true);
+                        //SendFeedback(misparHakovetz, file, true);
                         Dal.SetClientYatzran(MisparZehut, misparZihuySholeach, true);
                     }
                 }
                 else // Received Mashov B - from Yatzran - there must be an error from the Yatzran
                 {
                     // Check the record is not valid
-                    if (mimshakRec.SugMashov.MashovBeramatReshuma[j].MaaneMiYazran[0].MAANEBERAMATRESHUMA != null)
+                    if (mimshakRec.SugMashov.MashovBeramatReshuma[j].MaaneMiYazran[0] != null &&
+                        mimshakRec.SugMashov.MashovBeramatReshuma[j].MaaneMiYazran[0].MAANEBERAMATRESHUMA > 1000)
                     {
                         // Error in record from the Yatzran (can't supply client data for some reason)
                         Dal.ChangeClientStatus(MisparZehut, ClientStatus.NoData);
                         // Need to ask if the feedback from Yatzran to the error on record should be like "success".
-                        SendFeedback(misparHakovetz, file, 20, true);
+                        SendFeedback(misparHakovetz, file, true);
                         Dal.SetClientYatzran(MisparZehut, misparZihuySholeach, false);
                     }
                 }

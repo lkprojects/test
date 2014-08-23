@@ -43,6 +43,7 @@
       <HintPath>.\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -54,10 +55,10 @@
     <Compile Include="2012-59_HevrotBituah_XSD.cs" />
     <Compile Include="20120915_AdministrativeFeedbackInterface_XSD.cs" />
     <Compile Include="20120915_IncomingEventsInterface_XSD.cs" />
-    <Compile Include="HandleAchzakot.cs" />
+    <Compile Include="Achzakot.cs" />
     <Compile Include="Common.cs" />
-    <Compile Include="HandleEvents.cs" />
-    <Compile Include="HandleFeedback.cs" />
+    <Compile Include="Events.cs" />
+    <Compile Include="Feedback.cs" />
     <Compile Include="MislakaDataFlow.cs" />
     <Compile Include="MislakaFileName.cs" />
     <Compile Include="Program.cs" />

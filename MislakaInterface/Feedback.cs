@@ -8,19 +8,20 @@ using System.Globalization;
 
 namespace MislakaInterface
 {
-    class HandleFeedback
+    class Feedback
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private int SugMimshak = 20;
+        private const int SugMimshak = 20;
 
-        private Feedback.Mimshak mimshak;
-        public Feedback.Mimshak Mimshak
+        private FeedbackInterface.Mimshak mimshak;
+        private MislakaFileName mislakaFileName;
+
+        public FeedbackInterface.Mimshak Mimshak
         {
             get { return mimshak; }
             set { mimshak = value; }
         }
 
-        private MislakaFileName mislakaFileName;
 
         public MislakaFileName MislakaFilename
         {
@@ -30,30 +31,30 @@ namespace MislakaInterface
         
 
         // constructor
-        public HandleFeedback(Feedback.Mimshak feedback)
+        public Feedback(FeedbackInterface.Mimshak feedback)
         {
             mimshak = feedback;
         }
-        public HandleFeedback()
+        public Feedback()
         {
-            mimshak = new Feedback.Mimshak();
+            mimshak = new FeedbackInterface.Mimshak();
         }
 
         public void ProduceFeedback(FileTypes SvivatAvoda, string MisparHakovetz, string ShemHakovetz, bool isSuccess)
         {
             DAL.DAL Dal = new DAL.DAL("Events");
             int numerator = Dal.GetFileNumerator();
-            mimshak.KoteretKovetz = new Feedback.MimshakKoteretKovetz();
+            mimshak.KoteretKovetz = new FeedbackInterface.MimshakKoteretKovetz();
 
             mimshak.KoteretKovetz.KODSVIVATAVODA = (int)SvivatAvoda;
-            mimshak.KoteretKovetz.MISPARGIRSATXML = Feedback.MimshakKoteretKovetzMISPARGIRSATXML.Item001;
+            mimshak.KoteretKovetz.MISPARGIRSATXML = FeedbackInterface.MimshakKoteretKovetzMISPARGIRSATXML.Item001;
             mimshak.KoteretKovetz.MISPARHAKOVETZ = DateTime.Now.ToString("yyyyMMddhhmmss") + Dal.GetConfigParam("KOD-MEZAHE-YATZRAN").PadLeft(9, '0') + numerator.ToString("0000");
             mimshak.KoteretKovetz.MISPARSIDURI = numerator;
             mimshak.KoteretKovetz.SUGMIMSHAK = 6;
             mimshak.KoteretKovetz.TAARICHBITZUA = DateTime.Now.ToString("yyyyMMddhhmmss");
-            Feedback.MimshakYeshutGoremPoneLemislaka[] GufHamimshak = new Feedback.MimshakYeshutGoremPoneLemislaka[1];
+            FeedbackInterface.MimshakYeshutGoremPoneLemislaka[] GufHamimshak = new FeedbackInterface.MimshakYeshutGoremPoneLemislaka[1];
 
-            GufHamimshak[0] = new Feedback.MimshakYeshutGoremPoneLemislaka();
+            GufHamimshak[0] = new FeedbackInterface.MimshakYeshutGoremPoneLemislaka();
             GufHamimshak[0].EMAILPONELEMISLAKA = Dal.GetConfigParam("E-MAIL-PONE-LEMISLAKA");
             GufHamimshak[0].MISPARCELLULARI = Dal.GetConfigParam("MISPAR-CELLULARI");
             GufHamimshak[0].MISPARMEZAHEMETAFEL = Dal.GetConfigParam("MISPAR-MEZAHE-METAFEL");
@@ -64,16 +65,16 @@ namespace MislakaInterface
             GufHamimshak[0].SHEMPRATIPONELEMISLAKA = Dal.GetConfigParam("SHEM-PRATI-PONE-LEMISLAKA");
             GufHamimshak[0].SUGKODMEZAHEPONE = Convert.ToInt32(Dal.GetConfigParam("SUG-KOD-MEZAHE-PONE"));
             GufHamimshak[0].SUGPONE = 3; // 3 = Mefitz.
-            GufHamimshak[0].SugMashov = new Feedback.MimshakYeshutGoremPoneLemislakaSugMashov();
+            GufHamimshak[0].SugMashov = new FeedbackInterface.MimshakYeshutGoremPoneLemislakaSugMashov();
             GufHamimshak[0].SugMashov.MISPARHAKOVETZ = MisparHakovetz;
             GufHamimshak[0].SugMashov.RAMATMASHOV = 1; // 1 = File level, 2= Record level
             GufHamimshak[0].SugMashov.SHEMHAKOVETZ = ShemHakovetz;
-            GufHamimshak[0].SugMashov.SUGMASHOV = 1; // 1 = Shlav Aled, 2 = Shlav Bet
+            GufHamimshak[0].SugMashov.SUGMASHOV = 1; // 1 = Shlav Alef, 2 = Shlav Bet
             GufHamimshak[0].SugMashov.SUGMIMSHAKLEGABAVMUAVARHIZUNCHOZER = SugMimshak; // 1= Achzakot, = Trom Yeutz etc.
 
             if (!isSuccess)
             {
-                GufHamimshak[0].SugMashov.MashovBeramatKovetz = new Feedback.MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatKovetz();
+                GufHamimshak[0].SugMashov.MashovBeramatKovetz = new FeedbackInterface.MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatKovetz();
                 GufHamimshak[0].SugMashov.MashovBeramatKovetz.KODSHGIHA = 5; // 5 = Received Successfully.
             }
             mimshak.GufHamimshak = GufHamimshak;
@@ -127,7 +128,7 @@ namespace MislakaInterface
             return feedbackFile;
         }
 
-        private void GetGufHamimshak(ICollection<GoremPone> collection, Feedback.MimshakYeshutGoremPoneLemislaka[] GoremPoneLemislaka)
+        private void GetGufHamimshak(ICollection<GoremPone> collection, FeedbackInterface.MimshakYeshutGoremPoneLemislaka[] GoremPoneLemislaka)
         {
             GoremPone goremPone;
             for (int i = 0; i< GoremPoneLemislaka.Length; i++)
@@ -157,7 +158,7 @@ namespace MislakaInterface
             }
         }
 
-        private void GetRequest(ICollection<Request> collection, Feedback.MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatReshuma[] MashovBeramatReshuma)
+        private void GetRequest(ICollection<Request> collection, FeedbackInterface.MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatReshuma[] MashovBeramatReshuma)
         {
             Request request;
             if (MashovBeramatReshuma != null)
@@ -176,7 +177,8 @@ namespace MislakaInterface
             }
         }
 
-        private void GetRequestErrorDetails(ICollection<RequestErrorDetail> collection, Feedback.MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatReshumaPerutShgihaBeramatReshuma[] PerutShgihaBeramatReshuma)
+        private void GetRequestErrorDetails(ICollection<RequestErrorDetail> collection, 
+                                            FeedbackInterface.MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatReshumaPerutShgihaBeramatReshuma[] PerutShgihaBeramatReshuma)
         {
             RequestErrorDetail requestErrorDetail; 
             if (PerutShgihaBeramatReshuma != null)
@@ -190,7 +192,8 @@ namespace MislakaInterface
             }
         }
 
-        private void GetRequestPerYatzrans(ICollection<RequestPerYatzran> collection, Feedback.MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatReshumaMaaneMiYazran[] MaaneMiYazran)
+        private void GetRequestPerYatzrans(ICollection<RequestPerYatzran> collection,
+                                           FeedbackInterface.MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatReshumaMaaneMiYazran[] MaaneMiYazran)
         {
             RequestPerYatzran requestPerYatzran;
             if (MaaneMiYazran != null)
@@ -204,7 +207,7 @@ namespace MislakaInterface
             }
         }
 
-        private void GetFileErrorDetail(ICollection<FileErrorDetail> collection, Feedback.MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatKovetz MashovBeramatKovetz)
+        private void GetFileErrorDetail(ICollection<FileErrorDetail> collection, FeedbackInterface.MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatKovetz MashovBeramatKovetz)
         {
             FileErrorDetail fileErrorDetail;
             if (MashovBeramatKovetz.PerutShgihaBeramatKovetz != null)
@@ -218,7 +221,7 @@ namespace MislakaInterface
             }
         }
 
-        public void CreateFeedbackKovetzRecord(string fileName, string MezaheHaavara)
+        public void CreateFeedbackKovetzRecord(string file)
         {
             Kovetz kovetz = new Kovetz();
             kovetz.MISPAR_GIRSAT_XML = mimshak.KoteretKovetz.MISPARGIRSATXML.ToString().Replace("Item","");
@@ -228,8 +231,8 @@ namespace MislakaInterface
             kovetz.TAARICH_BITZUA = Common.ConvertDatetime(mimshak.KoteretKovetz.TAARICHBITZUA);
             kovetz.MISPAR_GIRSAT_XML = "001";
             kovetz.SHEM_SHOLEACH = "Feedback Success";
-            kovetz.FileName = fileName;
-            kovetz.MEZAHE_HAAVARA = MezaheHaavara;
+            kovetz.FileName = file;
+            kovetz.MEZAHE_HAAVARA = mimshak.KoteretKovetz.MISPARHAKOVETZ;
             kovetz.Yatzran_SHEM_YATZRAN = "";
             kovetz.LoadDate = DateTime.Now;
             kovetz.KIVUN_MIMSHAK_XML = 5;

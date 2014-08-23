@@ -1,5 +1,5 @@
 ﻿using DAL;
-using Events;
+using EventsInterface;
 using MislakaInterface;
 using System;
 using System.Collections.Generic;
@@ -8,25 +8,32 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-class HandleEvents
+class Event
 {
     private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
     private DAL.DAL DALobj = new DAL.DAL("Events");
     private List<Client> clientList = new List<Client>();
-    private Events.Mimshak mimshakEvent = new Events.Mimshak();
+    private EventsInterface.Mimshak mimshakEvent = new EventsInterface.Mimshak();
     private Kovetz fileRecord = new Kovetz();
+
+    private FileTypes environment;
+
+    public FileTypes Environment
+    {
+        get { return environment; }
+        set { environment = value; }
+    }
+    
 
     public Kovetz FileRecord 
     {
         get { return fileRecord; }
     }
 
-    private int kodEirua;
-
     private int numerator;
 
-    public Events.Mimshak MimshakEvent
+    public EventsInterface.Mimshak MimshakEvent
     {
         get { return mimshakEvent; }
         set { mimshakEvent = value; }
@@ -46,30 +53,32 @@ class HandleEvents
     }
 
 
-    private Events.Mimshak mimshak;
-    public Events.Mimshak Mimshak
+    private EventsInterface.Mimshak mimshak;
+    public EventsInterface.Mimshak Mimshak
     {
         get { return mimshak; }
         set { mimshak = value; }
     }
         
     // constructor
-    public HandleEvents(int fileNumerator)
+    public Event(int fileNumerator, FileTypes environment)
     {
         numerator = fileNumerator;
+        this.environment = environment;
     }
 
     // constructor
-    public HandleEvents(Events.Mimshak eruim, int fileNumerator)
+    public Event(EventsInterface.Mimshak eruim, int fileNumerator, FileTypes environment)
     {
         mimshak = eruim;
         numerator = fileNumerator;
+        this.environment = environment;
     }
 
     public void PrepareEventObject(List<Client> clientList)
     {
         this.clientList = clientList;
-        mimshakEvent = new Events.Mimshak();
+        mimshakEvent = new EventsInterface.Mimshak();
         mimshakEvent.KoteretKovetz = new MimshakKoteretKovetz();
         SetKoteretKovetz(mimshakEvent.KoteretKovetz);
         mimshakEvent.GufHamimshak = new MimshakYeshutGoremPoneLemislaka[100];
@@ -175,13 +184,12 @@ class HandleEvents
         Eirua[i].KodEirua.YipuiKoach.BakashatMefitzLeinianYipuiKoach.KAYAMMUTZARMUCHRAG = 2; // 1= Yes ; 2= No
         Eirua[i].KodEirua.YipuiKoach.BakashatMefitzLeinianYipuiKoach.TAARICHCHTIMALAKOACH = clientList[clientNo].InsertDate.ToString("yyyyMMdd");
 
-
     }
 
     private void SetKoteretKovetz(MimshakKoteretKovetz koteret)
     {
-        koteret.SUGMIMSHAK = 6;
-        koteret.KODSVIVATAVODA = Convert.ToInt32(DALobj.GetConfigParam("KOD-SVIVAT-AVODA"));
+        koteret.SUGMIMSHAK = 6; // 6 = Events interface
+        koteret.KODSVIVATAVODA = (int)environment;
         numerator = numerator % 10000;
         koteret.MISPARHAKOVETZ = DateTime.Now.ToString("yyyyMMddHHmmss") + DALobj.GetConfigParam("MISPAR-ZIHUI-SHOLECH").PadLeft(9, '0') + numerator.ToString("0000");
         koteret.MISPARSIDURI = numerator;
@@ -210,7 +218,7 @@ class HandleEvents
     {
 
         // Write the events to a file
-        System.Xml.Serialization.XmlSerializer writer = new System.Xml.Serialization.XmlSerializer(typeof(Events.Mimshak));
+        System.Xml.Serialization.XmlSerializer writer = new System.Xml.Serialization.XmlSerializer(typeof(EventsInterface.Mimshak));
         System.IO.StreamWriter file = new System.IO.StreamWriter(fileName);
         try
         {
@@ -230,20 +238,26 @@ class HandleEvents
     {
         fileRecord.MISPAR_GIRSAT_XML = mimshakEvent.KoteretKovetz.MISPARGIRSATXML.ToString();
         fileRecord.MISPAR_HAKOVETZ = mimshakEvent.KoteretKovetz.MISPARHAKOVETZ;
-        fileRecord.KOD_SVIVAT_AVODA = mimshakEvent.KoteretKovetz.KODSVIVATAVODA;
+        fileRecord.KOD_SVIVAT_AVODA = (int)environment;
         fileRecord.SUG_MIMSHAK = mimshakEvent.KoteretKovetz.SUGMIMSHAK;
         fileRecord.TAARICH_BITZUA = Common.ConvertDatetime(mimshakEvent.KoteretKovetz.TAARICHBITZUA);
         fileRecord.MISPAR_GIRSAT_XML = "001";
-        fileRecord.SHEM_SHOLEACH = "Events 9100";
+        fileRecord.SHEM_SHOLEACH = "Events";
         fileRecord.FileName = fileName;
         fileRecord.MEZAHE_HAAVARA = mislakaFileName.GetMislakaFileName();
         fileRecord.Yatzran_SHEM_YATZRAN = "All";
         fileRecord.LoadDate = DateTime.Now;
         fileRecord.KIVUN_MIMSHAK_XML = 5;
-
-        for (int i=0; i< clientList.Count ;i++)
+        for (int i = 0; i < clientList.Count; i++)
         {
             clientList[i].LastFileNumber = fileRecord.MISPAR_HAKOVETZ;
         }
+    }
+
+    internal void UpdateClientsRecords()
+    {
+        DALobj.Add(fileRecord);
+        DALobj.UpdateClients(clientList);
+        DALobj.SaveChanges();
     }
 }
