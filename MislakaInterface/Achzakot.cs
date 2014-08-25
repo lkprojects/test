@@ -150,7 +150,42 @@ namespace MislakaInterface
 
         public void SaveChanges()
         {
-            Dal.SaveChanges();
+            try
+            {
+                Dal.SaveChanges();
+            }
+            catch (System.Data.Entity.Validation.DbEntityValidationException e)
+            {
+                string rs = "";
+                foreach (var eve in e.EntityValidationErrors)
+                {
+                    rs = string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:", eve.Entry.Entity.GetType().Name, eve.Entry.State);
+
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        rs += "\n" + string.Format("- Property: \"{0}\", Error: \"{1}\"", ve.PropertyName, ve.ErrorMessage);
+                    }
+                    Console.WriteLine(rs);
+                    log.Error(rs, e);
+                }
+                throw new Exception(rs);
+            }
+            catch (System.Data.Entity.Infrastructure.DbUpdateException ex)
+            {
+                string rs = ex.Message;
+                rs += "\n" + ex.InnerException.InnerException.ToString();
+                Console.WriteLine(rs);
+                log.Error(rs, ex);
+
+                throw new Exception(rs);
+
+            }
+            catch (Exception e)
+            {
+                log.Error("Error Found", e);
+                throw new Exception(rs);
+            }
+            
         }
 
         public void ParseMutzar(out Mutzar mutzar, AchzakotInterface.MimshakMutzar mimshak, int Kovetz_Id)
@@ -214,6 +249,8 @@ namespace MislakaInterface
             Dal.Add(mutzar);
             client.LastStatus = (byte)ClientStatus.DataLoaded;
             Dal.UpdateClient(client);
+            Dal.SetClientYatzran(mutzar.KOD_MEZAHE_YATZRAN.ToString(), mutzar.Lakoach_MISPAR_ZIHUY_LAKOACH.TrimStart('0'), false);
+
         }
 
         private void ParseYeshutMaasik(Mutzar mutzar, AchzakotInterface.MimshakMutzarNetuneiMutzarYeshutMaasik[] mimshakYeshutMaasik)
@@ -904,9 +941,5 @@ namespace MislakaInterface
         }
 
 
-        public void SetClientStatuses()
-        {
-
-        }
     }
 }

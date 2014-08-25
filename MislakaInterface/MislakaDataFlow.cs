@@ -93,48 +93,18 @@ namespace MislakaInterface
             fs.Close();
 
             achzakotParser.ParseKovetz(mimshak, filename);
-
             try
             {
                 achzakotParser.SaveChanges();
                 log.Info("End Load Achzakot file " + filename);
-
                 return mimshak.KoteretKovetz.MISPARHAKOVETZ;
             }
-            catch (System.Data.Entity.Validation.DbEntityValidationException e)
+            catch
             {
-                string rs = "";
-                foreach (var eve in e.EntityValidationErrors)
-                {
-                    rs = string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:", eve.Entry.Entity.GetType().Name, eve.Entry.State);
-
-                    foreach (var ve in eve.ValidationErrors)
-                    {
-                        rs += "\n" + string.Format("- Property: \"{0}\", Error: \"{1}\"", ve.PropertyName, ve.ErrorMessage);
-                    }
-                    Console.WriteLine(rs);
-                    log.Error(rs, e);
-                }
-                return null;
-                // throw new Exception(rs);
-            }
-            catch (System.Data.Entity.Infrastructure.DbUpdateException ex)
-            {
-                string rs = ex.Message;
-                rs += "\n" + ex.InnerException.InnerException.ToString();
-                Console.WriteLine(rs);
-                log.Error(rs, ex);
-
-                return null;
-                // throw new Exception(rs);
-
-            }
-            catch (Exception e)
-            {
-                log.Error("Error Found", e);
+                log.Info("Load Achzakot failed for filename: " + filename);
                 return null;
             }
-
+            
         }
         /// <summary>
         /// Sends a success feedback file for a received file.
@@ -189,9 +159,8 @@ namespace MislakaInterface
 
                 handleEvents.SaveKovetzRecord(fileName, mislakaFileName);
                 handleEvents.UpdateClientsRecords();
+                log.Info("Finished producing " + clientList.Count.ToString() + " events in file " + fileName);
             }
-            if (clientList.Count > 0) 
-                log.Info("Finished producing " + clientList.Count.ToString() + "events");
             else
                 log.Info("No events to process");
         }
@@ -222,7 +191,7 @@ namespace MislakaInterface
             {
                 feedback.CreateFeedbackKovetzRecord(Common.RemovePath(file));
                 AnalyzeFeedback(file, feedback.Mimshak);
-
+                Dal.SaveChanges();
                 log.Info("Finished processing feedback file " + file);
             }
            
@@ -239,7 +208,7 @@ namespace MislakaInterface
             for (int i = 0; i < feedback.GufHamimshak.Length; i++)
             {
                 // Check for error on file level
-                if (feedback.GufHamimshak[i].SugMashov.RAMATMASHOV == 1 &&
+                if (feedback.GufHamimshak[i].SugMashov.RAMATMASHOV == 1 && /*Ramat Mashov 1 = "file level"*/
                     feedback.GufHamimshak[i].SugMashov.MashovBeramatKovetz != null &&
                     feedback.GufHamimshak[i].SugMashov.MashovBeramatKovetz.KODSHGIHA > 0)
                 {
@@ -247,12 +216,14 @@ namespace MislakaInterface
                                                        ClientStatus.EventFeedbackFileError);
 
                     SendFeedback(feedback.KoteretKovetz.MISPARHAKOVETZ, Common.RemovePath(file), false);
+                    break;
                 }
                 else if (feedback.GufHamimshak[i].SugMashov.RAMATMASHOV == 2) // Mashov on Records
                 {
                      AnalyzeFeedbackRecords(file, 
+                                            feedback.GufHamimshak[i].SugMashov.MISPARHAKOVETZ, 
                                             feedback.KoteretKovetz.NetuneiGoremSholech.MISPARZIHUISHOLECH, 
-                                            feedback.GufHamimshak[i].SugMashov.MISPARHAKOVETZ, feedback.GufHamimshak[i]);
+                                            feedback.GufHamimshak[i]);
                 }
             }
         }
@@ -261,12 +232,15 @@ namespace MislakaInterface
         {
             string MisparZehut = "";
             bool errorsFound = false;
+            misparZihuySholeach = misparZihuySholeach.TrimStart('0');
+            misparHakovetz = misparHakovetz.TrimStart('0');
 
             // Iterate over each record (client)
             for (int j = 0; j < mimshakRec.SugMashov.MashovBeramatReshuma.Length; j++)
             {
                 // The 16 character from offset 27 holds the client TZ.
-                MisparZehut = mimshakRec.SugMashov.MashovBeramatReshuma[j].MISPARMEZAHERESHUMA.Substring(26, 16);
+                MisparZehut = mimshakRec.SugMashov.MashovBeramatReshuma[j].MISPARMEZAHERESHUMA.Substring(26, 16).TrimStart('0');
+                log.Info("Reading feedback of Client Id " + MisparZehut);
                 // Check if received feedback from Mislaka "Mashov A"
                 if (mimshakRec.SugMashov.SUGMASHOV == 1)
                 {
@@ -275,7 +249,7 @@ namespace MislakaInterface
                               FeedbackInterface.MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatReshumaSTATUSRESHUMA.Item1) // Status 1 = OK 
                     {
                         // Error in record from the Mislaka 
-                        
+                        log.Error("Error from the clearing house with client ID " + MisparZehut + " - error status =" + mimshakRec.SugMashov.MashovBeramatReshuma[j].STATUSRESHUMA);
                         if (Dal.ChangeClientStatus(MisparZehut, ClientStatus.EventFeedbackRecordError))
                             if (!errorsFound)
                             {
@@ -285,10 +259,10 @@ namespace MislakaInterface
                     }
                     else // Success from Mislaka
                     {
+                        log.Debug("Success status from the clearing house with client ID " + MisparZehut);
                         Dal.ChangeClientStatus(MisparZehut, ClientStatus.EventFeedbackSuccess);
                         // Need to ask if the feedback from mefitz to the error on record should be like "success".
                         //SendFeedback(misparHakovetz, file, true);
-                        Dal.SetClientYatzran(MisparZehut, misparZihuySholeach, true);
                     }
                 }
                 else // Received Mashov B - from Yatzran - there must be an error from the Yatzran
@@ -297,11 +271,13 @@ namespace MislakaInterface
                     if (mimshakRec.SugMashov.MashovBeramatReshuma[j].MaaneMiYazran[0] != null &&
                         mimshakRec.SugMashov.MashovBeramatReshuma[j].MaaneMiYazran[0].MAANEBERAMATRESHUMA > 1000)
                     {
+                        log.Debug("Received an error from Yatzran. client ID " + MisparZehut + ". Record error=" + 
+                                   mimshakRec.SugMashov.MashovBeramatReshuma[j].MaaneMiYazran[0].MAANEBERAMATRESHUMA);
                         // Error in record from the Yatzran (can't supply client data for some reason)
                         Dal.ChangeClientStatus(MisparZehut, ClientStatus.NoData);
                         // Need to ask if the feedback from Yatzran to the error on record should be like "success".
                         SendFeedback(misparHakovetz, file, true);
-                        Dal.SetClientYatzran(MisparZehut, misparZihuySholeach, false);
+                        Dal.SetClientYatzran(misparZihuySholeach, MisparZehut, false);
                     }
                 }
             }

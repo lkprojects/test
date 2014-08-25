@@ -296,7 +296,7 @@ namespace DAL
         }
 
 
-        public void SetClientYatzran(string kodYatzran, string MisparZihuy, bool hasData)
+        public void SetClientYatzran(string kodYatzran, string MisparZihuy, bool? hasData)
         {
             // Check if the Client-Yatzran correlation already exists
             ClientYatzran clientYatzran =  
@@ -311,7 +311,7 @@ namespace DAL
                 // Get the client id that matches the "Teudat Zehut"
                 int clientId =
                     (from c in dbCtx.Clients
-                     where c.TeudatZehut == MisparZihuy 
+                     where c.TeudatZehut == MisparZihuy
                      select c.Client_Id).FirstOrDefault();
 
                 clientYatzran = new ClientYatzran();
