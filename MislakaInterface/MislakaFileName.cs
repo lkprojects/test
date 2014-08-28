@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MislakaInterface
 {
-    public enum FileTypes { TST = 1, DAT };
+    public enum FileTypes { TST = 1, DAT, PDF, JPG };
     public enum ServiceTypes { EVENTS, FEDBKA, FEDBKB, HOLDNG, CONSLT, TRNSFR, WRNING, EMPONG, EMPNEG, EMPFED, EMPSVR, EMPYRL };
     public enum ProductTypes { KGM, PNN, PNO, INP, ING , NotRelevant };
 
@@ -76,6 +76,29 @@ namespace MislakaInterface
             set { fileType = value; }
         }
 
+        private int attachmentSequence = 0;
+
+        public int AttachmentSequence 
+        {
+            get { return attachmentSequence; }
+            set { attachmentSequence = value; }
+        }
+
+        public MislakaFileName(string Direction, string CustomerID, ServiceTypes Service, ProductTypes ProductType,
+                       string Version, DateTime Date, int Sequence, int AttachmentSequence, FileTypes FileType)
+        {
+            direction = Direction;
+            customerID = CustomerID;
+            service = Service;
+            productType = ProductType;
+            version = Version;
+            date = Date;
+            sequence = Sequence;
+            attachmentSequence = AttachmentSequence;
+            fileType = FileType;
+
+        }
+
         public MislakaFileName(string Direction, string CustomerID, ServiceTypes Service, ProductTypes ProductType, 
                                string Version, DateTime Date, int Sequence, FileTypes FileType)
         {
@@ -111,6 +134,12 @@ namespace MislakaInterface
         {
             string FileName;
             string prodType = productType.ToString();
+            string attSequence = "";
+
+            if (attachmentSequence > 0)
+            {
+                attSequence = "_" + attachmentSequence.ToString("000");
+            }
 
             if (productType == ProductTypes.NotRelevant)
                 prodType = "000";
@@ -121,7 +150,8 @@ namespace MislakaInterface
                        prodType +
                        version +
                        date.ToString("yyyyMMddHHmmss") +
-                       sequence.ToString("0000") +
+                       sequence.ToString("0000") + 
+                       attSequence +
                        "." + 
                        fileType.ToString();
             return FileName;

@@ -138,11 +138,15 @@ namespace MislakaInterface
             string fileName;
             Event handleEvents;
             MislakaFileName mislakaFileName;
+            MislakaFileName YipuyKoachFileName;
             EventsInterface.Mimshak EventObj = new EventsInterface.Mimshak();
+
 
             int numerator = Dal.GetFileNumerator();
             Mutzar lakoachRec = new Mutzar();
             string Version = EventsInterface.MimshakKoteretKovetzMISPARGIRSATXML.Item001.ToString().Replace("Item","");
+
+            WordTemplate template = new WordTemplate();
 
             // Get a list of clients for which to produce an events file.
             List<Client> clientList = Dal.GetClientsByStatus((int)ClientStatus.New);
@@ -150,12 +154,24 @@ namespace MislakaInterface
             {
                 mislakaFileName = new MislakaFileName("001" /*Mefitz to mislaka*/, Dal.GetConfigParam("MISPAR-MEZAHE-PONE"), ServiceTypes.EVENTS,
                                                       ProductTypes.NotRelevant, Version, DateTime.Now, numerator, Environment);
-
                 // Read the client data 
                 handleEvents = new Event(numerator, Environment);
                 handleEvents.PrepareEventObject(clientList);
                 fileName = outgoingDir + "\\" + mislakaFileName.GetMislakaFileName();
                 handleEvents.SerializeToFile(fileName);
+
+                int attNumerator = 1;
+                foreach (Client client in clientList )
+                {
+                    YipuyKoachFileName = new MislakaFileName("001" /*Mefitz to mislaka*/, Dal.GetConfigParam("MISPAR-MEZAHE-PONE"), ServiceTypes.EVENTS,
+                                                             ProductTypes.NotRelevant, Version, DateTime.Now, numerator, attNumerator, FileTypes.PDF);
+                    fileName = outgoingDir + "\\" + YipuyKoachFileName.GetMislakaFileName();
+                    template.FillAndSave(client.FirstName + " " + client.LastName, client.TeudatZehut, 
+                                         client.AddressStreetName + " " + client.AddressStreetNumber + " " + client.AddressCity,
+                                         Dal.GetConfigParam("YipuiKoachTemplateFile"),
+                                         fileName);
+                    attNumerator++;
+                }
 
                 handleEvents.SaveKovetzRecord(fileName, mislakaFileName);
                 handleEvents.UpdateClientsRecords();

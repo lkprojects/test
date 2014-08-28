@@ -183,7 +183,7 @@ namespace MislakaInterface
             catch (Exception e)
             {
                 log.Error("Error Found", e);
-                throw new Exception(rs);
+              //  throw new Exception(rs);
             }
             
         }
