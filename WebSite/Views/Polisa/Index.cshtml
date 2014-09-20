@@ -1,0 +1,12 @@
+﻿@model List<DAL.HeshbonOPolisa>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@foreach (var pensia in Model)
+    { 
+        @pensia.AmitOMevutach_MISPAR_ZIHUY
+       @*Html.DisplayFor(model => model[i].AmitOMevutach_MISPAR_ZIHUY) *@
+    }

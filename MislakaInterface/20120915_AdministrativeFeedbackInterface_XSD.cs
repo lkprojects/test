@@ -28,7 +28,7 @@ namespace FeedbackInterface
 
         private MimshakKoteretKovetz koteretKovetzField;
 
-        private MimshakYeshutGoremPoneLemislaka[] gufHamimshakField;
+        private MimshakYeshutMavirMeidaLemislaka[] GufHaMimshakField;
 
         /// <remarks/>
         public MimshakKoteretKovetz KoteretKovetz
@@ -44,16 +44,16 @@ namespace FeedbackInterface
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("YeshutGoremPoneLemislaka", IsNullable = false)]
-        public MimshakYeshutGoremPoneLemislaka[] GufHamimshak
+        [System.Xml.Serialization.XmlArrayItemAttribute("YeshutMavirMeidaLemislaka", IsNullable = false)]
+        public MimshakYeshutMavirMeidaLemislaka[] GufHaMimshak
         {
             get
             {
-                return this.gufHamimshakField;
+                return this.GufHaMimshakField;
             }
             set
             {
-                this.gufHamimshakField = value;
+                this.GufHaMimshakField = value;
             }
         }
     }
@@ -440,7 +440,7 @@ namespace FeedbackInterface
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    public partial class MimshakYeshutGoremPoneLemislaka
+    public partial class MimshakYeshutMavirMeidaLemislaka
     {
 
         private System.Nullable<int> sUGPONEField;
@@ -463,7 +463,7 @@ namespace FeedbackInterface
 
         private string mISPARCELLULARIField;
 
-        private MimshakYeshutGoremPoneLemislakaSugMashov sugMashovField;
+        private MimshakYeshutMavirMeidaLemislakaSugMashov sugMashovField;
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("SUG-PONE", IsNullable = true)]
@@ -606,7 +606,7 @@ namespace FeedbackInterface
         }
 
         /// <remarks/>
-        public MimshakYeshutGoremPoneLemislakaSugMashov SugMashov
+        public MimshakYeshutMavirMeidaLemislakaSugMashov SugMashov
         {
             get
             {
@@ -625,7 +625,7 @@ namespace FeedbackInterface
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    public partial class MimshakYeshutGoremPoneLemislakaSugMashov
+    public partial class MimshakYeshutMavirMeidaLemislakaSugMashov
     {
 
         private int sUGMIMSHAKLEGABAVMUAVARHIZUNCHOZERField;
@@ -638,9 +638,9 @@ namespace FeedbackInterface
 
         private int sUGMASHOVField;
 
-        private MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatKovetz mashovBeramatKovetzField;
+        private MimshakYeshutMavirMeidaLemislakaSugMashovMashovBeramatKovetz mashovBeramatKovetzField;
 
-        private MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatReshuma[] mashovBeramatReshumaField;
+        private MimshakYeshutMavirMeidaLemislakaSugMashovMashovBeramatReshuma[] mashovBeramatReshumaField;
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("SUG-MIMSHAK-LEGABAV-MUAVAR-HIZUN-CHOZER")]
@@ -713,7 +713,7 @@ namespace FeedbackInterface
         }
 
         /// <remarks/>
-        public MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatKovetz MashovBeramatKovetz
+        public MimshakYeshutMavirMeidaLemislakaSugMashovMashovBeramatKovetz MashovBeramatKovetz
         {
             get
             {
@@ -727,7 +727,7 @@ namespace FeedbackInterface
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("MashovBeramatReshuma")]
-        public MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatReshuma[] MashovBeramatReshuma
+        public MimshakYeshutMavirMeidaLemislakaSugMashovMashovBeramatReshuma[] MashovBeramatReshuma
         {
             get
             {
@@ -746,12 +746,12 @@ namespace FeedbackInterface
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    public partial class MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatKovetz
+    public partial class MimshakYeshutMavirMeidaLemislakaSugMashovMashovBeramatKovetz
     {
 
         private int kODSHGIHAField;
 
-        private MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatKovetzPerutShgihaBeramatKovetz[] perutShgihaBeramatKovetzField;
+        private MimshakYeshutMavirMeidaLemislakaSugMashovMashovBeramatKovetzPerutShgihaBeramatKovetz[] perutShgihaBeramatKovetzField;
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("KOD-SHGIHA")]
@@ -769,7 +769,7 @@ namespace FeedbackInterface
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("PerutShgihaBeramatKovetz")]
-        public MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatKovetzPerutShgihaBeramatKovetz[] PerutShgihaBeramatKovetz
+        public MimshakYeshutMavirMeidaLemislakaSugMashovMashovBeramatKovetzPerutShgihaBeramatKovetz[] PerutShgihaBeramatKovetz
         {
             get
             {
@@ -788,7 +788,7 @@ namespace FeedbackInterface
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    public partial class MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatKovetzPerutShgihaBeramatKovetz
+    public partial class MimshakYeshutMavirMeidaLemislakaSugMashovMashovBeramatKovetzPerutShgihaBeramatKovetz
     {
 
         private string pERUTSHGIHABERAMATKOVETZField;
@@ -814,20 +814,20 @@ namespace FeedbackInterface
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    public partial class MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatReshuma
+    public partial class MimshakYeshutMavirMeidaLemislakaSugMashovMashovBeramatReshuma
     {
 
         private string mISPARMISLAKAField;
 
         private string mISPARMEZAHERESHUMAField;
 
-        private MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatReshumaSTATUSRESHUMA sTATUSRESHUMAField;
+        private MimshakYeshutMavirMeidaLemislakaSugMashovMashovBeramatReshumaSTATUSRESHUMA sTATUSRESHUMAField;
 
         private System.Nullable<int> kODSHGIHABERAMATRESHUMAField;
 
-        private MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatReshumaMaaneMiYazran[] maaneMiYazranField;
+        private MimshakYeshutMavirMeidaLemislakaSugMashovMashovBeramatReshumaMaaneMiYazran[] maaneMiYazranField;
 
-        private MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatReshumaPerutShgihaBeramatReshuma[] perutShgihaBeramatReshumaField;
+        private MimshakYeshutMavirMeidaLemislakaSugMashovMashovBeramatReshumaPerutShgihaBeramatReshuma[] perutShgihaBeramatReshumaField;
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("MISPAR-MISLAKA", IsNullable = true)]
@@ -859,7 +859,7 @@ namespace FeedbackInterface
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("STATUS-RESHUMA")]
-        public MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatReshumaSTATUSRESHUMA STATUSRESHUMA
+        public MimshakYeshutMavirMeidaLemislakaSugMashovMashovBeramatReshumaSTATUSRESHUMA STATUSRESHUMA
         {
             get
             {
@@ -887,7 +887,7 @@ namespace FeedbackInterface
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("MaaneMiYazran")]
-        public MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatReshumaMaaneMiYazran[] MaaneMiYazran
+        public MimshakYeshutMavirMeidaLemislakaSugMashovMashovBeramatReshumaMaaneMiYazran[] MaaneMiYazran
         {
             get
             {
@@ -901,7 +901,7 @@ namespace FeedbackInterface
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("PerutShgihaBeramatReshuma")]
-        public MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatReshumaPerutShgihaBeramatReshuma[] PerutShgihaBeramatReshuma
+        public MimshakYeshutMavirMeidaLemislakaSugMashovMashovBeramatReshumaPerutShgihaBeramatReshuma[] PerutShgihaBeramatReshuma
         {
             get
             {
@@ -918,7 +918,7 @@ namespace FeedbackInterface
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    public enum MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatReshumaSTATUSRESHUMA
+    public enum MimshakYeshutMavirMeidaLemislakaSugMashovMashovBeramatReshumaSTATUSRESHUMA
     {
 
         /// <remarks/>
@@ -952,7 +952,7 @@ namespace FeedbackInterface
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    public partial class MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatReshumaMaaneMiYazran
+    public partial class MimshakYeshutMavirMeidaLemislakaSugMashovMashovBeramatReshumaMaaneMiYazran
     {
 
         private int mAANEBERAMATRESHUMAField;
@@ -978,7 +978,7 @@ namespace FeedbackInterface
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    public partial class MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatReshumaPerutShgihaBeramatReshuma
+    public partial class MimshakYeshutMavirMeidaLemislakaSugMashovMashovBeramatReshumaPerutShgihaBeramatReshuma
     {
 
         private string pERUTSHGIHABERAMATRESHUMAField;

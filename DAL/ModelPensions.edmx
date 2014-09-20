@@ -535,21 +535,21 @@
           <Key>
             <PropertyRef Name="GoremPone_ID" />
           </Key>
-          <Property Name="GoremPone_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GoremPone_ID" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
           <Property Name="FeedbackFile_ID" Type="int" />
           <Property Name="SUG-PONE" Type="int" />
           <Property Name="SUG-KOD-MEZAHE-PONE" Type="int" />
-          <Property Name="MISPAR-MEZAHE-PONE" Type="varchar" MaxLength="16" />
-          <Property Name="SHEM-GOREM-PONE" Type="varchar" MaxLength="50" />
-          <Property Name="MISPAR-MEZAHE-METAFEL" Type="varchar" MaxLength="16" />
-          <Property Name="SHEM-PRATI-PONE-LEMISLAKA" Type="varchar" MaxLength="20" />
-          <Property Name="SHEM-MISHPACHA-PONE-LEMISLAKA" Type="varchar" MaxLength="20" />
-          <Property Name="MISPAR-TELEPHONE-KAVI-PONE-LEMISLAKA" Type="varchar" MaxLength="11" />
-          <Property Name="E-MAIL-PONE-LEMISLAKA" Type="varchar" MaxLength="50" />
-          <Property Name="MISPAR-CELLULARI" Type="varchar" MaxLength="15" />
+          <Property Name="MISPAR-MEZAHE-PONE" MaxLength="16" Type="varchar" />
+          <Property Name="SHEM-GOREM-PONE" MaxLength="50" Type="varchar" />
+          <Property Name="MISPAR-MEZAHE-METAFEL" MaxLength="16" Type="varchar" />
+          <Property Name="SHEM-PRATI-PONE-LEMISLAKA" MaxLength="20" Type="varchar" />
+          <Property Name="SHEM-MISHPACHA-PONE-LEMISLAKA" MaxLength="20" Type="varchar" />
+          <Property Name="MISPAR-TELEPHONE-KAVI-PONE-LEMISLAKA" MaxLength="11" Type="varchar" />
+          <Property Name="E-MAIL-PONE-LEMISLAKA" MaxLength="50" Type="varchar" />
+          <Property Name="MISPAR-CELLULARI" MaxLength="15" Type="varchar" />
           <Property Name="SUG-MIMSHAK-LEGABAV-MUAVAR-HIZUN-CHOZER" Type="int" />
-          <Property Name="SHEM-HAKOVETZ" Type="varchar" MaxLength="50" />
-          <Property Name="MISPAR-HAKOVETZ" Type="varchar" MaxLength="30" />
+          <Property Name="SHEM-HAKOVETZ" MaxLength="50" Type="varchar" />
+          <Property Name="MISPAR-HAKOVETZ" MaxLength="30" Type="varchar" />
           <Property Name="RAMAT-MASHOV" Type="int" />
           <Property Name="SUG-MASHOV" Type="int" />
           <Property Name="KOD-SHGIHA" Type="int" />
@@ -754,8 +754,8 @@
           <Property Name="HEAROT" Type="varchar" MaxLength="50" />
         </EntityType>
         <Association Name="FileErrorDetail_GoremPone">
-          <End Role="GoremPone" Type="Self.GoremPone" Multiplicity="0..1" />
-          <End Role="FileErrorDetail" Type="Self.FileErrorDetail" Multiplicity="*" />
+          <End Type="Self.GoremPone" Multiplicity="0..1" Role="GoremPone" />
+          <End Type="Self.FileErrorDetail" Multiplicity="*" Role="FileErrorDetail" />
           <ReferentialConstraint>
             <Principal Role="GoremPone">
               <PropertyRef Name="GoremPone_ID" />
@@ -766,8 +766,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="GoremPone_FeedbackFile">
-          <End Role="FeedbackFile" Type="Self.FeedbackFile" Multiplicity="0..1" />
-          <End Role="GoremPone" Type="Self.GoremPone" Multiplicity="*" />
+          <End Type="Self.FeedbackFile" Multiplicity="0..1" Role="FeedbackFile" />
+          <End Type="Self.GoremPone" Multiplicity="*" Role="GoremPone" />
           <ReferentialConstraint>
             <Principal Role="FeedbackFile">
               <PropertyRef Name="FeedbackFile_ID" />
@@ -1078,8 +1078,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="Request_GoremPone">
-          <End Role="GoremPone" Type="Self.GoremPone" Multiplicity="0..1" />
-          <End Role="Request" Type="Self.Request" Multiplicity="*" />
+          <End Type="Self.GoremPone" Multiplicity="0..1" Role="GoremPone" />
+          <End Type="Self.Request" Multiplicity="*" Role="Request" />
           <ReferentialConstraint>
             <Principal Role="GoremPone">
               <PropertyRef Name="GoremPone_ID" />
@@ -1244,12 +1244,12 @@
           <EntitySet Name="MutzarKovetz" EntityType="Self.MutzarKovetz" Schema="Product" store:Type="Tables" />
           <EntitySet Name="YeshutMaasik" EntityType="Self.YeshutMaasik" Schema="Product" store:Type="Tables" />
           <AssociationSet Name="FileErrorDetail_GoremPone" Association="Self.FileErrorDetail_GoremPone">
-            <End Role="GoremPone" EntitySet="GoremPone" />
-            <End Role="FileErrorDetail" EntitySet="FileErrorDetail" />
+            <End EntitySet="GoremPone" Role="GoremPone" />
+            <End EntitySet="FileErrorDetail" Role="FileErrorDetail" />
           </AssociationSet>
           <AssociationSet Name="GoremPone_FeedbackFile" Association="Self.GoremPone_FeedbackFile">
-            <End Role="FeedbackFile" EntitySet="FeedbackFile" />
-            <End Role="GoremPone" EntitySet="GoremPone" />
+            <End EntitySet="FeedbackFile" Role="FeedbackFile" />
+            <End EntitySet="GoremPone" Role="GoremPone" />
           </AssociationSet>
           <AssociationSet Name="HafkadaAchrona_PerutHafkadaAchrona" Association="Self.HafkadaAchrona_PerutHafkadaAchrona">
             <End Role="HafkadaAchrona" EntitySet="HafkadaAchrona" />
@@ -1352,8 +1352,8 @@
             <End Role="Yitrot" EntitySet="Yitrot" />
           </AssociationSet>
           <AssociationSet Name="Request_GoremPone" Association="Self.Request_GoremPone">
-            <End Role="GoremPone" EntitySet="GoremPone" />
-            <End Role="Request" EntitySet="Request" />
+            <End EntitySet="GoremPone" Role="GoremPone" />
+            <End EntitySet="Request" Role="Request" />
           </AssociationSet>
           <AssociationSet Name="RequestErrorDetail_Request" Association="Self.RequestErrorDetail_Request">
             <End Role="Request" EntitySet="Request" />
@@ -1913,21 +1913,21 @@
           <Key>
             <PropertyRef Name="GoremPone_ID" />
           </Key>
-          <Property Name="GoremPone_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GoremPone_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
           <Property Name="FeedbackFile_ID" Type="Int32" />
           <Property Name="SUG_PONE" Type="Int32" />
           <Property Name="SUG_KOD_MEZAHE_PONE" Type="Int32" />
-          <Property Name="MISPAR_MEZAHE_PONE" Type="String" MaxLength="16" FixedLength="false" Unicode="false" />
-          <Property Name="SHEM_GOREM_PONE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="MISPAR_MEZAHE_METAFEL" Type="String" MaxLength="16" FixedLength="false" Unicode="false" />
-          <Property Name="SHEM_PRATI_PONE_LEMISLAKA" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="SHEM_MISHPACHA_PONE_LEMISLAKA" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="MISPAR_TELEPHONE_KAVI_PONE_LEMISLAKA" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
-          <Property Name="E_MAIL_PONE_LEMISLAKA" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="MISPAR_CELLULARI" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="MISPAR_MEZAHE_PONE" MaxLength="16" FixedLength="false" Unicode="false" Type="String" />
+          <Property Name="SHEM_GOREM_PONE" MaxLength="50" FixedLength="false" Unicode="false" Type="String" />
+          <Property Name="MISPAR_MEZAHE_METAFEL" MaxLength="16" FixedLength="false" Unicode="false" Type="String" />
+          <Property Name="SHEM_PRATI_PONE_LEMISLAKA" MaxLength="20" FixedLength="false" Unicode="false" Type="String" />
+          <Property Name="SHEM_MISHPACHA_PONE_LEMISLAKA" MaxLength="20" FixedLength="false" Unicode="false" Type="String" />
+          <Property Name="MISPAR_TELEPHONE_KAVI_PONE_LEMISLAKA" MaxLength="11" FixedLength="false" Unicode="false" Type="String" />
+          <Property Name="E_MAIL_PONE_LEMISLAKA" MaxLength="50" FixedLength="false" Unicode="false" Type="String" />
+          <Property Name="MISPAR_CELLULARI" MaxLength="15" FixedLength="false" Unicode="false" Type="String" />
           <Property Name="SUG_MIMSHAK_LEGABAV_MUAVAR_HIZUN_CHOZER" Type="Int32" />
-          <Property Name="SHEM_HAKOVETZ" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="MISPAR_HAKOVETZ" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="SHEM_HAKOVETZ" MaxLength="50" FixedLength="false" Unicode="false" Type="String" />
+          <Property Name="MISPAR_HAKOVETZ" MaxLength="30" FixedLength="false" Unicode="false" Type="String" />
           <Property Name="RAMAT_MASHOV" Type="Int32" />
           <Property Name="SUG_MASHOV" Type="Int32" />
           <Property Name="KOD_SHGIHA" Type="Int32" />
@@ -2420,8 +2420,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="GoremPone_FeedbackFile">
-          <End Role="FeedbackFile" Type="Self.FeedbackFile" Multiplicity="0..1" />
-          <End Role="GoremPone" Type="Self.GoremPone" Multiplicity="*" />
+          <End Type="Self.FeedbackFile" Multiplicity="0..1" Role="FeedbackFile" />
+          <End Type="Self.GoremPone" Multiplicity="*" Role="GoremPone" />
           <ReferentialConstraint>
             <Principal Role="FeedbackFile">
               <PropertyRef Name="FeedbackFile_ID" />
@@ -2432,8 +2432,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FileErrorDetail_GoremPone">
-          <End Role="GoremPone" Type="Self.GoremPone" Multiplicity="0..1" />
-          <End Role="FileErrorDetail" Type="Self.FileErrorDetail" Multiplicity="*" />
+          <End Type="Self.GoremPone" Multiplicity="0..1" Role="GoremPone" />
+          <End Type="Self.FileErrorDetail" Multiplicity="*" Role="FileErrorDetail" />
           <ReferentialConstraint>
             <Principal Role="GoremPone">
               <PropertyRef Name="GoremPone_ID" />
@@ -2444,8 +2444,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="Request_GoremPone">
-          <End Role="GoremPone" Type="Self.GoremPone" Multiplicity="0..1" />
-          <End Role="Request" Type="Self.Request" Multiplicity="*" />
+          <End Type="Self.GoremPone" Multiplicity="0..1" Role="GoremPone" />
+          <End Type="Self.Request" Multiplicity="*" Role="Request" />
           <ReferentialConstraint>
             <Principal Role="GoremPone">
               <PropertyRef Name="GoremPone_ID" />
@@ -2671,16 +2671,16 @@
             <End Role="YitraLeTkufa" EntitySet="YitraLeTkufas" />
           </AssociationSet>
           <AssociationSet Name="GoremPone_FeedbackFile" Association="Self.GoremPone_FeedbackFile">
-            <End Role="FeedbackFile" EntitySet="FeedbackFiles" />
-            <End Role="GoremPone" EntitySet="GoremPones" />
+            <End EntitySet="FeedbackFiles" Role="FeedbackFile" />
+            <End EntitySet="GoremPones" Role="GoremPone" />
           </AssociationSet>
           <AssociationSet Name="FileErrorDetail_GoremPone" Association="Self.FileErrorDetail_GoremPone">
-            <End Role="GoremPone" EntitySet="GoremPones" />
-            <End Role="FileErrorDetail" EntitySet="FileErrorDetails" />
+            <End EntitySet="GoremPones" Role="GoremPone" />
+            <End EntitySet="FileErrorDetails" Role="FileErrorDetail" />
           </AssociationSet>
           <AssociationSet Name="Request_GoremPone" Association="Self.Request_GoremPone">
-            <End Role="GoremPone" EntitySet="GoremPones" />
-            <End Role="Request" EntitySet="Requests" />
+            <End EntitySet="GoremPones" Role="GoremPone" />
+            <End EntitySet="Requests" Role="Request" />
           </AssociationSet>
           <AssociationSet Name="RequestErrorDetail_Request" Association="Self.RequestErrorDetail_Request">
             <End Role="Request" EntitySet="Requests" />

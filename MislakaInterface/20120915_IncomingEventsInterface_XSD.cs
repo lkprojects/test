@@ -27,7 +27,7 @@ namespace EventsInterface
 
         private MimshakKoteretKovetz koteretKovetzField;
 
-        private MimshakYeshutGoremPoneLemislaka[] gufHamimshakField;
+        private MimshakYeshutGoremPoneLemislaka[] GufHamimshakField;
 
         private MimshakReshumatSgira reshumatSgiraField;
 
@@ -50,11 +50,11 @@ namespace EventsInterface
         {
             get
             {
-                return this.gufHamimshakField;
+                return this.GufHamimshakField;
             }
             set
             {
-                this.gufHamimshakField = value;
+                this.GufHamimshakField = value;
             }
         }
 

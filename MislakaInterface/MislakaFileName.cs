@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace MislakaInterface
 {
     public enum FileTypes { TST = 1, DAT, PDF, JPG };
-    public enum ServiceTypes { EVENTS, FEDBKA, FEDBKB, HOLDNG, CONSLT, TRNSFR, WRNING, EMPONG, EMPNEG, EMPFED, EMPSVR, EMPYRL };
+    public enum ServiceTypes { EVENTS, FEDBKA, FEDBKB, FEEDBK, HOLDNG, CONSLT, TRNSFR, WRNING, EMPONG, EMPNEG, EMPFED, EMPSVR, EMPYRL };
     public enum ProductTypes { KGM, PNN, PNO, INP, ING , NotRelevant };
 
     class MislakaFileName
@@ -117,6 +117,7 @@ namespace MislakaInterface
         {
             direction = FileName.Substring(0, 3);
             customerID = FileName.Substring(3, 12);
+            string x = FileName.Substring(15, 6);
             service = (ServiceTypes)Enum.Parse(typeof(ServiceTypes), FileName.Substring(15, 6));
                 
             if (FileName.Substring(21, 3) != "000")

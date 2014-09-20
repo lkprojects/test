@@ -58,7 +58,9 @@ namespace MislakaInterface
                         SendFeedback(MisparKovetz, file, true);
                     }
                     //If it is a feedback - process feedback
-                    if (mislakaFileName.Service == ServiceTypes.FEDBKA || mislakaFileName.Service == ServiceTypes.FEDBKB)
+                    if (mislakaFileName.Service == ServiceTypes.FEDBKA || 
+                        mislakaFileName.Service == ServiceTypes.FEDBKB ||
+                        mislakaFileName.Service == ServiceTypes.FEEDBK)
                     {
                         LoadFeedback(file);
                     }
@@ -221,30 +223,30 @@ namespace MislakaInterface
 
         private static void AnalyzeFeedback(string file, FeedbackInterface.Mimshak feedback)
         {
-            for (int i = 0; i < feedback.GufHamimshak.Length; i++)
+            for (int i = 0; i < feedback.GufHaMimshak.Length; i++)
             {
                 // Check for error on file level
-                if (feedback.GufHamimshak[i].SugMashov.RAMATMASHOV == 1 && /*Ramat Mashov 1 = "file level"*/
-                    feedback.GufHamimshak[i].SugMashov.MashovBeramatKovetz != null &&
-                    feedback.GufHamimshak[i].SugMashov.MashovBeramatKovetz.KODSHGIHA > 0)
+                if (feedback.GufHaMimshak[i].SugMashov.RAMATMASHOV == 1 && /*Ramat Mashov 1 = "file level"*/
+                    feedback.GufHaMimshak[i].SugMashov.MashovBeramatKovetz != null &&
+                    feedback.GufHaMimshak[i].SugMashov.MashovBeramatKovetz.KODSHGIHA > 0)
                 {
-                    Dal.ChangeClientStatusByFileNumber(feedback.GufHamimshak[i].SugMashov.MISPARHAKOVETZ,
+                    Dal.ChangeClientStatusByFileNumber(feedback.GufHaMimshak[i].SugMashov.MISPARHAKOVETZ,
                                                        ClientStatus.EventFeedbackFileError);
 
                     SendFeedback(feedback.KoteretKovetz.MISPARHAKOVETZ, Common.RemovePath(file), false);
                     break;
                 }
-                else if (feedback.GufHamimshak[i].SugMashov.RAMATMASHOV == 2) // Mashov on Records
+                else if (feedback.GufHaMimshak[i].SugMashov.RAMATMASHOV == 2) // Mashov on Records
                 {
                      AnalyzeFeedbackRecords(file, 
-                                            feedback.GufHamimshak[i].SugMashov.MISPARHAKOVETZ, 
+                                            feedback.GufHaMimshak[i].SugMashov.MISPARHAKOVETZ, 
                                             feedback.KoteretKovetz.NetuneiGoremSholech.MISPARZIHUISHOLECH, 
-                                            feedback.GufHamimshak[i]);
+                                            feedback.GufHaMimshak[i]);
                 }
             }
         }
 
-        private static void AnalyzeFeedbackRecords(string file, string misparHakovetz, string misparZihuySholeach, FeedbackInterface.MimshakYeshutGoremPoneLemislaka mimshakRec)
+        private static void AnalyzeFeedbackRecords(string file, string misparHakovetz, string misparZihuySholeach, FeedbackInterface.MimshakYeshutMavirMeidaLemislaka mimshakRec)
         {
             string MisparZehut = "";
             bool errorsFound = false;
@@ -262,7 +264,7 @@ namespace MislakaInterface
                 {
                     // Check the record is not valid
                     if (mimshakRec.SugMashov.MashovBeramatReshuma[j].STATUSRESHUMA !=
-                              FeedbackInterface.MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatReshumaSTATUSRESHUMA.Item1) // Status 1 = OK 
+                              FeedbackInterface.MimshakYeshutMavirMeidaLemislakaSugMashovMashovBeramatReshumaSTATUSRESHUMA.Item1) // Status 1 = OK 
                     {
                         // Error in record from the Mislaka 
                         log.Error("Error from the clearing house with client ID " + MisparZehut + " - error status =" + mimshakRec.SugMashov.MashovBeramatReshuma[j].STATUSRESHUMA);

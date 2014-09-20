@@ -1,0 +1,249 @@
+﻿
+
+header, footer, nav, section {
+    display: block;
+}
+
+
+/* Styles for my site
+-----------------------------------------------------------*/
+
+        .header {
+            position:relative;
+            top:0px;
+/*            border:3px solid;*/
+        }
+
+        .logo {
+            width: 200px;
+            margin: 0px 0px 0px 0px ;
+            line-height: 0px;
+        }
+
+
+        .UserArea{
+            float:left;
+            width: 200px;
+            position:relative;
+            top:-45px;
+            line-height: 0px;
+        }
+
+        .PersonalDetailsLinks {
+            font-size:12px;
+        }
+        body {
+            direction: rtl;
+            font-family:Arial;
+        }
+
+        #container {
+          margin: 0px 0px 0px 0px;
+          padding: 0px 0px 0px 0px;
+        }
+
+        #SideMenu {
+            overflow-y: auto;
+            width: 200px;
+            height: 600px;
+            right:0px;
+            font-weight:bold; 
+            position:relative;
+            top: 0px;
+            float: right;
+
+        }
+        .ProductGroupMenuItem
+        {
+            background:#71869C;
+            color: white;
+            font-size:12px;
+            width:150px;
+            height:17px;
+            margin-top: 10px;
+            margin-right:20px;
+            font-weight:bold;
+            padding-right:10px;
+            
+
+/*            background:#C60000; -- bordo
+            background:#003366; -- darker gray 
+
+#C60000
+                #9EADBB --  gray
+                #455E7A -- very dark gray
+                #003157  -- very very dark gray
+                #c70304 -- -- bordo2
+                #A5B7C9 -- lighter gray
+                #595959 -- dark gray
+                #E3E3E3 -- very light gray
+                #5a5d61 -- dark gray
+    */
+        }
+        .ProductMenuItem
+        {
+            font-size:12px;
+            font-weight:normal;
+            width:150px;
+            background:#E8F0F0;
+            padding-right:10px;
+            height:17px;
+
+        }
+
+        #Disconnect {
+            margin-right: 20px;
+        }
+        #content {
+        }
+
+        #footer {
+            clear: both;
+            text-align: center;
+
+            font-size:11px;
+        }
+
+        .TopMenu {
+            border-bottom:solid;
+            border-width:thin;
+            position:relative;
+            top: 10px;
+            right: 200px;
+            width: 800px;
+        }
+
+        .TopMenuItem
+        {   
+            background:#DDE1E7;
+            color:#003366;
+            display:inline;
+            margin: 20px;
+            border-radius:8px;
+            padding-top:5px;
+            padding-bottom:5px;
+            padding-left:13px;
+            padding-right:13px;
+            border-style:solid;
+            border-width:1px;
+        }
+        .TopMenuItemLink 
+        {
+            text-decoration:none;
+            color:#003366;
+        }
+        .ProductMenuItemLink
+        {
+            color:#003366;
+            text-decoration:none;
+            font-size:12px;
+        }
+        /* Totals Bar*/
+
+        .TotalsBarDiv
+        {
+            margin-left:40px; width:100%; right:200px;
+        }
+        .TotalsBarTable
+        {
+            width:700px; 
+            word-wrap:break-word;
+            font-size:12px;
+            font-weight:bold;
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        .TotalsBarTableTopRow
+        {
+
+        }
+        .TotalsBarTableBottomRow
+        {
+            font-size:20px;
+        }
+        .TotalsBarItem
+        {
+            padding: 5px 5px 5px 5px;
+            border-right: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        /* Details */
+
+        .DetailsDiv {
+            border: solid;
+            border-width: 1px;
+            width: 300px;
+            float: right;
+            margin-left: 40px;
+            right: 200px;
+            top: 500px;
+            margin-bottom: 20px;
+        }
+        .DetailsTable{
+            width:300px; 
+            word-wrap:break-word;
+        }
+
+        .DetailsTableHeader {
+            text-align: center;
+            font-weight: bold;
+            background: #a4b2bf;
+            color: white;
+        }
+        .DetailsTableBody {
+            font-size:13px;
+        }
+
+
+
+/* Styles for basic forms
+-----------------------------------------------------------*/
+fieldset {
+    border: 1px solid #ddd;
+    padding: 0 1.4em 1.4em 1.4em;
+    margin: 0 0 1.5em 0;
+}
+
+legend {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+textarea {
+    min-height: 75px;
+}
+
+.editor-label {
+    margin: 1em 0 0 0;
+}
+
+.editor-field {
+    margin: 0.5em 0 0 0;
+}
+
+
+/* Styles for validation helpers
+-----------------------------------------------------------*/
+.field-validation-error {
+    color: #f00;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+.input-validation-error {
+    border: 1px solid #f00;
+    background-color: #fee;
+}
+
+.validation-summary-errors {
+    font-weight: bold;
+    color: #f00;
+}
+
+.validation-summary-valid {
+    display: none;
+}

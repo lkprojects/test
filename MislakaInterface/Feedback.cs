@@ -52,32 +52,32 @@ namespace MislakaInterface
             mimshak.KoteretKovetz.MISPARSIDURI = numerator;
             mimshak.KoteretKovetz.SUGMIMSHAK = 6;
             mimshak.KoteretKovetz.TAARICHBITZUA = DateTime.Now.ToString("yyyyMMddhhmmss");
-            FeedbackInterface.MimshakYeshutGoremPoneLemislaka[] GufHamimshak = new FeedbackInterface.MimshakYeshutGoremPoneLemislaka[1];
+            FeedbackInterface.MimshakYeshutMavirMeidaLemislaka[] GufHaMimshak = new FeedbackInterface.MimshakYeshutMavirMeidaLemislaka[1];
 
-            GufHamimshak[0] = new FeedbackInterface.MimshakYeshutGoremPoneLemislaka();
-            GufHamimshak[0].EMAILPONELEMISLAKA = Dal.GetConfigParam("E-MAIL-PONE-LEMISLAKA");
-            GufHamimshak[0].MISPARCELLULARI = Dal.GetConfigParam("MISPAR-CELLULARI");
-            GufHamimshak[0].MISPARMEZAHEMETAFEL = Dal.GetConfigParam("MISPAR-MEZAHE-METAFEL");
-            GufHamimshak[0].MISPARMEZAHEPONE = Dal.GetConfigParam("MISPAR-MEZAHE-PONE");
-            GufHamimshak[0].MISPARTELEPHONEKAVIPONELEMISLAKA = Dal.GetConfigParam("MISPAR-TELEPHONE-KAVI-PONE-LEMISLAKA");
-            GufHamimshak[0].SHEMGOREMPONE = Dal.GetConfigParam("SHEM-GOREM-PONE");
-            GufHamimshak[0].SHEMMISHPACHAPONELEMISLAKA = Dal.GetConfigParam("SHEM-MISHPACHA-PONE-LEMISLAKA");
-            GufHamimshak[0].SHEMPRATIPONELEMISLAKA = Dal.GetConfigParam("SHEM-PRATI-PONE-LEMISLAKA");
-            GufHamimshak[0].SUGKODMEZAHEPONE = Convert.ToInt32(Dal.GetConfigParam("SUG-KOD-MEZAHE-PONE"));
-            GufHamimshak[0].SUGPONE = 3; // 3 = Mefitz.
-            GufHamimshak[0].SugMashov = new FeedbackInterface.MimshakYeshutGoremPoneLemislakaSugMashov();
-            GufHamimshak[0].SugMashov.MISPARHAKOVETZ = MisparHakovetz;
-            GufHamimshak[0].SugMashov.RAMATMASHOV = 1; // 1 = File level, 2= Record level
-            GufHamimshak[0].SugMashov.SHEMHAKOVETZ = ShemHakovetz;
-            GufHamimshak[0].SugMashov.SUGMASHOV = 1; // 1 = Shlav Alef, 2 = Shlav Bet
-            GufHamimshak[0].SugMashov.SUGMIMSHAKLEGABAVMUAVARHIZUNCHOZER = SugMimshak; // 1= Achzakot, = Trom Yeutz etc.
+            GufHaMimshak[0] = new FeedbackInterface.MimshakYeshutMavirMeidaLemislaka();
+            GufHaMimshak[0].EMAILPONELEMISLAKA = Dal.GetConfigParam("E-MAIL-PONE-LEMISLAKA");
+            GufHaMimshak[0].MISPARCELLULARI = Dal.GetConfigParam("MISPAR-CELLULARI");
+            GufHaMimshak[0].MISPARMEZAHEMETAFEL = Dal.GetConfigParam("MISPAR-MEZAHE-METAFEL");
+            GufHaMimshak[0].MISPARMEZAHEPONE = Dal.GetConfigParam("MISPAR-MEZAHE-PONE");
+            GufHaMimshak[0].MISPARTELEPHONEKAVIPONELEMISLAKA = Dal.GetConfigParam("MISPAR-TELEPHONE-KAVI-PONE-LEMISLAKA");
+            GufHaMimshak[0].SHEMGOREMPONE = Dal.GetConfigParam("SHEM-GOREM-PONE");
+            GufHaMimshak[0].SHEMMISHPACHAPONELEMISLAKA = Dal.GetConfigParam("SHEM-MISHPACHA-PONE-LEMISLAKA");
+            GufHaMimshak[0].SHEMPRATIPONELEMISLAKA = Dal.GetConfigParam("SHEM-PRATI-PONE-LEMISLAKA");
+            GufHaMimshak[0].SUGKODMEZAHEPONE = Convert.ToInt32(Dal.GetConfigParam("SUG-KOD-MEZAHE-PONE"));
+            GufHaMimshak[0].SUGPONE = 3; // 3 = Mefitz.
+            GufHaMimshak[0].SugMashov = new FeedbackInterface.MimshakYeshutMavirMeidaLemislakaSugMashov();
+            GufHaMimshak[0].SugMashov.MISPARHAKOVETZ = MisparHakovetz;
+            GufHaMimshak[0].SugMashov.RAMATMASHOV = 1; // 1 = File level, 2= Record level
+            GufHaMimshak[0].SugMashov.SHEMHAKOVETZ = ShemHakovetz;
+            GufHaMimshak[0].SugMashov.SUGMASHOV = 1; // 1 = Shlav Alef, 2 = Shlav Bet
+            GufHaMimshak[0].SugMashov.SUGMIMSHAKLEGABAVMUAVARHIZUNCHOZER = SugMimshak; // 1= Achzakot, = Trom Yeutz etc.
 
             if (!isSuccess)
             {
-                GufHamimshak[0].SugMashov.MashovBeramatKovetz = new FeedbackInterface.MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatKovetz();
-                GufHamimshak[0].SugMashov.MashovBeramatKovetz.KODSHGIHA = 5; // 5 = Received Successfully.
+                GufHaMimshak[0].SugMashov.MashovBeramatKovetz = new FeedbackInterface.MimshakYeshutMavirMeidaLemislakaSugMashovMashovBeramatKovetz();
+                GufHaMimshak[0].SugMashov.MashovBeramatKovetz.KODSHGIHA = 5; // 5 = Received Successfully.
             }
-            mimshak.GufHamimshak = GufHamimshak;
+            mimshak.GufHaMimshak = GufHaMimshak;
 
             mislakaFileName = new MislakaFileName("001" /*Mefitz to Mislaka*/,
                                                     Dal.GetConfigParam("MISPAR-MEZAHE-METAFEL"),
@@ -123,12 +123,12 @@ namespace MislakaInterface
             }
  
 
-            GetGufHamimshak(feedbackFile.GoremPones, mimshak.GufHamimshak);
+            GetGufHaMimshak(feedbackFile.GoremPones, mimshak.GufHaMimshak);
             log.Debug("End parsing feedback file #" + mimshak.KoteretKovetz.MISPARHAKOVETZ);
             return feedbackFile;
         }
 
-        private void GetGufHamimshak(ICollection<GoremPone> collection, FeedbackInterface.MimshakYeshutGoremPoneLemislaka[] GoremPoneLemislaka)
+        private void GetGufHaMimshak(ICollection<GoremPone> collection, FeedbackInterface.MimshakYeshutMavirMeidaLemislaka[] GoremPoneLemislaka)
         {
             GoremPone goremPone;
             for (int i = 0; i< GoremPoneLemislaka.Length; i++)
@@ -158,7 +158,7 @@ namespace MislakaInterface
             }
         }
 
-        private void GetRequest(ICollection<Request> collection, FeedbackInterface.MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatReshuma[] MashovBeramatReshuma)
+        private void GetRequest(ICollection<Request> collection, FeedbackInterface.MimshakYeshutMavirMeidaLemislakaSugMashovMashovBeramatReshuma[] MashovBeramatReshuma)
         {
             Request request;
             if (MashovBeramatReshuma != null)
@@ -178,7 +178,7 @@ namespace MislakaInterface
         }
 
         private void GetRequestErrorDetails(ICollection<RequestErrorDetail> collection, 
-                                            FeedbackInterface.MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatReshumaPerutShgihaBeramatReshuma[] PerutShgihaBeramatReshuma)
+                                            FeedbackInterface.MimshakYeshutMavirMeidaLemislakaSugMashovMashovBeramatReshumaPerutShgihaBeramatReshuma[] PerutShgihaBeramatReshuma)
         {
             RequestErrorDetail requestErrorDetail; 
             if (PerutShgihaBeramatReshuma != null)
@@ -193,7 +193,7 @@ namespace MislakaInterface
         }
 
         private void GetRequestPerYatzrans(ICollection<RequestPerYatzran> collection,
-                                           FeedbackInterface.MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatReshumaMaaneMiYazran[] MaaneMiYazran)
+                                           FeedbackInterface.MimshakYeshutMavirMeidaLemislakaSugMashovMashovBeramatReshumaMaaneMiYazran[] MaaneMiYazran)
         {
             RequestPerYatzran requestPerYatzran;
             if (MaaneMiYazran != null)
@@ -207,7 +207,7 @@ namespace MislakaInterface
             }
         }
 
-        private void GetFileErrorDetail(ICollection<FileErrorDetail> collection, FeedbackInterface.MimshakYeshutGoremPoneLemislakaSugMashovMashovBeramatKovetz MashovBeramatKovetz)
+        private void GetFileErrorDetail(ICollection<FileErrorDetail> collection, FeedbackInterface.MimshakYeshutMavirMeidaLemislakaSugMashovMashovBeramatKovetz MashovBeramatKovetz)
         {
             FileErrorDetail fileErrorDetail;
             if (MashovBeramatKovetz.PerutShgihaBeramatKovetz != null)
