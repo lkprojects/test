@@ -26,7 +26,7 @@ namespace DAL
         public Nullable<int> HeshbonOPolisa_Id { get; set; }
         public string MISPAR_KISUI_BE_YATZRAN { get; set; }
         public string SHEM_KISUI_YATZRAN { get; set; }
-        public int SUG_KISUI_ETZEL_YATZRAN { get; set; }
+        public Nullable<int> SUG_KISUI_ETZEL_YATZRAN { get; set; }
         public string Mutzar_KOD_MIUTZAR_LAKISUY { get; set; }
         public Nullable<int> Mutzar_SUG_MEVUTACH { get; set; }
         public Nullable<System.DateTime> Mutzar_TAARICH_TCHILAT_KISUY { get; set; }

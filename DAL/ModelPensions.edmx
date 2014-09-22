@@ -154,8 +154,8 @@
           <Property Name="Kisui_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="HeshbonOPolisa_Id" Type="int" />
           <Property Name="MISPAR-KISUI-BE-YATZRAN" Type="varchar" MaxLength="30" />
-          <Property Name="SHEM-KISUI-YATZRAN" Type="varchar" MaxLength="60" Nullable="false" />
-          <Property Name="SUG-KISUI-ETZEL-YATZRAN" Type="int" Nullable="false" />
+          <Property Name="SHEM-KISUI-YATZRAN" Type="varchar" MaxLength="60" />
+          <Property Name="SUG-KISUI-ETZEL-YATZRAN" Type="int" />
           <Property Name="Mutzar_KOD-MIUTZAR-LAKISUY" Type="varchar" MaxLength="30" />
           <Property Name="Mutzar_SUG-MEVUTACH" Type="int" />
           <Property Name="Mutzar_TAARICH-TCHILAT-KISUY" Type="date" />
@@ -251,7 +251,7 @@
           </Key>
           <Property Name="Tosafot_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Kisui_Id" Type="int" Nullable="false" />
-          <Property Name="TOSEFET-TAARIF" Type="int" Nullable="false" />
+          <Property Name="TOSEFET-TAARIF" Type="int" />
           <Property Name="KOD-SUG-TOSEFET" Type="int" />
           <Property Name="SHEUR-TOSEFET" Type="decimal" Precision="15" Scale="2" />
           <Property Name="TAARICH-TOM-TOSEFET" Type="date" />
@@ -326,7 +326,7 @@
             <PropertyRef Name="KOD-MEZAHE_YATZRAN" />
           </Key>
           <Property Name="KOD-MEZAHE_YATZRAN" Type="int" Nullable="false" />
-          <Property Name="SHEM-YATZRAN" Type="varchar" MaxLength="50" />
+          <Property Name="SHEM-YATZRAN" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="DmeiNihul">
           <Key>
@@ -535,21 +535,21 @@
           <Key>
             <PropertyRef Name="GoremPone_ID" />
           </Key>
-          <Property Name="GoremPone_ID" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
+          <Property Name="GoremPone_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="FeedbackFile_ID" Type="int" />
           <Property Name="SUG-PONE" Type="int" />
           <Property Name="SUG-KOD-MEZAHE-PONE" Type="int" />
-          <Property Name="MISPAR-MEZAHE-PONE" MaxLength="16" Type="varchar" />
-          <Property Name="SHEM-GOREM-PONE" MaxLength="50" Type="varchar" />
-          <Property Name="MISPAR-MEZAHE-METAFEL" MaxLength="16" Type="varchar" />
-          <Property Name="SHEM-PRATI-PONE-LEMISLAKA" MaxLength="20" Type="varchar" />
-          <Property Name="SHEM-MISHPACHA-PONE-LEMISLAKA" MaxLength="20" Type="varchar" />
-          <Property Name="MISPAR-TELEPHONE-KAVI-PONE-LEMISLAKA" MaxLength="11" Type="varchar" />
-          <Property Name="E-MAIL-PONE-LEMISLAKA" MaxLength="50" Type="varchar" />
-          <Property Name="MISPAR-CELLULARI" MaxLength="15" Type="varchar" />
+          <Property Name="MISPAR-MEZAHE-PONE" Type="varchar" MaxLength="16" />
+          <Property Name="SHEM-GOREM-PONE" Type="varchar" MaxLength="50" />
+          <Property Name="MISPAR-MEZAHE-METAFEL" Type="varchar" MaxLength="16" />
+          <Property Name="SHEM-PRATI-PONE-LEMISLAKA" Type="varchar" MaxLength="20" />
+          <Property Name="SHEM-MISHPACHA-PONE-LEMISLAKA" Type="varchar" MaxLength="20" />
+          <Property Name="MISPAR-TELEPHONE-KAVI-PONE-LEMISLAKA" Type="varchar" MaxLength="11" />
+          <Property Name="E-MAIL-PONE-LEMISLAKA" Type="varchar" MaxLength="50" />
+          <Property Name="MISPAR-CELLULARI" Type="varchar" MaxLength="15" />
           <Property Name="SUG-MIMSHAK-LEGABAV-MUAVAR-HIZUN-CHOZER" Type="int" />
-          <Property Name="SHEM-HAKOVETZ" MaxLength="50" Type="varchar" />
-          <Property Name="MISPAR-HAKOVETZ" MaxLength="30" Type="varchar" />
+          <Property Name="SHEM-HAKOVETZ" Type="varchar" MaxLength="50" />
+          <Property Name="MISPAR-HAKOVETZ" Type="varchar" MaxLength="30" />
           <Property Name="RAMAT-MASHOV" Type="int" />
           <Property Name="SUG-MASHOV" Type="int" />
           <Property Name="KOD-SHGIHA" Type="int" />
@@ -754,8 +754,8 @@
           <Property Name="HEAROT" Type="varchar" MaxLength="50" />
         </EntityType>
         <Association Name="FileErrorDetail_GoremPone">
-          <End Type="Self.GoremPone" Multiplicity="0..1" Role="GoremPone" />
-          <End Type="Self.FileErrorDetail" Multiplicity="*" Role="FileErrorDetail" />
+          <End Role="GoremPone" Type="Self.GoremPone" Multiplicity="0..1" />
+          <End Role="FileErrorDetail" Type="Self.FileErrorDetail" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="GoremPone">
               <PropertyRef Name="GoremPone_ID" />
@@ -766,8 +766,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="GoremPone_FeedbackFile">
-          <End Type="Self.FeedbackFile" Multiplicity="0..1" Role="FeedbackFile" />
-          <End Type="Self.GoremPone" Multiplicity="*" Role="GoremPone" />
+          <End Role="FeedbackFile" Type="Self.FeedbackFile" Multiplicity="0..1" />
+          <End Role="GoremPone" Type="Self.GoremPone" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="FeedbackFile">
               <PropertyRef Name="FeedbackFile_ID" />
@@ -1078,8 +1078,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="Request_GoremPone">
-          <End Type="Self.GoremPone" Multiplicity="0..1" Role="GoremPone" />
-          <End Type="Self.Request" Multiplicity="*" Role="Request" />
+          <End Role="GoremPone" Type="Self.GoremPone" Multiplicity="0..1" />
+          <End Role="Request" Type="Self.Request" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="GoremPone">
               <PropertyRef Name="GoremPone_ID" />
@@ -1183,6 +1183,12 @@
           <Parameter Name="MisparKovetz" Type="varchar" Mode="In" />
           <Parameter Name="NewStatus" Type="int" Mode="In" />
         </Function>
+        <Function Name="ChangeClientStatusOLD" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MISPAR_ZIHUY" Type="varchar" Mode="InOut" />
+          <Parameter Name="FromStatus" Type="int" Mode="In" />
+          <Parameter Name="ToStatus" Type="int" Mode="In" />
+          <Parameter Name="kovetz_id" Type="int" Mode="In" />
+        </Function>
         <Function Name="DeleteKovetz" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Kovetz_Id" Type="int" Mode="In" />
         </Function>
@@ -1195,10 +1201,41 @@
         <Function Name="DequeueEvent" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="MISPAR_ZIHUY" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
         <Function Name="GetFileNumerator" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="numerator" Type="int" Mode="InOut" />
         </Function>
         <Function Name="InsertKovetzTest" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="PensionsModelStoreContainer">
           <EntitySet Name="Halvaa" EntityType="Self.Halvaa" Schema="Account" store:Type="Tables" />
           <EntitySet Name="HeshbonOPolisa" EntityType="Self.HeshbonOPolisa" Schema="Account" store:Type="Tables" />
@@ -1244,12 +1281,12 @@
           <EntitySet Name="MutzarKovetz" EntityType="Self.MutzarKovetz" Schema="Product" store:Type="Tables" />
           <EntitySet Name="YeshutMaasik" EntityType="Self.YeshutMaasik" Schema="Product" store:Type="Tables" />
           <AssociationSet Name="FileErrorDetail_GoremPone" Association="Self.FileErrorDetail_GoremPone">
-            <End EntitySet="GoremPone" Role="GoremPone" />
-            <End EntitySet="FileErrorDetail" Role="FileErrorDetail" />
+            <End Role="GoremPone" EntitySet="GoremPone" />
+            <End Role="FileErrorDetail" EntitySet="FileErrorDetail" />
           </AssociationSet>
           <AssociationSet Name="GoremPone_FeedbackFile" Association="Self.GoremPone_FeedbackFile">
-            <End EntitySet="FeedbackFile" Role="FeedbackFile" />
-            <End EntitySet="GoremPone" Role="GoremPone" />
+            <End Role="FeedbackFile" EntitySet="FeedbackFile" />
+            <End Role="GoremPone" EntitySet="GoremPone" />
           </AssociationSet>
           <AssociationSet Name="HafkadaAchrona_PerutHafkadaAchrona" Association="Self.HafkadaAchrona_PerutHafkadaAchrona">
             <End Role="HafkadaAchrona" EntitySet="HafkadaAchrona" />
@@ -1352,8 +1389,8 @@
             <End Role="Yitrot" EntitySet="Yitrot" />
           </AssociationSet>
           <AssociationSet Name="Request_GoremPone" Association="Self.Request_GoremPone">
-            <End EntitySet="GoremPone" Role="GoremPone" />
-            <End EntitySet="Request" Role="Request" />
+            <End Role="GoremPone" EntitySet="GoremPone" />
+            <End Role="Request" EntitySet="Request" />
           </AssociationSet>
           <AssociationSet Name="RequestErrorDetail_Request" Association="Self.RequestErrorDetail_Request">
             <End Role="Request" EntitySet="Request" />
@@ -1446,7 +1483,6 @@
           <Property Name="Mishloach_MIKUD" Type="Int32" />
           <Property Name="Mishloach_TA_DOAR" Type="Int32" />
           <NavigationProperty Name="Halvaas" Relationship="Self.HeshbonOPolisa_Halvaa" FromRole="HeshbonOPolisa" ToRole="Halvaa" />
-          <NavigationProperty Name="Kisuis" Relationship="Self.HeshbonOPolisa_Kisui" FromRole="HeshbonOPolisa" ToRole="Kisui" />
           <NavigationProperty Name="MeyupeKoaches" Relationship="Self.HeshbonOPolisa_MeyupeKoach" FromRole="HeshbonOPolisa" ToRole="MeyupeKoach" />
           <NavigationProperty Name="Mitryots" Relationship="Self.HeshbonOPolisa_Mitryot" FromRole="HeshbonOPolisa" ToRole="Mitryot" />
           <NavigationProperty Name="PirteiTaktzivs" Relationship="Self.HeshbonOPolisa_PirteiTaktziv" FromRole="HeshbonOPolisa" ToRole="PirteiTaktziv" />
@@ -1454,6 +1490,7 @@
           <NavigationProperty Name="Tvias" Relationship="Self.HeshbonOPolisa_Tvia" FromRole="HeshbonOPolisa" ToRole="Tvia" />
           <NavigationProperty Name="YitraLefiGilPrishas" Relationship="Self.HeshbonOPolisa_YitraLefiGilPrisha" FromRole="HeshbonOPolisa" ToRole="YitraLefiGilPrisha" />
           <NavigationProperty Name="Mutzar" Relationship="Self.Mutzar_HeshbonOPolisa" FromRole="HeshbonOPolisa" ToRole="Mutzar" />
+          <NavigationProperty Name="Kisuis" Relationship="PensionsModel.HeshbonOPolisa_Kisui" FromRole="HeshbonOPolisa" ToRole="Kisui" />
         </EntityType>
         <EntityType Name="Kupa">
           <Key>
@@ -1547,74 +1584,6 @@
           <NavigationProperty Name="HeshbonOPolisa" Relationship="Self.HeshbonOPolisa_YitraLefiGilPrisha" FromRole="YitraLefiGilPrisha" ToRole="HeshbonOPolisa" />
           <NavigationProperty Name="Kupas" Relationship="Self.YitraLefiGilPrisha_Kupa" FromRole="YitraLefiGilPrisha" ToRole="Kupa" />
         </EntityType>
-        <EntityType Name="Kisui">
-          <Key>
-            <PropertyRef Name="Kisui_Id" />
-          </Key>
-          <Property Name="Kisui_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="HeshbonOPolisa_Id" Type="Int32" />
-          <Property Name="MISPAR_KISUI_BE_YATZRAN" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="SHEM_KISUI_YATZRAN" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="SUG_KISUI_ETZEL_YATZRAN" Type="Int32" Nullable="false" />
-          <Property Name="Mutzar_KOD_MIUTZAR_LAKISUY" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="Mutzar_SUG_MEVUTACH" Type="Int32" />
-          <Property Name="Mutzar_TAARICH_TCHILAT_KISUY" Type="DateTime" Precision="0" />
-          <Property Name="Mutzar_TAARICH_TOM_KISUY" Type="DateTime" Precision="0" />
-          <Property Name="Mutzar_TAARICH_HAFSAKAT_TASHLUM" Type="DateTime" Precision="0" />
-          <Property Name="Mutzar_ACHUZ_ME_SCM_BTH_YESODI" Type="Decimal" Precision="5" Scale="2" />
-          <Property Name="Mutzar_ACHUZ_MESACHAR" Type="Decimal" Precision="5" Scale="2" />
-          <Property Name="Mutzar_OFEN_TASHLUM_SCHUM_BITUACH" Type="Int32" />
-          <Property Name="Mutzar_SCHUM_BITUACH" Type="Decimal" Precision="15" Scale="2" />
-          <Property Name="Mutzar_MESHALEM_HAKISUY" Type="Int32" />
-          <Property Name="Mutzar_KOD_ISHUN" Type="Int32" />
-          <Property Name="Mutzar_IND_CHITUM" Type="Int32" />
-          <Property Name="Mutzar_TAARICH_CHITUM" Type="DateTime" Precision="0" />
-          <Property Name="Mutzar_HACHRAGA" Type="Int32" />
-          <Property Name="Mutzar_SUG_HACHRAGA" Type="Int32" />
-          <Property Name="Mutzar_TKUFAT_ACHSHARA" Type="Int32" />
-          <Property Name="Mutzar_TKUFAT_HAMTANA_CHODASHIM" Type="Int32" />
-          <Property Name="Mutzar_HANACHA" Type="Int32" />
-          <Property Name="Mutzar_HATNAYA_LAHANACHA_DMEI_BITUAH" Type="Int32" />
-          <Property Name="Mutzar_DMEI_BITUAH_LETASHLUM_BAPOAL" Type="Decimal" Precision="15" Scale="2" />
-          <Property Name="Mutzar_TADIRUT_SHINUY_DMEI_HABITUAH_BESHANIM" Type="Int32" />
-          <Property Name="Mutzar_TAARICH_IDKUN_HABA_SHEL_DMEI_HABITUAH" Type="DateTime" Precision="0" />
-          <Property Name="KerenPensia_ALUT_KISUI_NECHUT" Type="Decimal" Precision="15" Scale="2" />
-          <Property Name="KerenPensia_ALUT_KISUI_PNS_SHRM_NECHE" Type="Decimal" Precision="15" Scale="2" />
-          <Property Name="KerenPensia_SHEUR_KISUY_NECHUT" Type="Decimal" Precision="5" Scale="2" />
-          <Property Name="KerenPensia_SACHAR_KOVEA_LE_NECHUT_VE_SHEERIM" Type="Decimal" Precision="15" Scale="2" />
-          <Property Name="KerenPensia_TAARICH_MASKORET_NECHUT_VE_SHEERIM" Type="DateTime" Precision="0" />
-          <Property Name="KerenPensia_SACH_PENSIAT_NECHUT" Type="Decimal" Precision="15" Scale="2" />
-          <Property Name="KerenPensia_ALUT_KISUY_SHEERIM" Type="Decimal" Precision="15" Scale="2" />
-          <Property Name="KerenPensia_SHIUR_KISUY_YATOM" Type="Decimal" Precision="5" Scale="2" />
-          <Property Name="KerenPensia_KITZBAT_SHEERIM_LEALMAN_O_ALMANA" Type="Decimal" Precision="15" Scale="2" />
-          <Property Name="KerenPensia_KITZBAT_SHEERIM_LEYATOM" Type="Decimal" Precision="15" Scale="2" />
-          <Property Name="KerenPensia_KITZBAT_SHEERIM_LEHORE_NITMACH" Type="Decimal" Precision="15" Scale="2" />
-          <Property Name="KerenPensia_SHIUR_KISUY_ALMAN_O_ALMANA" Type="Decimal" Precision="5" Scale="2" />
-          <Property Name="KerenPensia_SHIUR_KISUY_HORE_NITMACH" Type="Decimal" Precision="5" Scale="2" />
-          <Property Name="KerenPensia_GIL_PRISHA_LEPENSIYAT_ZIKNA" Type="Decimal" Precision="4" Scale="2" />
-          <Property Name="KerenPensia_SACH_PENSIYAT_ALMAN_O_ALMANA" Type="Decimal" Precision="15" Scale="2" />
-          <Property Name="KerenPensia_MISPAR_HODSHEI_HAVERUT_BEKEREN_HAPENSIYA" Type="Int32" />
-          <Property Name="KerenPensia_MENAT_PENSIA_TZVURA" Type="Decimal" Precision="15" Scale="2" />
-          <Property Name="KerenPensia_AHUZ_PENSIYA_TZVURA" Type="Decimal" Precision="5" Scale="2" />
-          <Property Name="KerenPensia_TAARICH_TCHILAT_HAVERUT" Type="DateTime" Precision="0" />
-          <Property Name="KerenPensia_TAARICH_ERECH_LANENTUNIM" Type="DateTime" Precision="0" />
-          <Property Name="KerenPensia_HATAVA_BITUCHIT" Type="Int32" />
-          <Property Name="Yesodi_KOD_MUTZAR_LEFI_KIDUD_ACHID_LAYESODI" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="Yesodi_SUG_HATZMADA_SCHUM_BITUAH" Type="Int32" />
-          <Property Name="Yesodi_SUG_MASLUL_LEBITUAH" Type="Int32" />
-          <Property Name="Yesodi_IND_SCHUM_BITUAH_KOLEL_CHISACHON" Type="Int32" />
-          <Property Name="Yesodi_SCHUM_BITUACH_LEMASLUL" Type="Decimal" Precision="15" Scale="2" />
-          <Property Name="Yesodi_MISPAR_MASKOROT" Type="Int32" />
-          <Property Name="Yesodi_ACHUZ_HAKTZAA_LE_CHISACHON" Type="Decimal" Precision="5" Scale="2" />
-          <Property Name="Yesodi_TIKRAT_GAG_HATAM_LEMIKRE_MAVET" Type="Decimal" Precision="15" Scale="2" />
-          <Property Name="Yesodi_TIKRAT_GAG_HATAM_LE_O_K_A" Type="Decimal" Precision="15" Scale="2" />
-          <Property Name="Yesodi_SCHUM_BITUAH_LEMAVET" Type="Decimal" Precision="15" Scale="2" />
-          <NavigationProperty Name="HeshbonOPolisa" Relationship="Self.HeshbonOPolisa_Kisui" FromRole="Kisui" ToRole="HeshbonOPolisa" />
-          <NavigationProperty Name="Mevutaches" Relationship="Self.Kisui_Mevutach" FromRole="Kisui" ToRole="Mevutach" />
-          <NavigationProperty Name="Miktsoa_Isuk_Tachviv" Relationship="Self.Kisui_Miktsoa_Isuk_Tachviv" FromRole="Kisui" ToRole="Miktsoa_Isuk_Tachviv" />
-          <NavigationProperty Name="Mutavs" Relationship="Self.Kisui_Mutav" FromRole="Kisui" ToRole="Mutav" />
-          <NavigationProperty Name="Tosafots" Relationship="Self.Kisui_Tosafot" FromRole="Kisui" ToRole="Tosafot" />
-        </EntityType>
         <EntityType Name="Mevutach">
           <Key>
             <PropertyRef Name="Mevutach_Id" />
@@ -1623,7 +1592,7 @@
           <Property Name="Kisui_Id" Type="Int32" Nullable="false" />
           <Property Name="SUG_TEUDA" Type="Int32" Nullable="false" />
           <Property Name="MISPAR_ZIHUY_LAKOACH" Type="String" MaxLength="16" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Kisui" Relationship="Self.Kisui_Mevutach" FromRole="Mevutach" ToRole="Kisui" />
+          <NavigationProperty Name="Kisui" Relationship="PensionsModel.Kisui_Mevutach" FromRole="Mevutach" ToRole="Kisui" />
         </EntityType>
         <EntityType Name="Miktsoa_Isuk_Tachviv">
           <Key>
@@ -1634,7 +1603,7 @@
           <Property Name="TACHVIVIM_O_ISUKIM" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
           <Property Name="KOD_MIKTZOA" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
           <Property Name="TCHUM_ISUK_CHADASH" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Kisui" Relationship="Self.Kisui_Miktsoa_Isuk_Tachviv" FromRole="Miktsoa_Isuk_Tachviv" ToRole="Kisui" />
+          <NavigationProperty Name="Kisui" Relationship="PensionsModel.Kisui_Miktsoa_Isuk_Tachviv" FromRole="Miktsoa_Isuk_Tachviv" ToRole="Kisui" />
         </EntityType>
         <EntityType Name="Mutav">
           <Key>
@@ -1651,7 +1620,7 @@
           <Property Name="ACHUZ_MUTAV" Type="Decimal" Precision="5" Scale="2" />
           <Property Name="HAGDARAT_MUTAV" Type="Int32" />
           <Property Name="MAHUT_MUTAV" Type="Int32" />
-          <NavigationProperty Name="Kisui" Relationship="Self.Kisui_Mutav" FromRole="Mutav" ToRole="Kisui" />
+          <NavigationProperty Name="Kisui" Relationship="PensionsModel.Kisui_Mutav" FromRole="Mutav" ToRole="Kisui" />
         </EntityType>
         <EntityType Name="Tosafot">
           <Key>
@@ -1659,11 +1628,11 @@
           </Key>
           <Property Name="Tosafot_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Kisui_Id" Type="Int32" Nullable="false" />
-          <Property Name="TOSEFET_TAARIF" Type="Int32" Nullable="false" />
+          <Property Name="TOSEFET_TAARIF" Type="Int32" />
           <Property Name="KOD_SUG_TOSEFET" Type="Int32" />
           <Property Name="SHEUR_TOSEFET" Type="Decimal" Precision="15" Scale="2" />
           <Property Name="TAARICH_TOM_TOSEFET" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="Kisui" Relationship="Self.Kisui_Tosafot" FromRole="Tosafot" ToRole="Kisui" />
+          <NavigationProperty Name="Kisui" Relationship="PensionsModel.Kisui_Tosafot" FromRole="Tosafot" ToRole="Kisui" />
         </EntityType>
         <EntityType Name="Config">
           <Key>
@@ -2155,18 +2124,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="HeshbonOPolisa_Kisui">
-          <End Role="HeshbonOPolisa" Type="Self.HeshbonOPolisa" Multiplicity="0..1" />
-          <End Role="Kisui" Type="Self.Kisui" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="HeshbonOPolisa">
-              <PropertyRef Name="HeshbonOPolisa_Id" />
-            </Principal>
-            <Dependent Role="Kisui">
-              <PropertyRef Name="HeshbonOPolisa_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="HeshbonOPolisa_MeyupeKoach">
           <End Role="HeshbonOPolisa" Type="Self.HeshbonOPolisa" Multiplicity="1" />
           <End Role="MeyupeKoach" Type="Self.MeyupeKoach" Multiplicity="*" />
@@ -2260,54 +2217,6 @@
             </Principal>
             <Dependent Role="Kupa">
               <PropertyRef Name="YitraLefiGilPrisha_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Kisui_Mevutach">
-          <End Role="Kisui" Type="Self.Kisui" Multiplicity="1" />
-          <End Role="Mevutach" Type="Self.Mevutach" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Kisui">
-              <PropertyRef Name="Kisui_Id" />
-            </Principal>
-            <Dependent Role="Mevutach">
-              <PropertyRef Name="Kisui_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Kisui_Miktsoa_Isuk_Tachviv">
-          <End Role="Kisui" Type="Self.Kisui" Multiplicity="1" />
-          <End Role="Miktsoa_Isuk_Tachviv" Type="Self.Miktsoa_Isuk_Tachviv" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Kisui">
-              <PropertyRef Name="Kisui_Id" />
-            </Principal>
-            <Dependent Role="Miktsoa_Isuk_Tachviv">
-              <PropertyRef Name="Kisui_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Kisui_Mutav">
-          <End Role="Kisui" Type="Self.Kisui" Multiplicity="1" />
-          <End Role="Mutav" Type="Self.Mutav" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Kisui">
-              <PropertyRef Name="Kisui_Id" />
-            </Principal>
-            <Dependent Role="Mutav">
-              <PropertyRef Name="Kisui_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Kisui_Tosafot">
-          <End Role="Kisui" Type="Self.Kisui" Multiplicity="1" />
-          <End Role="Tosafot" Type="Self.Tosafot" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Kisui">
-              <PropertyRef Name="Kisui_Id" />
-            </Principal>
-            <Dependent Role="Tosafot">
-              <PropertyRef Name="Kisui_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2548,7 +2457,6 @@
           <EntitySet Name="Sheers" EntityType="Self.Sheer" />
           <EntitySet Name="Tvias" EntityType="Self.Tvia" />
           <EntitySet Name="YitraLefiGilPrishas" EntityType="Self.YitraLefiGilPrisha" />
-          <EntitySet Name="Kisuis" EntityType="Self.Kisui" />
           <EntitySet Name="Mevutaches" EntityType="Self.Mevutach" />
           <EntitySet Name="Miktsoa_Isuk_Tachviv" EntityType="Self.Miktsoa_Isuk_Tachviv" />
           <EntitySet Name="Mutavs" EntityType="Self.Mutav" />
@@ -2582,10 +2490,6 @@
             <End Role="HeshbonOPolisa" EntitySet="HeshbonOPolisas" />
             <End Role="Halvaa" EntitySet="Halvaas" />
           </AssociationSet>
-          <AssociationSet Name="HeshbonOPolisa_Kisui" Association="Self.HeshbonOPolisa_Kisui">
-            <End Role="HeshbonOPolisa" EntitySet="HeshbonOPolisas" />
-            <End Role="Kisui" EntitySet="Kisuis" />
-          </AssociationSet>
           <AssociationSet Name="HeshbonOPolisa_MeyupeKoach" Association="Self.HeshbonOPolisa_MeyupeKoach">
             <End Role="HeshbonOPolisa" EntitySet="HeshbonOPolisas" />
             <End Role="MeyupeKoach" EntitySet="MeyupeKoaches" />
@@ -2617,22 +2521,6 @@
           <AssociationSet Name="YitraLefiGilPrisha_Kupa" Association="Self.YitraLefiGilPrisha_Kupa">
             <End Role="YitraLefiGilPrisha" EntitySet="YitraLefiGilPrishas" />
             <End Role="Kupa" EntitySet="Kupas" />
-          </AssociationSet>
-          <AssociationSet Name="Kisui_Mevutach" Association="Self.Kisui_Mevutach">
-            <End Role="Kisui" EntitySet="Kisuis" />
-            <End Role="Mevutach" EntitySet="Mevutaches" />
-          </AssociationSet>
-          <AssociationSet Name="Kisui_Miktsoa_Isuk_Tachviv" Association="Self.Kisui_Miktsoa_Isuk_Tachviv">
-            <End Role="Kisui" EntitySet="Kisuis" />
-            <End Role="Miktsoa_Isuk_Tachviv" EntitySet="Miktsoa_Isuk_Tachviv" />
-          </AssociationSet>
-          <AssociationSet Name="Kisui_Mutav" Association="Self.Kisui_Mutav">
-            <End Role="Kisui" EntitySet="Kisuis" />
-            <End Role="Mutav" EntitySet="Mutavs" />
-          </AssociationSet>
-          <AssociationSet Name="Kisui_Tosafot" Association="Self.Kisui_Tosafot">
-            <End Role="Kisui" EntitySet="Kisuis" />
-            <End Role="Tosafot" EntitySet="Tosafots" />
           </AssociationSet>
           <AssociationSet Name="PirteiTaktziv_DmeiNihul" Association="Self.PirteiTaktziv_DmeiNihul">
             <End Role="PirteiTaktziv" EntitySet="PirteiTaktzivs" />
@@ -2749,6 +2637,63 @@
           <EntitySet Name="ClientYatzrans" EntityType="PensionsModel.ClientYatzran" />
           <EntitySet Name="Clients" EntityType="PensionsModel.Client" />
           <EntitySet Name="ClientHistories" EntityType="PensionsModel.ClientHistory" />
+          <FunctionImport Name="ChangeClientStatusOLD">
+            <Parameter Name="MISPAR_ZIHUY" Mode="InOut" Type="String" />
+            <Parameter Name="FromStatus" Mode="In" Type="Int32" />
+            <Parameter Name="ToStatus" Mode="In" Type="Int32" />
+            <Parameter Name="kovetz_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+          <EntitySet Name="Kisuis" EntityType="PensionsModel.Kisui" />
+          <AssociationSet Name="HeshbonOPolisa_Kisui" Association="PensionsModel.HeshbonOPolisa_Kisui">
+            <End Role="HeshbonOPolisa" EntitySet="HeshbonOPolisas" />
+            <End Role="Kisui" EntitySet="Kisuis" />
+          </AssociationSet>
+          <AssociationSet Name="Kisui_Mevutach" Association="PensionsModel.Kisui_Mevutach">
+            <End Role="Kisui" EntitySet="Kisuis" />
+            <End Role="Mevutach" EntitySet="Mevutaches" />
+          </AssociationSet>
+          <AssociationSet Name="Kisui_Miktsoa_Isuk_Tachviv" Association="PensionsModel.Kisui_Miktsoa_Isuk_Tachviv">
+            <End Role="Kisui" EntitySet="Kisuis" />
+            <End Role="Miktsoa_Isuk_Tachviv" EntitySet="Miktsoa_Isuk_Tachviv" />
+          </AssociationSet>
+          <AssociationSet Name="Kisui_Mutav" Association="PensionsModel.Kisui_Mutav">
+            <End Role="Kisui" EntitySet="Kisuis" />
+            <End Role="Mutav" EntitySet="Mutavs" />
+          </AssociationSet>
+          <AssociationSet Name="Kisui_Tosafot" Association="PensionsModel.Kisui_Tosafot">
+            <End Role="Kisui" EntitySet="Kisuis" />
+            <End Role="Tosafot" EntitySet="Tosafots" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="MutzarKovetz">
           <Key>
@@ -2790,7 +2735,7 @@
             <PropertyRef Name="KOD_MEZAHE_YATZRAN" />
           </Key>
           <Property Name="KOD_MEZAHE_YATZRAN" Type="Int32" Nullable="false" />
-          <Property Name="SHEM_YATZRAN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SHEM_YATZRAN" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ClientYatzran">
           <Key>
@@ -2837,6 +2782,134 @@
           <Property Name="KodEirua" Type="Int32" />
           <Property Name="InsertDate" Type="DateTime" Precision="3" />
         </EntityType>
+        <EntityType Name="Kisui">
+          <Key>
+            <PropertyRef Name="Kisui_Id" />
+          </Key>
+          <Property Name="Kisui_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HeshbonOPolisa_Id" Type="Int32" />
+          <Property Name="MISPAR_KISUI_BE_YATZRAN" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="SHEM_KISUI_YATZRAN" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="SUG_KISUI_ETZEL_YATZRAN" Type="Int32" />
+          <Property Name="Mutzar_KOD_MIUTZAR_LAKISUY" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Mutzar_SUG_MEVUTACH" Type="Int32" />
+          <Property Name="Mutzar_TAARICH_TCHILAT_KISUY" Type="DateTime" Precision="0" />
+          <Property Name="Mutzar_TAARICH_TOM_KISUY" Type="DateTime" Precision="0" />
+          <Property Name="Mutzar_TAARICH_HAFSAKAT_TASHLUM" Type="DateTime" Precision="0" />
+          <Property Name="Mutzar_ACHUZ_ME_SCM_BTH_YESODI" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="Mutzar_ACHUZ_MESACHAR" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="Mutzar_OFEN_TASHLUM_SCHUM_BITUACH" Type="Int32" />
+          <Property Name="Mutzar_SCHUM_BITUACH" Type="Decimal" Precision="15" Scale="2" />
+          <Property Name="Mutzar_MESHALEM_HAKISUY" Type="Int32" />
+          <Property Name="Mutzar_KOD_ISHUN" Type="Int32" />
+          <Property Name="Mutzar_IND_CHITUM" Type="Int32" />
+          <Property Name="Mutzar_TAARICH_CHITUM" Type="DateTime" Precision="0" />
+          <Property Name="Mutzar_HACHRAGA" Type="Int32" />
+          <Property Name="Mutzar_SUG_HACHRAGA" Type="Int32" />
+          <Property Name="Mutzar_TKUFAT_ACHSHARA" Type="Int32" />
+          <Property Name="Mutzar_TKUFAT_HAMTANA_CHODASHIM" Type="Int32" />
+          <Property Name="Mutzar_HANACHA" Type="Int32" />
+          <Property Name="Mutzar_HATNAYA_LAHANACHA_DMEI_BITUAH" Type="Int32" />
+          <Property Name="Mutzar_DMEI_BITUAH_LETASHLUM_BAPOAL" Type="Decimal" Precision="15" Scale="2" />
+          <Property Name="Mutzar_TADIRUT_SHINUY_DMEI_HABITUAH_BESHANIM" Type="Int32" />
+          <Property Name="Mutzar_TAARICH_IDKUN_HABA_SHEL_DMEI_HABITUAH" Type="DateTime" Precision="0" />
+          <Property Name="KerenPensia_ALUT_KISUI_NECHUT" Type="Decimal" Precision="15" Scale="2" />
+          <Property Name="KerenPensia_ALUT_KISUI_PNS_SHRM_NECHE" Type="Decimal" Precision="15" Scale="2" />
+          <Property Name="KerenPensia_SHEUR_KISUY_NECHUT" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="KerenPensia_SACHAR_KOVEA_LE_NECHUT_VE_SHEERIM" Type="Decimal" Precision="15" Scale="2" />
+          <Property Name="KerenPensia_TAARICH_MASKORET_NECHUT_VE_SHEERIM" Type="DateTime" Precision="0" />
+          <Property Name="KerenPensia_SACH_PENSIAT_NECHUT" Type="Decimal" Precision="15" Scale="2" />
+          <Property Name="KerenPensia_ALUT_KISUY_SHEERIM" Type="Decimal" Precision="15" Scale="2" />
+          <Property Name="KerenPensia_SHIUR_KISUY_YATOM" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="KerenPensia_KITZBAT_SHEERIM_LEALMAN_O_ALMANA" Type="Decimal" Precision="15" Scale="2" />
+          <Property Name="KerenPensia_KITZBAT_SHEERIM_LEYATOM" Type="Decimal" Precision="15" Scale="2" />
+          <Property Name="KerenPensia_KITZBAT_SHEERIM_LEHORE_NITMACH" Type="Decimal" Precision="15" Scale="2" />
+          <Property Name="KerenPensia_SHIUR_KISUY_ALMAN_O_ALMANA" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="KerenPensia_SHIUR_KISUY_HORE_NITMACH" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="KerenPensia_GIL_PRISHA_LEPENSIYAT_ZIKNA" Type="Decimal" Precision="4" Scale="2" />
+          <Property Name="KerenPensia_SACH_PENSIYAT_ALMAN_O_ALMANA" Type="Decimal" Precision="15" Scale="2" />
+          <Property Name="KerenPensia_MISPAR_HODSHEI_HAVERUT_BEKEREN_HAPENSIYA" Type="Int32" />
+          <Property Name="KerenPensia_MENAT_PENSIA_TZVURA" Type="Decimal" Precision="15" Scale="2" />
+          <Property Name="KerenPensia_AHUZ_PENSIYA_TZVURA" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="KerenPensia_TAARICH_TCHILAT_HAVERUT" Type="DateTime" Precision="0" />
+          <Property Name="KerenPensia_TAARICH_ERECH_LANENTUNIM" Type="DateTime" Precision="0" />
+          <Property Name="KerenPensia_HATAVA_BITUCHIT" Type="Int32" />
+          <Property Name="Yesodi_KOD_MUTZAR_LEFI_KIDUD_ACHID_LAYESODI" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Yesodi_SUG_HATZMADA_SCHUM_BITUAH" Type="Int32" />
+          <Property Name="Yesodi_SUG_MASLUL_LEBITUAH" Type="Int32" />
+          <Property Name="Yesodi_IND_SCHUM_BITUAH_KOLEL_CHISACHON" Type="Int32" />
+          <Property Name="Yesodi_SCHUM_BITUACH_LEMASLUL" Type="Decimal" Precision="15" Scale="2" />
+          <Property Name="Yesodi_MISPAR_MASKOROT" Type="Int32" />
+          <Property Name="Yesodi_ACHUZ_HAKTZAA_LE_CHISACHON" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="Yesodi_TIKRAT_GAG_HATAM_LEMIKRE_MAVET" Type="Decimal" Precision="15" Scale="2" />
+          <Property Name="Yesodi_TIKRAT_GAG_HATAM_LE_O_K_A" Type="Decimal" Precision="15" Scale="2" />
+          <Property Name="Yesodi_SCHUM_BITUAH_LEMAVET" Type="Decimal" Precision="15" Scale="2" />
+          <NavigationProperty Name="HeshbonOPolisa" Relationship="PensionsModel.HeshbonOPolisa_Kisui" FromRole="Kisui" ToRole="HeshbonOPolisa" />
+          <NavigationProperty Name="Mevutaches" Relationship="PensionsModel.Kisui_Mevutach" FromRole="Kisui" ToRole="Mevutach" />
+          <NavigationProperty Name="Miktsoa_Isuk_Tachviv" Relationship="PensionsModel.Kisui_Miktsoa_Isuk_Tachviv" FromRole="Kisui" ToRole="Miktsoa_Isuk_Tachviv" />
+          <NavigationProperty Name="Mutavs" Relationship="PensionsModel.Kisui_Mutav" FromRole="Kisui" ToRole="Mutav" />
+          <NavigationProperty Name="Tosafots" Relationship="PensionsModel.Kisui_Tosafot" FromRole="Kisui" ToRole="Tosafot" />
+        </EntityType>
+        <Association Name="HeshbonOPolisa_Kisui">
+          <End Type="PensionsModel.HeshbonOPolisa" Role="HeshbonOPolisa" Multiplicity="0..1" />
+          <End Type="PensionsModel.Kisui" Role="Kisui" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HeshbonOPolisa">
+              <PropertyRef Name="HeshbonOPolisa_Id" />
+            </Principal>
+            <Dependent Role="Kisui">
+              <PropertyRef Name="HeshbonOPolisa_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Kisui_Mevutach">
+          <End Type="PensionsModel.Kisui" Role="Kisui" Multiplicity="1" />
+          <End Type="PensionsModel.Mevutach" Role="Mevutach" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kisui">
+              <PropertyRef Name="Kisui_Id" />
+            </Principal>
+            <Dependent Role="Mevutach">
+              <PropertyRef Name="Kisui_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Kisui_Miktsoa_Isuk_Tachviv">
+          <End Type="PensionsModel.Kisui" Role="Kisui" Multiplicity="1" />
+          <End Type="PensionsModel.Miktsoa_Isuk_Tachviv" Role="Miktsoa_Isuk_Tachviv" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kisui">
+              <PropertyRef Name="Kisui_Id" />
+            </Principal>
+            <Dependent Role="Miktsoa_Isuk_Tachviv">
+              <PropertyRef Name="Kisui_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Kisui_Mutav">
+          <End Type="PensionsModel.Kisui" Role="Kisui" Multiplicity="1" />
+          <End Type="PensionsModel.Mutav" Role="Mutav" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kisui">
+              <PropertyRef Name="Kisui_Id" />
+            </Principal>
+            <Dependent Role="Mutav">
+              <PropertyRef Name="Kisui_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Kisui_Tosafot">
+          <End Type="PensionsModel.Kisui" Role="Kisui" Multiplicity="1" />
+          <End Type="PensionsModel.Tosafot" Role="Tosafot" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kisui">
+              <PropertyRef Name="Kisui_Id" />
+            </Principal>
+            <Dependent Role="Tosafot">
+              <PropertyRef Name="Kisui_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2990,70 +3063,6 @@
                 <ScalarProperty Name="TOTAL_CHISACHON_MITZTABER_TZAFUY" ColumnName="TOTAL-CHISACHON-MITZTABER-TZAFUY" />
                 <ScalarProperty Name="TZVIRAT_CHISACHON_CHAZUYA_LELO_PREMIYOT" ColumnName="TZVIRAT-CHISACHON-CHAZUYA-LELO-PREMIYOT" />
                 <ScalarProperty Name="SHEUR_PNS_ZIKNA_TZFUYA" ColumnName="SHEUR-PNS-ZIKNA-TZFUYA" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Kisuis">
-            <EntityTypeMapping TypeName="PensionsModel.Kisui">
-              <MappingFragment StoreEntitySet="Kisui">
-                <ScalarProperty Name="Kisui_Id" ColumnName="Kisui_Id" />
-                <ScalarProperty Name="HeshbonOPolisa_Id" ColumnName="HeshbonOPolisa_Id" />
-                <ScalarProperty Name="MISPAR_KISUI_BE_YATZRAN" ColumnName="MISPAR-KISUI-BE-YATZRAN" />
-                <ScalarProperty Name="SHEM_KISUI_YATZRAN" ColumnName="SHEM-KISUI-YATZRAN" />
-                <ScalarProperty Name="SUG_KISUI_ETZEL_YATZRAN" ColumnName="SUG-KISUI-ETZEL-YATZRAN" />
-                <ScalarProperty Name="Mutzar_KOD_MIUTZAR_LAKISUY" ColumnName="Mutzar_KOD-MIUTZAR-LAKISUY" />
-                <ScalarProperty Name="Mutzar_SUG_MEVUTACH" ColumnName="Mutzar_SUG-MEVUTACH" />
-                <ScalarProperty Name="Mutzar_TAARICH_TCHILAT_KISUY" ColumnName="Mutzar_TAARICH-TCHILAT-KISUY" />
-                <ScalarProperty Name="Mutzar_TAARICH_TOM_KISUY" ColumnName="Mutzar_TAARICH-TOM-KISUY" />
-                <ScalarProperty Name="Mutzar_TAARICH_HAFSAKAT_TASHLUM" ColumnName="Mutzar_TAARICH-HAFSAKAT-TASHLUM" />
-                <ScalarProperty Name="Mutzar_ACHUZ_ME_SCM_BTH_YESODI" ColumnName="Mutzar_ACHUZ-ME-SCM-BTH-YESODI" />
-                <ScalarProperty Name="Mutzar_ACHUZ_MESACHAR" ColumnName="Mutzar_ACHUZ-MESACHAR" />
-                <ScalarProperty Name="Mutzar_OFEN_TASHLUM_SCHUM_BITUACH" ColumnName="Mutzar_OFEN-TASHLUM-SCHUM-BITUACH" />
-                <ScalarProperty Name="Mutzar_SCHUM_BITUACH" ColumnName="Mutzar_SCHUM-BITUACH" />
-                <ScalarProperty Name="Mutzar_MESHALEM_HAKISUY" ColumnName="Mutzar_MESHALEM-HAKISUY" />
-                <ScalarProperty Name="Mutzar_KOD_ISHUN" ColumnName="Mutzar_KOD-ISHUN" />
-                <ScalarProperty Name="Mutzar_IND_CHITUM" ColumnName="Mutzar_IND-CHITUM" />
-                <ScalarProperty Name="Mutzar_TAARICH_CHITUM" ColumnName="Mutzar_TAARICH-CHITUM" />
-                <ScalarProperty Name="Mutzar_HACHRAGA" ColumnName="Mutzar_HACHRAGA" />
-                <ScalarProperty Name="Mutzar_SUG_HACHRAGA" ColumnName="Mutzar_SUG-HACHRAGA" />
-                <ScalarProperty Name="Mutzar_TKUFAT_ACHSHARA" ColumnName="Mutzar_TKUFAT-ACHSHARA" />
-                <ScalarProperty Name="Mutzar_TKUFAT_HAMTANA_CHODASHIM" ColumnName="Mutzar_TKUFAT-HAMTANA-CHODASHIM" />
-                <ScalarProperty Name="Mutzar_HANACHA" ColumnName="Mutzar_HANACHA" />
-                <ScalarProperty Name="Mutzar_HATNAYA_LAHANACHA_DMEI_BITUAH" ColumnName="Mutzar_HATNAYA-LAHANACHA-DMEI-BITUAH" />
-                <ScalarProperty Name="Mutzar_DMEI_BITUAH_LETASHLUM_BAPOAL" ColumnName="Mutzar_DMEI-BITUAH-LETASHLUM-BAPOAL" />
-                <ScalarProperty Name="Mutzar_TADIRUT_SHINUY_DMEI_HABITUAH_BESHANIM" ColumnName="Mutzar_TADIRUT-SHINUY-DMEI-HABITUAH-BESHANIM" />
-                <ScalarProperty Name="Mutzar_TAARICH_IDKUN_HABA_SHEL_DMEI_HABITUAH" ColumnName="Mutzar_TAARICH-IDKUN-HABA-SHEL-DMEI-HABITUAH" />
-                <ScalarProperty Name="KerenPensia_ALUT_KISUI_NECHUT" ColumnName="KerenPensia_ALUT-KISUI-NECHUT" />
-                <ScalarProperty Name="KerenPensia_ALUT_KISUI_PNS_SHRM_NECHE" ColumnName="KerenPensia_ALUT-KISUI-PNS-SHRM-NECHE" />
-                <ScalarProperty Name="KerenPensia_SHEUR_KISUY_NECHUT" ColumnName="KerenPensia_SHEUR-KISUY-NECHUT" />
-                <ScalarProperty Name="KerenPensia_SACHAR_KOVEA_LE_NECHUT_VE_SHEERIM" ColumnName="KerenPensia_SACHAR-KOVEA-LE-NECHUT-VE-SHEERIM" />
-                <ScalarProperty Name="KerenPensia_TAARICH_MASKORET_NECHUT_VE_SHEERIM" ColumnName="KerenPensia_TAARICH-MASKORET-NECHUT-VE-SHEERIM" />
-                <ScalarProperty Name="KerenPensia_SACH_PENSIAT_NECHUT" ColumnName="KerenPensia_SACH-PENSIAT-NECHUT" />
-                <ScalarProperty Name="KerenPensia_ALUT_KISUY_SHEERIM" ColumnName="KerenPensia_ALUT-KISUY-SHEERIM" />
-                <ScalarProperty Name="KerenPensia_SHIUR_KISUY_YATOM" ColumnName="KerenPensia_SHIUR-KISUY-YATOM" />
-                <ScalarProperty Name="KerenPensia_KITZBAT_SHEERIM_LEALMAN_O_ALMANA" ColumnName="KerenPensia_KITZBAT-SHEERIM-LEALMAN-O-ALMANA" />
-                <ScalarProperty Name="KerenPensia_KITZBAT_SHEERIM_LEYATOM" ColumnName="KerenPensia_KITZBAT-SHEERIM-LEYATOM" />
-                <ScalarProperty Name="KerenPensia_KITZBAT_SHEERIM_LEHORE_NITMACH" ColumnName="KerenPensia_KITZBAT-SHEERIM-LEHORE-NITMACH" />
-                <ScalarProperty Name="KerenPensia_SHIUR_KISUY_ALMAN_O_ALMANA" ColumnName="KerenPensia_SHIUR-KISUY-ALMAN-O-ALMANA" />
-                <ScalarProperty Name="KerenPensia_SHIUR_KISUY_HORE_NITMACH" ColumnName="KerenPensia_SHIUR-KISUY-HORE-NITMACH" />
-                <ScalarProperty Name="KerenPensia_GIL_PRISHA_LEPENSIYAT_ZIKNA" ColumnName="KerenPensia_GIL-PRISHA-LEPENSIYAT-ZIKNA" />
-                <ScalarProperty Name="KerenPensia_SACH_PENSIYAT_ALMAN_O_ALMANA" ColumnName="KerenPensia_SACH-PENSIYAT-ALMAN-O-ALMANA" />
-                <ScalarProperty Name="KerenPensia_MISPAR_HODSHEI_HAVERUT_BEKEREN_HAPENSIYA" ColumnName="KerenPensia_MISPAR-HODSHEI-HAVERUT-BEKEREN-HAPENSIYA" />
-                <ScalarProperty Name="KerenPensia_MENAT_PENSIA_TZVURA" ColumnName="KerenPensia_MENAT-PENSIA-TZVURA" />
-                <ScalarProperty Name="KerenPensia_AHUZ_PENSIYA_TZVURA" ColumnName="KerenPensia_AHUZ-PENSIYA-TZVURA" />
-                <ScalarProperty Name="KerenPensia_TAARICH_TCHILAT_HAVERUT" ColumnName="KerenPensia_TAARICH-TCHILAT-HAVERUT" />
-                <ScalarProperty Name="KerenPensia_TAARICH_ERECH_LANENTUNIM" ColumnName="KerenPensia_TAARICH-ERECH-LANENTUNIM" />
-                <ScalarProperty Name="KerenPensia_HATAVA_BITUCHIT" ColumnName="KerenPensia_HATAVA-BITUCHIT" />
-                <ScalarProperty Name="Yesodi_KOD_MUTZAR_LEFI_KIDUD_ACHID_LAYESODI" ColumnName="Yesodi_KOD-MUTZAR-LEFI-KIDUD-ACHID-LAYESODI" />
-                <ScalarProperty Name="Yesodi_SUG_HATZMADA_SCHUM_BITUAH" ColumnName="Yesodi_SUG-HATZMADA-SCHUM-BITUAH" />
-                <ScalarProperty Name="Yesodi_SUG_MASLUL_LEBITUAH" ColumnName="Yesodi_SUG-MASLUL-LEBITUAH" />
-                <ScalarProperty Name="Yesodi_IND_SCHUM_BITUAH_KOLEL_CHISACHON" ColumnName="Yesodi_IND-SCHUM-BITUAH-KOLEL-CHISACHON" />
-                <ScalarProperty Name="Yesodi_SCHUM_BITUACH_LEMASLUL" ColumnName="Yesodi_SCHUM-BITUACH-LEMASLUL" />
-                <ScalarProperty Name="Yesodi_MISPAR_MASKOROT" ColumnName="Yesodi_MISPAR-MASKOROT" />
-                <ScalarProperty Name="Yesodi_ACHUZ_HAKTZAA_LE_CHISACHON" ColumnName="Yesodi_ACHUZ-HAKTZAA-LE-CHISACHON" />
-                <ScalarProperty Name="Yesodi_TIKRAT_GAG_HATAM_LEMIKRE_MAVET" ColumnName="Yesodi_TIKRAT-GAG-HATAM-LEMIKRE-MAVET" />
-                <ScalarProperty Name="Yesodi_TIKRAT_GAG_HATAM_LE_O_K_A" ColumnName="Yesodi_TIKRAT-GAG-HATAM-LE-O-K-A" />
-                <ScalarProperty Name="Yesodi_SCHUM_BITUAH_LEMAVET" ColumnName="Yesodi_SCHUM-BITUAH-LEMAVET" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3634,6 +3643,78 @@
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Client_Id" ColumnName="Client_Id" />
                 <ScalarProperty Name="EventsHistory_Id" ColumnName="EventsHistory_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ChangeClientStatusOLD" FunctionName="PensionsModel.Store.ChangeClientStatusOLD" />
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="PensionsModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="PensionsModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="PensionsModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="PensionsModel.Store.sp_helpdiagramdefinition" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="PensionsModel.Store.sp_helpdiagrams" />
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="PensionsModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="PensionsModel.Store.sp_upgraddiagrams" />
+          <EntitySetMapping Name="Kisuis">
+            <EntityTypeMapping TypeName="PensionsModel.Kisui">
+              <MappingFragment StoreEntitySet="Kisui">
+                <ScalarProperty Name="Yesodi_SCHUM_BITUAH_LEMAVET" ColumnName="Yesodi_SCHUM-BITUAH-LEMAVET" />
+                <ScalarProperty Name="Yesodi_TIKRAT_GAG_HATAM_LE_O_K_A" ColumnName="Yesodi_TIKRAT-GAG-HATAM-LE-O-K-A" />
+                <ScalarProperty Name="Yesodi_TIKRAT_GAG_HATAM_LEMIKRE_MAVET" ColumnName="Yesodi_TIKRAT-GAG-HATAM-LEMIKRE-MAVET" />
+                <ScalarProperty Name="Yesodi_ACHUZ_HAKTZAA_LE_CHISACHON" ColumnName="Yesodi_ACHUZ-HAKTZAA-LE-CHISACHON" />
+                <ScalarProperty Name="Yesodi_MISPAR_MASKOROT" ColumnName="Yesodi_MISPAR-MASKOROT" />
+                <ScalarProperty Name="Yesodi_SCHUM_BITUACH_LEMASLUL" ColumnName="Yesodi_SCHUM-BITUACH-LEMASLUL" />
+                <ScalarProperty Name="Yesodi_IND_SCHUM_BITUAH_KOLEL_CHISACHON" ColumnName="Yesodi_IND-SCHUM-BITUAH-KOLEL-CHISACHON" />
+                <ScalarProperty Name="Yesodi_SUG_MASLUL_LEBITUAH" ColumnName="Yesodi_SUG-MASLUL-LEBITUAH" />
+                <ScalarProperty Name="Yesodi_SUG_HATZMADA_SCHUM_BITUAH" ColumnName="Yesodi_SUG-HATZMADA-SCHUM-BITUAH" />
+                <ScalarProperty Name="Yesodi_KOD_MUTZAR_LEFI_KIDUD_ACHID_LAYESODI" ColumnName="Yesodi_KOD-MUTZAR-LEFI-KIDUD-ACHID-LAYESODI" />
+                <ScalarProperty Name="KerenPensia_HATAVA_BITUCHIT" ColumnName="KerenPensia_HATAVA-BITUCHIT" />
+                <ScalarProperty Name="KerenPensia_TAARICH_ERECH_LANENTUNIM" ColumnName="KerenPensia_TAARICH-ERECH-LANENTUNIM" />
+                <ScalarProperty Name="KerenPensia_TAARICH_TCHILAT_HAVERUT" ColumnName="KerenPensia_TAARICH-TCHILAT-HAVERUT" />
+                <ScalarProperty Name="KerenPensia_AHUZ_PENSIYA_TZVURA" ColumnName="KerenPensia_AHUZ-PENSIYA-TZVURA" />
+                <ScalarProperty Name="KerenPensia_MENAT_PENSIA_TZVURA" ColumnName="KerenPensia_MENAT-PENSIA-TZVURA" />
+                <ScalarProperty Name="KerenPensia_MISPAR_HODSHEI_HAVERUT_BEKEREN_HAPENSIYA" ColumnName="KerenPensia_MISPAR-HODSHEI-HAVERUT-BEKEREN-HAPENSIYA" />
+                <ScalarProperty Name="KerenPensia_SACH_PENSIYAT_ALMAN_O_ALMANA" ColumnName="KerenPensia_SACH-PENSIYAT-ALMAN-O-ALMANA" />
+                <ScalarProperty Name="KerenPensia_GIL_PRISHA_LEPENSIYAT_ZIKNA" ColumnName="KerenPensia_GIL-PRISHA-LEPENSIYAT-ZIKNA" />
+                <ScalarProperty Name="KerenPensia_SHIUR_KISUY_HORE_NITMACH" ColumnName="KerenPensia_SHIUR-KISUY-HORE-NITMACH" />
+                <ScalarProperty Name="KerenPensia_SHIUR_KISUY_ALMAN_O_ALMANA" ColumnName="KerenPensia_SHIUR-KISUY-ALMAN-O-ALMANA" />
+                <ScalarProperty Name="KerenPensia_KITZBAT_SHEERIM_LEHORE_NITMACH" ColumnName="KerenPensia_KITZBAT-SHEERIM-LEHORE-NITMACH" />
+                <ScalarProperty Name="KerenPensia_KITZBAT_SHEERIM_LEYATOM" ColumnName="KerenPensia_KITZBAT-SHEERIM-LEYATOM" />
+                <ScalarProperty Name="KerenPensia_KITZBAT_SHEERIM_LEALMAN_O_ALMANA" ColumnName="KerenPensia_KITZBAT-SHEERIM-LEALMAN-O-ALMANA" />
+                <ScalarProperty Name="KerenPensia_SHIUR_KISUY_YATOM" ColumnName="KerenPensia_SHIUR-KISUY-YATOM" />
+                <ScalarProperty Name="KerenPensia_ALUT_KISUY_SHEERIM" ColumnName="KerenPensia_ALUT-KISUY-SHEERIM" />
+                <ScalarProperty Name="KerenPensia_SACH_PENSIAT_NECHUT" ColumnName="KerenPensia_SACH-PENSIAT-NECHUT" />
+                <ScalarProperty Name="KerenPensia_TAARICH_MASKORET_NECHUT_VE_SHEERIM" ColumnName="KerenPensia_TAARICH-MASKORET-NECHUT-VE-SHEERIM" />
+                <ScalarProperty Name="KerenPensia_SACHAR_KOVEA_LE_NECHUT_VE_SHEERIM" ColumnName="KerenPensia_SACHAR-KOVEA-LE-NECHUT-VE-SHEERIM" />
+                <ScalarProperty Name="KerenPensia_SHEUR_KISUY_NECHUT" ColumnName="KerenPensia_SHEUR-KISUY-NECHUT" />
+                <ScalarProperty Name="KerenPensia_ALUT_KISUI_PNS_SHRM_NECHE" ColumnName="KerenPensia_ALUT-KISUI-PNS-SHRM-NECHE" />
+                <ScalarProperty Name="KerenPensia_ALUT_KISUI_NECHUT" ColumnName="KerenPensia_ALUT-KISUI-NECHUT" />
+                <ScalarProperty Name="Mutzar_TAARICH_IDKUN_HABA_SHEL_DMEI_HABITUAH" ColumnName="Mutzar_TAARICH-IDKUN-HABA-SHEL-DMEI-HABITUAH" />
+                <ScalarProperty Name="Mutzar_TADIRUT_SHINUY_DMEI_HABITUAH_BESHANIM" ColumnName="Mutzar_TADIRUT-SHINUY-DMEI-HABITUAH-BESHANIM" />
+                <ScalarProperty Name="Mutzar_DMEI_BITUAH_LETASHLUM_BAPOAL" ColumnName="Mutzar_DMEI-BITUAH-LETASHLUM-BAPOAL" />
+                <ScalarProperty Name="Mutzar_HATNAYA_LAHANACHA_DMEI_BITUAH" ColumnName="Mutzar_HATNAYA-LAHANACHA-DMEI-BITUAH" />
+                <ScalarProperty Name="Mutzar_HANACHA" ColumnName="Mutzar_HANACHA" />
+                <ScalarProperty Name="Mutzar_TKUFAT_HAMTANA_CHODASHIM" ColumnName="Mutzar_TKUFAT-HAMTANA-CHODASHIM" />
+                <ScalarProperty Name="Mutzar_TKUFAT_ACHSHARA" ColumnName="Mutzar_TKUFAT-ACHSHARA" />
+                <ScalarProperty Name="Mutzar_SUG_HACHRAGA" ColumnName="Mutzar_SUG-HACHRAGA" />
+                <ScalarProperty Name="Mutzar_HACHRAGA" ColumnName="Mutzar_HACHRAGA" />
+                <ScalarProperty Name="Mutzar_TAARICH_CHITUM" ColumnName="Mutzar_TAARICH-CHITUM" />
+                <ScalarProperty Name="Mutzar_IND_CHITUM" ColumnName="Mutzar_IND-CHITUM" />
+                <ScalarProperty Name="Mutzar_KOD_ISHUN" ColumnName="Mutzar_KOD-ISHUN" />
+                <ScalarProperty Name="Mutzar_MESHALEM_HAKISUY" ColumnName="Mutzar_MESHALEM-HAKISUY" />
+                <ScalarProperty Name="Mutzar_SCHUM_BITUACH" ColumnName="Mutzar_SCHUM-BITUACH" />
+                <ScalarProperty Name="Mutzar_OFEN_TASHLUM_SCHUM_BITUACH" ColumnName="Mutzar_OFEN-TASHLUM-SCHUM-BITUACH" />
+                <ScalarProperty Name="Mutzar_ACHUZ_MESACHAR" ColumnName="Mutzar_ACHUZ-MESACHAR" />
+                <ScalarProperty Name="Mutzar_ACHUZ_ME_SCM_BTH_YESODI" ColumnName="Mutzar_ACHUZ-ME-SCM-BTH-YESODI" />
+                <ScalarProperty Name="Mutzar_TAARICH_HAFSAKAT_TASHLUM" ColumnName="Mutzar_TAARICH-HAFSAKAT-TASHLUM" />
+                <ScalarProperty Name="Mutzar_TAARICH_TOM_KISUY" ColumnName="Mutzar_TAARICH-TOM-KISUY" />
+                <ScalarProperty Name="Mutzar_TAARICH_TCHILAT_KISUY" ColumnName="Mutzar_TAARICH-TCHILAT-KISUY" />
+                <ScalarProperty Name="Mutzar_SUG_MEVUTACH" ColumnName="Mutzar_SUG-MEVUTACH" />
+                <ScalarProperty Name="Mutzar_KOD_MIUTZAR_LAKISUY" ColumnName="Mutzar_KOD-MIUTZAR-LAKISUY" />
+                <ScalarProperty Name="SUG_KISUI_ETZEL_YATZRAN" ColumnName="SUG-KISUI-ETZEL-YATZRAN" />
+                <ScalarProperty Name="SHEM_KISUI_YATZRAN" ColumnName="SHEM-KISUI-YATZRAN" />
+                <ScalarProperty Name="MISPAR_KISUI_BE_YATZRAN" ColumnName="MISPAR-KISUI-BE-YATZRAN" />
+                <ScalarProperty Name="HeshbonOPolisa_Id" ColumnName="HeshbonOPolisa_Id" />
+                <ScalarProperty Name="Kisui_Id" ColumnName="Kisui_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -38,7 +38,7 @@ namespace MislakaInterface
 
             log.Info("Start Process Cycle");
 
-            ProduceEvents();
+            //ProduceEvents();
 
             //Read all incoming files
             foreach (string file in Directory.GetFiles(incomingDir))

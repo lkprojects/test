@@ -16,7 +16,7 @@ namespace DAL
     {
         public int Tosafot_Id { get; set; }
         public int Kisui_Id { get; set; }
-        public int TOSEFET_TAARIF { get; set; }
+        public Nullable<int> TOSEFET_TAARIF { get; set; }
         public Nullable<int> KOD_SUG_TOSEFET { get; set; }
         public Nullable<decimal> SHEUR_TOSEFET { get; set; }
         public Nullable<System.DateTime> TAARICH_TOM_TOSEFET { get; set; }

@@ -247,8 +247,11 @@ namespace MislakaInterface
             }
 
             Dal.Add(mutzar);
-            client.LastStatus = (byte)ClientStatus.DataLoaded;
-            Dal.UpdateClient(client);
+            if (client != null)
+            {
+                client.LastStatus = (byte)ClientStatus.DataLoaded;
+                Dal.UpdateClient(client);
+            }
             Dal.SetClientYatzran(mutzar.KOD_MEZAHE_YATZRAN.ToString(), mutzar.Lakoach_MISPAR_ZIHUY_LAKOACH.TrimStart('0'), false);
 
         }
@@ -327,7 +330,8 @@ namespace MislakaInterface
             heshbonOPolisa.PENSIA_VATIKA_O_HADASHA = mimshakMutzarHeshbonOPolisa.PENSIAVATIKAOHADASHA;
             heshbonOPolisa.STATUS_POLISA_O_CHESHBON = mimshakMutzarHeshbonOPolisa.STATUSPOLISAOCHESHBON;
             heshbonOPolisa.SUG_KEREN_PENSIA = mimshakMutzarHeshbonOPolisa.SUGKERENPENSIA;
-            heshbonOPolisa.SUG_POLISA = mimshakMutzarHeshbonOPolisa.SUGPOLISA;
+            if (mimshakMutzarHeshbonOPolisa.SUGPOLISA != null)
+               heshbonOPolisa.SUG_POLISA = (int)mimshakMutzarHeshbonOPolisa.SUGPOLISA;
             heshbonOPolisa.SUG_TOCHNIT_O_CHESHBON = mimshakMutzarHeshbonOPolisa.SUGTOCHNITOCHESHBON;
             heshbonOPolisa.TAARICH_HITZTARFUT_MUTZAR = Common.ConvertDate(mimshakMutzarHeshbonOPolisa.TAARICHHITZTARFUTMUTZAR);
             heshbonOPolisa.TAARICH_HITZTARFUT_RISHON = Common.ConvertDate(mimshakMutzarHeshbonOPolisa.TAARICHHITZTARFUTRISHON);
@@ -595,7 +599,7 @@ namespace MislakaInterface
                     dmeiNihul = new DmeiNihul(); 
                     dmeiNihul.DMEI_NIHUL_ACHERIM = mimshakDmeiNihul[i].DMEINIHULACHERIM;
                     dmeiNihul.DMEI_NIHUL_ACHIDIM = mimshakDmeiNihul[i].DMEINIHULACHIDIM;
-                    dmeiNihul.GOVA_DMEI_NIHUL_NIKBA_AL_PI_HOTZAOT_BAPOAL = mimshakDmeiNihul[i].GOVADMEINIHULNIKBAALPIHOTZAOTBAPOAL;
+                    dmeiNihul.GOVA_DMEI_NIHUL_NIKBA_AL_PI_HOTZAOT_BAPOAL = (int)mimshakDmeiNihul[i].GOVADMEINIHULNIKBAALPIHOTZAOTBAPOAL;
                     dmeiNihul.KAYEMET_HATAVA = mimshakDmeiNihul[i].KAYEMETHATAVA;
                     dmeiNihul.KOD_MASLUL_DMEI_NIHUL = mimshakDmeiNihul[i].KODMASLULDMEINIHUL;
                     dmeiNihul.KOD_MASLUL_HASHKAA_BAAL_DMEI_NIHUL_YECHUDIIM = mimshakDmeiNihul[i].KODMASLULHASHKAABAALDMEINIHULYECHUDIIM;

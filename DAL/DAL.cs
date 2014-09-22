@@ -313,12 +313,14 @@ namespace DAL
                     (from c in dbCtx.Clients
                      where c.TeudatZehut == MisparZihuy
                      select c.Client_Id).FirstOrDefault();
-
-                clientYatzran = new ClientYatzran();
-                clientYatzran.KodYatzran = kodYatzran;
-                clientYatzran.Client_Id = clientId;
-                clientYatzran.HasData = hasData;
-                dbCtx.ClientYatzrans.Add(clientYatzran);
+                if (clientId > 0)
+                {
+                    clientYatzran = new ClientYatzran();
+                    clientYatzran.KodYatzran = kodYatzran;
+                    clientYatzran.Client_Id = clientId;
+                    clientYatzran.HasData = hasData;
+                    dbCtx.ClientYatzrans.Add(clientYatzran);
+                }
             }
             // If record does exists - change the "hasData" indicator if necessary
             else if (clientYatzran.HasData != hasData)

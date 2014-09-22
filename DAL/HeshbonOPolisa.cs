@@ -17,13 +17,13 @@ namespace DAL
         public HeshbonOPolisa()
         {
             this.Halvaas = new HashSet<Halvaa>();
-            this.Kisuis = new HashSet<Kisui>();
             this.MeyupeKoaches = new HashSet<MeyupeKoach>();
             this.Mitryots = new HashSet<Mitryot>();
             this.PirteiTaktzivs = new HashSet<PirteiTaktziv>();
             this.Sheers = new HashSet<Sheer>();
             this.Tvias = new HashSet<Tvia>();
             this.YitraLefiGilPrishas = new HashSet<YitraLefiGilPrisha>();
+            this.Kisuis = new HashSet<Kisui>();
         }
     
         public int HeshbonOPolisa_Id { get; set; }
@@ -60,7 +60,6 @@ namespace DAL
         public Nullable<int> Mishloach_TA_DOAR { get; set; }
     
         public virtual ICollection<Halvaa> Halvaas { get; set; }
-        public virtual ICollection<Kisui> Kisuis { get; set; }
         public virtual ICollection<MeyupeKoach> MeyupeKoaches { get; set; }
         public virtual ICollection<Mitryot> Mitryots { get; set; }
         public virtual ICollection<PirteiTaktziv> PirteiTaktzivs { get; set; }
@@ -68,5 +67,6 @@ namespace DAL
         public virtual ICollection<Tvia> Tvias { get; set; }
         public virtual ICollection<YitraLefiGilPrisha> YitraLefiGilPrishas { get; set; }
         public virtual Mutzar Mutzar { get; set; }
+        public virtual ICollection<Kisui> Kisuis { get; set; }
     }
 }
