@@ -15,10 +15,10 @@ namespace DAL
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     
-    public partial class PensionsEntities : DbContext
+    public partial class Entities : DbContext
     {
-        public PensionsEntities()
-            : base("name=PensionsEntities")
+        public Entities()
+            : base("name=Entities")
         {
         }
     
@@ -27,77 +27,50 @@ namespace DAL
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Halvaa> Halvaas { get; set; }
-        public virtual DbSet<HeshbonOPolisa> HeshbonOPolisas { get; set; }
-        public virtual DbSet<Kupa> Kupas { get; set; }
-        public virtual DbSet<MeyupeKoach> MeyupeKoaches { get; set; }
-        public virtual DbSet<Mitryot> Mitryots { get; set; }
-        public virtual DbSet<Sheer> Sheers { get; set; }
-        public virtual DbSet<Tvia> Tvias { get; set; }
-        public virtual DbSet<YitraLefiGilPrisha> YitraLefiGilPrishas { get; set; }
-        public virtual DbSet<Mevutach> Mevutaches { get; set; }
-        public virtual DbSet<Miktsoa_Isuk_Tachviv> Miktsoa_Isuk_Tachviv { get; set; }
-        public virtual DbSet<Mutav> Mutavs { get; set; }
-        public virtual DbSet<Tosafot> Tosafots { get; set; }
+        public virtual DbSet<ClientHistory> ClientHistories { get; set; }
+        public virtual DbSet<ClientYatzran> ClientYatzrans { get; set; }
         public virtual DbSet<Config> Configs { get; set; }
         public virtual DbSet<LUT> LUTs { get; set; }
-        public virtual DbSet<DmeiNihul> DmeiNihuls { get; set; }
-        public virtual DbSet<HafkadaAchrona> HafkadaAchronas { get; set; }
-        public virtual DbSet<HafkadotMetchilatShana> HafkadotMetchilatShanas { get; set; }
-        public virtual DbSet<HafrashotLePolisa> HafrashotLePolisas { get; set; }
-        public virtual DbSet<MasluleiHashkaa> MasluleiHashkaas { get; set; }
-        public virtual DbSet<PerutHafkadaAchrona> PerutHafkadaAchronas { get; set; }
-        public virtual DbSet<PerutYitrot> PerutYitrots { get; set; }
-        public virtual DbSet<PirteiTaktziv> PirteiTaktzivs { get; set; }
-        public virtual DbSet<YitraLeTkufa> YitraLeTkufas { get; set; }
-        public virtual DbSet<Yitrot> Yitrots { get; set; }
+        public virtual DbSet<Yatzran> Yatzrans { get; set; }
         public virtual DbSet<FeedbackFile> FeedbackFiles { get; set; }
         public virtual DbSet<FileErrorDetail> FileErrorDetails { get; set; }
-        public virtual DbSet<GoremPone> GoremPones { get; set; }
         public virtual DbSet<Request> Requests { get; set; }
         public virtual DbSet<RequestErrorDetail> RequestErrorDetails { get; set; }
         public virtual DbSet<RequestPerYatzran> RequestPerYatzrans { get; set; }
-        public virtual DbSet<IshKesherYeshutMetafel> IshKesherYeshutMetafels { get; set; }
-        public virtual DbSet<IshKesherYeshutYatzran> IshKesherYeshutYatzrans { get; set; }
-        public virtual DbSet<Kovetz> Kovetzs { get; set; }
-        public virtual DbSet<YeshutMetafel> YeshutMetafels { get; set; }
-        public virtual DbSet<IshKesherYeshutMaasik> IshKesherYeshutMaasiks { get; set; }
-        public virtual DbSet<Mutzar> Mutzars { get; set; }
-        public virtual DbSet<YeshutMaasik> YeshutMaasiks { get; set; }
-        public virtual DbSet<MutzarKovetz> MutzarKovetzs { get; set; }
-        public virtual DbSet<Yatzran> Yatzrans { get; set; }
-        public virtual DbSet<ClientYatzran> ClientYatzrans { get; set; }
-        public virtual DbSet<Client> Clients { get; set; }
-        public virtual DbSet<ClientHistory> ClientHistories { get; set; }
+        public virtual DbSet<DmeiNihul> DmeiNihuls { get; set; }
+        public virtual DbSet<GoremPone> GoremPones { get; set; }
+        public virtual DbSet<HafkadaAchrona> HafkadaAchronas { get; set; }
+        public virtual DbSet<HafkadotMetchilatShana> HafkadotMetchilatShanas { get; set; }
+        public virtual DbSet<HafrashotLePolisa> HafrashotLePolisas { get; set; }
+        public virtual DbSet<Halvaa> Halvaas { get; set; }
+        public virtual DbSet<HeshbonKovetz> HeshbonKovetzs { get; set; }
+        public virtual DbSet<IshKesherMaasik> IshKesherMaasiks { get; set; }
+        public virtual DbSet<IshKesherMetafel> IshKesherMetafels { get; set; }
+        public virtual DbSet<IshKesherYatzran> IshKesherYatzrans { get; set; }
         public virtual DbSet<Kisui> Kisuis { get; set; }
-    
-        public virtual int DeleteMutzar(Nullable<int> mutzar_Id)
-        {
-            var mutzar_IdParameter = mutzar_Id.HasValue ?
-                new ObjectParameter("Mutzar_Id", mutzar_Id) :
-                new ObjectParameter("Mutzar_Id", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteMutzar", mutzar_IdParameter);
-        }
-    
-        public virtual int DequeueEvent(string mISPAR_ZIHUY)
-        {
-            var mISPAR_ZIHUYParameter = mISPAR_ZIHUY != null ?
-                new ObjectParameter("MISPAR_ZIHUY", mISPAR_ZIHUY) :
-                new ObjectParameter("MISPAR_ZIHUY", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DequeueEvent", mISPAR_ZIHUYParameter);
-        }
-    
-        public virtual int GetFileNumerator(ObjectParameter numerator)
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GetFileNumerator", numerator);
-        }
-    
-        public virtual ObjectResult<Nullable<int>> InsertKovetzTest()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("InsertKovetzTest");
-        }
+        public virtual DbSet<Kovetz> Kovetzs { get; set; }
+        public virtual DbSet<Kupa> Kupas { get; set; }
+        public virtual DbSet<Maasik> Maasiks { get; set; }
+        public virtual DbSet<MasluleiHashkaa> MasluleiHashkaas { get; set; }
+        public virtual DbSet<Metafel> Metafels { get; set; }
+        public virtual DbSet<Mevutach> Mevutaches { get; set; }
+        public virtual DbSet<MeyupeKoach> MeyupeKoaches { get; set; }
+        public virtual DbSet<Miktsoa_Isuk_Tachviv> Miktsoa_Isuk_Tachviv { get; set; }
+        public virtual DbSet<Mitryot> Mitryots { get; set; }
+        public virtual DbSet<Mutav> Mutavs { get; set; }
+        public virtual DbSet<PerutHafkadaAchrona> PerutHafkadaAchronas { get; set; }
+        public virtual DbSet<PerutYitrot> PerutYitrots { get; set; }
+        public virtual DbSet<PirteiTaktziv> PirteiTaktzivs { get; set; }
+        public virtual DbSet<Sheer> Sheers { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+        public virtual DbSet<Tosafot> Tosafots { get; set; }
+        public virtual DbSet<Tvia> Tvias { get; set; }
+        public virtual DbSet<YitraLefiGilPrisha> YitraLefiGilPrishas { get; set; }
+        public virtual DbSet<YitraLeTkufa> YitraLeTkufas { get; set; }
+        public virtual DbSet<Yitrot> Yitrots { get; set; }
+        public virtual DbSet<Client> Clients { get; set; }
+        public virtual DbSet<Customer> Customers { get; set; }
+        public virtual DbSet<HeshbonOPolisa> HeshbonOPolisas { get; set; }
     
         public virtual int ChangeClientStatus(ObjectParameter mISPAR_ZIHUY, Nullable<int> fromStatus, Nullable<int> toStatus, Nullable<int> kovetz_id)
         {
@@ -116,24 +89,6 @@ namespace DAL
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ChangeClientStatus", mISPAR_ZIHUY, fromStatusParameter, toStatusParameter, kovetz_idParameter);
         }
     
-        public virtual int DeleteKovetz(Nullable<int> kovetz_Id)
-        {
-            var kovetz_IdParameter = kovetz_Id.HasValue ?
-                new ObjectParameter("Kovetz_Id", kovetz_Id) :
-                new ObjectParameter("Kovetz_Id", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteKovetz", kovetz_IdParameter);
-        }
-    
-        public virtual int DeleteKovetzAndMutzar(Nullable<int> kovetz_Id)
-        {
-            var kovetz_IdParameter = kovetz_Id.HasValue ?
-                new ObjectParameter("Kovetz_Id", kovetz_Id) :
-                new ObjectParameter("Kovetz_Id", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteKovetzAndMutzar", kovetz_IdParameter);
-        }
-    
         public virtual int ChangeClientStatusByFileNumber(string misparKovetz, Nullable<int> newStatus)
         {
             var misparKovetzParameter = misparKovetz != null ?
@@ -147,124 +102,18 @@ namespace DAL
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ChangeClientStatusByFileNumber", misparKovetzParameter, newStatusParameter);
         }
     
-        public virtual int ChangeClientStatusOLD(ObjectParameter mISPAR_ZIHUY, Nullable<int> fromStatus, Nullable<int> toStatus, Nullable<int> kovetz_id)
+        public virtual int DequeueEvent(string mISPAR_ZIHUY)
         {
-            var fromStatusParameter = fromStatus.HasValue ?
-                new ObjectParameter("FromStatus", fromStatus) :
-                new ObjectParameter("FromStatus", typeof(int));
+            var mISPAR_ZIHUYParameter = mISPAR_ZIHUY != null ?
+                new ObjectParameter("MISPAR_ZIHUY", mISPAR_ZIHUY) :
+                new ObjectParameter("MISPAR_ZIHUY", typeof(string));
     
-            var toStatusParameter = toStatus.HasValue ?
-                new ObjectParameter("ToStatus", toStatus) :
-                new ObjectParameter("ToStatus", typeof(int));
-    
-            var kovetz_idParameter = kovetz_id.HasValue ?
-                new ObjectParameter("kovetz_id", kovetz_id) :
-                new ObjectParameter("kovetz_id", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ChangeClientStatusOLD", mISPAR_ZIHUY, fromStatusParameter, toStatusParameter, kovetz_idParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DequeueEvent", mISPAR_ZIHUYParameter);
         }
     
-        public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
+        public virtual int GetFileNumerator(ObjectParameter numerator)
         {
-            var diagramnameParameter = diagramname != null ?
-                new ObjectParameter("diagramname", diagramname) :
-                new ObjectParameter("diagramname", typeof(string));
-    
-            var owner_idParameter = owner_id.HasValue ?
-                new ObjectParameter("owner_id", owner_id) :
-                new ObjectParameter("owner_id", typeof(int));
-    
-            var versionParameter = version.HasValue ?
-                new ObjectParameter("version", version) :
-                new ObjectParameter("version", typeof(int));
-    
-            var definitionParameter = definition != null ?
-                new ObjectParameter("definition", definition) :
-                new ObjectParameter("definition", typeof(byte[]));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_alterdiagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
-        }
-    
-        public virtual int sp_creatediagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
-        {
-            var diagramnameParameter = diagramname != null ?
-                new ObjectParameter("diagramname", diagramname) :
-                new ObjectParameter("diagramname", typeof(string));
-    
-            var owner_idParameter = owner_id.HasValue ?
-                new ObjectParameter("owner_id", owner_id) :
-                new ObjectParameter("owner_id", typeof(int));
-    
-            var versionParameter = version.HasValue ?
-                new ObjectParameter("version", version) :
-                new ObjectParameter("version", typeof(int));
-    
-            var definitionParameter = definition != null ?
-                new ObjectParameter("definition", definition) :
-                new ObjectParameter("definition", typeof(byte[]));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_creatediagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
-        }
-    
-        public virtual int sp_dropdiagram(string diagramname, Nullable<int> owner_id)
-        {
-            var diagramnameParameter = diagramname != null ?
-                new ObjectParameter("diagramname", diagramname) :
-                new ObjectParameter("diagramname", typeof(string));
-    
-            var owner_idParameter = owner_id.HasValue ?
-                new ObjectParameter("owner_id", owner_id) :
-                new ObjectParameter("owner_id", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_dropdiagram", diagramnameParameter, owner_idParameter);
-        }
-    
-        public virtual int sp_helpdiagramdefinition(string diagramname, Nullable<int> owner_id)
-        {
-            var diagramnameParameter = diagramname != null ?
-                new ObjectParameter("diagramname", diagramname) :
-                new ObjectParameter("diagramname", typeof(string));
-    
-            var owner_idParameter = owner_id.HasValue ?
-                new ObjectParameter("owner_id", owner_id) :
-                new ObjectParameter("owner_id", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_helpdiagramdefinition", diagramnameParameter, owner_idParameter);
-        }
-    
-        public virtual int sp_helpdiagrams(string diagramname, Nullable<int> owner_id)
-        {
-            var diagramnameParameter = diagramname != null ?
-                new ObjectParameter("diagramname", diagramname) :
-                new ObjectParameter("diagramname", typeof(string));
-    
-            var owner_idParameter = owner_id.HasValue ?
-                new ObjectParameter("owner_id", owner_id) :
-                new ObjectParameter("owner_id", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_helpdiagrams", diagramnameParameter, owner_idParameter);
-        }
-    
-        public virtual int sp_renamediagram(string diagramname, Nullable<int> owner_id, string new_diagramname)
-        {
-            var diagramnameParameter = diagramname != null ?
-                new ObjectParameter("diagramname", diagramname) :
-                new ObjectParameter("diagramname", typeof(string));
-    
-            var owner_idParameter = owner_id.HasValue ?
-                new ObjectParameter("owner_id", owner_id) :
-                new ObjectParameter("owner_id", typeof(int));
-    
-            var new_diagramnameParameter = new_diagramname != null ?
-                new ObjectParameter("new_diagramname", new_diagramname) :
-                new ObjectParameter("new_diagramname", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_renamediagram", diagramnameParameter, owner_idParameter, new_diagramnameParameter);
-        }
-    
-        public virtual int sp_upgraddiagrams()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_upgraddiagrams");
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GetFileNumerator", numerator);
         }
     }
 }

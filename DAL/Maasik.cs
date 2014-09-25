@@ -12,12 +12,20 @@ namespace DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class IshKesherYeshutMetafel
+    public partial class Maasik
     {
-        public int IshKesherYeshutMetafel_Id { get; set; }
-        public int YeshutMetafel_Id { get; set; }
-        public string SHEM_PRATI { get; set; }
-        public string SHEM_MISHPACHA { get; set; }
+        public Maasik()
+        {
+            this.IshKesherMaasiks = new HashSet<IshKesherMaasik>();
+            this.PirteiTaktzivs = new HashSet<PirteiTaktziv>();
+        }
+    
+        public int Maasik_Id { get; set; }
+        public string MPR_MAASIK_BE_YATZRAN { get; set; }
+        public int SUG_MEZAHE_MAASIK { get; set; }
+        public string MISPAR_MEZAHE_MAASIK { get; set; }
+        public Nullable<int> MISPAR_TIK_NIKUIIM { get; set; }
+        public string SHEM_MAASIK { get; set; }
         public string ERETZ { get; set; }
         public string SHEM_YISHUV { get; set; }
         public Nullable<int> SEMEL_YESHUV { get; set; }
@@ -34,6 +42,7 @@ namespace DAL
         public string E_MAIL { get; set; }
         public string HEAROT { get; set; }
     
-        public virtual YeshutMetafel YeshutMetafel { get; set; }
+        public virtual ICollection<IshKesherMaasik> IshKesherMaasiks { get; set; }
+        public virtual ICollection<PirteiTaktziv> PirteiTaktzivs { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace WebSite.Controllers
             var name = (string)RouteData.Values["id"];
             var polisaBL = new PolisaBL();
             DAL.Client client = new DAL.Client();
-            client.TeudatZehut = "024416422";
+            client.TeudatZehut = "24416422".PadLeft(12,'0');
             var model = polisaBL.GetPolisas(client);
 
             if (model == null)

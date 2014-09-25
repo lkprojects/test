@@ -14,7 +14,16 @@ namespace DAL
     
     public partial class Yatzran
     {
+        public Yatzran()
+        {
+            this.IshKesherYatzrans = new HashSet<IshKesherYatzran>();
+            this.HeshbonOPolisas = new HashSet<HeshbonOPolisa>();
+        }
+    
         public int KOD_MEZAHE_YATZRAN { get; set; }
         public string SHEM_YATZRAN { get; set; }
+    
+        public virtual ICollection<IshKesherYatzran> IshKesherYatzrans { get; set; }
+        public virtual ICollection<HeshbonOPolisa> HeshbonOPolisas { get; set; }
     }
 }

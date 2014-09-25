@@ -81,10 +81,10 @@ namespace DAL
         public Nullable<decimal> Yesodi_TIKRAT_GAG_HATAM_LE_O_K_A { get; set; }
         public Nullable<decimal> Yesodi_SCHUM_BITUAH_LEMAVET { get; set; }
     
-        public virtual HeshbonOPolisa HeshbonOPolisa { get; set; }
         public virtual ICollection<Mevutach> Mevutaches { get; set; }
         public virtual ICollection<Miktsoa_Isuk_Tachviv> Miktsoa_Isuk_Tachviv { get; set; }
         public virtual ICollection<Mutav> Mutavs { get; set; }
         public virtual ICollection<Tosafot> Tosafots { get; set; }
+        public virtual HeshbonOPolisa HeshbonOPolisa { get; set; }
     }
 }

@@ -13,6 +13,8 @@ namespace WebSite.Controllers
 
         public ActionResult Index()
         {
+            ViewBag.xx = "BLABLA";
+
             return View();
         }
 

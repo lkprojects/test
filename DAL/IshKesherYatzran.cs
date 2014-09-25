@@ -12,10 +12,10 @@ namespace DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class IshKesherYeshutYatzran
+    public partial class IshKesherYatzran
     {
         public int IshKesherYeshutYatzran_Id { get; set; }
-        public int Kovetz_Id { get; set; }
+        public int KOD_MEZAHE_YATZRAN { get; set; }
         public string SHEM_PRATI { get; set; }
         public string SHEM_MISHPACHA { get; set; }
         public string ERETZ { get; set; }
@@ -34,6 +34,6 @@ namespace DAL
         public string E_MAIL { get; set; }
         public string HEAROT { get; set; }
     
-        public virtual Kovetz Kovetz { get; set; }
+        public virtual Yatzran Yatzran { get; set; }
     }
 }

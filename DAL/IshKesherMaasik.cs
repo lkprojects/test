@@ -12,7 +12,7 @@ namespace DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class IshKesherYeshutMaasik
+    public partial class IshKesherMaasik
     {
         public int IshKesherYeshutMaasik_Id { get; set; }
         public int YeshutMaasik_Id { get; set; }
@@ -24,6 +24,6 @@ namespace DAL
         public string E_MAIL { get; set; }
         public string HEAROT { get; set; }
     
-        public virtual YeshutMaasik YeshutMaasik { get; set; }
+        public virtual Maasik Maasik { get; set; }
     }
 }

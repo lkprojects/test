@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using log4net;
 using System.Data.Entity;
+
 namespace DAL
 {
     public enum ClientStatus { New = 1, EventSent, EventFeedbackSuccess, EventFeedbackFileError, EventFeedbackRecordError, DataLoaded, NoData};
@@ -14,7 +15,7 @@ namespace DAL
     {
         private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private Config[] configArray;
-        private PensionsEntities dbCtx = new PensionsEntities();
+        private Entities dbCtx = new Entities();
         public Config[] ConfigArray { get { return configArray; } }
 
         /// <summary>
@@ -23,7 +24,7 @@ namespace DAL
         public DAL()
         {
             log4net.Config.XmlConfigurator.Configure();
-            dbCtx = new PensionsEntities();
+            dbCtx = new Entities();
         }
 
         /// <summary>
@@ -71,6 +72,54 @@ namespace DAL
             }
 
         }
+
+
+        public void SaveYatzran (Yatzran yatzran)
+        {
+            Yatzran yatzran_check = new Yatzran();
+            yatzran_check = 
+                    (from ya in dbCtx.Yatzrans
+                     where ya.KOD_MEZAHE_YATZRAN == yatzran.KOD_MEZAHE_YATZRAN
+                     select ya).FirstOrDefault();
+            if (yatzran_check == null)
+            {
+                dbCtx.Yatzrans.Add(yatzran);
+            }
+            
+        }
+
+        public bool CheckMetafel (int? KodMezaheMetafel)
+        {
+            if (KodMezaheMetafel == null)
+                return false;
+
+            int kod =
+                (from m in dbCtx.Metafels
+                 where m.KOD_MEZAHE_METAFEL == KodMezaheMetafel
+                 select m.KOD_MEZAHE_METAFEL).FirstOrDefault();
+
+            if (kod > 0)
+                return true;
+            else
+                return false;
+        }
+
+        public void SaveIshKesherYatzran(IshKesherYatzran ishKesherYatzran)
+        {
+            IshKesherYatzran ishKesherYatzran_check =
+                    (from ya in dbCtx.IshKesherYatzrans
+                     where ya.SHEM_PRATI == ishKesherYatzran.SHEM_PRATI &&
+                           ya.SHEM_MISHPACHA == ishKesherYatzran.SHEM_MISHPACHA
+                     select ya).FirstOrDefault();
+
+            if (ishKesherYatzran_check != null)
+            {
+                dbCtx.IshKesherYatzrans.Remove(ishKesherYatzran_check);
+            }
+
+            dbCtx.IshKesherYatzrans.Add(ishKesherYatzran);
+        }
+
 
         public List<Client> GetClientsByStatus(int status)
         {
@@ -144,34 +193,34 @@ namespace DAL
             }
         }
 
-        public void DeleteMutzar (int MutzarId)
-        {
-            try
-            {
-                dbCtx.DeleteMutzar(MutzarId);
-            }
-            catch (Exception ex)
-            {
+        //public void DeleteMutzar (int MutzarId)
+        //{
+        //    try
+        //    {
+        //        dbCtx.DeleteMutzar(MutzarId);
+        //    }
+        //    catch (Exception ex)
+        //    {
                 
-            }
-        }
+        //    }
+        //}
         
         public void GetDatabaseValues(object entity)
         {
             dbCtx.Entry(entity).GetDatabaseValues();
         }
 
-        public void DeleteKovetz(int KovetzId)
-        {
-            try
-            {
-                dbCtx.DeleteMutzar(KovetzId);
-            }
-            catch (Exception ex)
-            {
+        //public void DeleteKovetz(int KovetzId)
+        //{
+        //    try
+        //    {
+        //        dbCtx.DeleteMutzar(KovetzId);
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-            }
-        }
+        //    }
+        //}
 
         public bool CheckIfFileExists(string MisparKovetz)
         {
@@ -240,20 +289,20 @@ namespace DAL
             }
         }
 
-        public Mutzar GetMutzarByNumber(int sug, string misparZihuy, int KodMezaheYatzran, int? KodMezaheMetafel)
-        {
-            Mutzar mutzar = new Mutzar();
-            dbCtx.Configuration.LazyLoadingEnabled = false;
+        //public Mutzar GetMutzarByNumber(int sug, string misparZihuy, int KodMezaheYatzran, int? KodMezaheMetafel)
+        //{
+        //    Mutzar mutzar = new Mutzar();
+        //    dbCtx.Configuration.LazyLoadingEnabled = false;
             
-            mutzar = (from k in dbCtx.Mutzars
-                      where k.Lakoach_MISPAR_ZIHUY_LAKOACH == misparZihuy &&
-                            k.SUG_MUTZAR_PENSIONI == sug &&
-                            k.KOD_MEZAHE_YATZRAN == KodMezaheYatzran &&
-                            k.KOD_MEZAHE_METAFEL == KodMezaheMetafel
-                      select k).FirstOrDefault();
+        //    mutzar = (from k in dbCtx.Mutzars
+        //              where k.Lakoach_MISPAR_ZIHUY_LAKOACH == misparZihuy &&
+        //                    k.SUG_MUTZAR_PENSIONI == sug &&
+        //                    k.KOD_MEZAHE_YATZRAN == KodMezaheYatzran &&
+        //                    k.KOD_MEZAHE_METAFEL == KodMezaheMetafel
+        //              select k).FirstOrDefault();
 
-            return mutzar;
-        }
+        //    return mutzar;
+        //}
         
         public Kovetz GetKovetzByNumber (string key)
         {
@@ -278,10 +327,10 @@ namespace DAL
             dbCtx.Kovetzs.Add(kovetz);
         }
 
-        public void Add(Mutzar mutzar)
-        {
-            dbCtx.Mutzars.Add(mutzar);
-        }
+        //public void Add(Mutzar mutzar)
+        //{
+        //    dbCtx.Mutzars.Add(mutzar);
+        //}
 
         public void UpdateClients(List<Client> clients)
         {
@@ -330,5 +379,67 @@ namespace DAL
             }
         }
 
+
+        public void SaveIshKesherMetafel(IshKesherMetafel ishKesherMetafel)
+        {
+            IshKesherMetafel IshKesherMetafel_check =
+                    (from m in dbCtx.IshKesherMetafels
+                     where m.SHEM_PRATI == ishKesherMetafel.SHEM_PRATI &&
+                           m.SHEM_MISHPACHA == ishKesherMetafel.SHEM_MISHPACHA
+                     select m).FirstOrDefault();
+
+            if (IshKesherMetafel_check != null)
+            {
+                dbCtx.IshKesherMetafels.Remove(IshKesherMetafel_check);
+            }
+
+            dbCtx.IshKesherMetafels.Add(ishKesherMetafel);
+        }
+
+        public void SaveMetafel(Metafel metafel)
+        {
+            Metafel metafel_check = new Metafel();
+            metafel_check =
+                    (from m in dbCtx.Metafels
+                     where m.KOD_MEZAHE_METAFEL == metafel.KOD_MEZAHE_METAFEL
+                     select m).FirstOrDefault();
+            if (metafel_check == null)
+            {
+                dbCtx.Metafels.Add(metafel);
+            }
+        }
+
+        public void SaveCustomer(Customer customer)
+        {
+            Customer customer_check = new Customer();
+            customer_check =
+                    (from c in dbCtx.Customers
+                     where c.SUG_MEZAHE_LAKOACH == customer.SUG_MEZAHE_LAKOACH &&
+                           c.MISPAR_ZIHUY_LAKOACH == customer.MISPAR_ZIHUY_LAKOACH
+                     select c).FirstOrDefault();
+            if (customer_check == null)
+            {
+                dbCtx.Customers.Add(customer);
+            }
+            else 
+               dbCtx.Entry(customer).State = EntityState.Modified;
+            
+        }
+
+        public void SaveMaasik(Maasik maasik)
+        {
+            Maasik maasik_check = new Maasik();
+            maasik_check =
+                    (from m in dbCtx.Maasiks
+                     where m.MISPAR_MEZAHE_MAASIK == maasik.MISPAR_MEZAHE_MAASIK &&
+                           m.SUG_MEZAHE_MAASIK == maasik.SUG_MEZAHE_MAASIK
+                     select c).FirstOrDefault();
+            if (maasik_check == null)
+            {
+                dbCtx.Maasiks.Add(maasik);
+            }
+            else
+                dbCtx.Entry(maasik).State = EntityState.Modified;          
+        }
     }
 }

@@ -63,6 +63,9 @@
     <Compile Include="Config.cs">
       <DependentUpon>ModelPensions.tt</DependentUpon>
     </Compile>
+    <Compile Include="Customer.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
     <Compile Include="DAL.cs" />
     <Compile Include="DmeiNihul.cs">
       <DependentUpon>ModelPensions.tt</DependentUpon>
@@ -88,16 +91,19 @@
     <Compile Include="Halvaa.cs">
       <DependentUpon>ModelPensions.tt</DependentUpon>
     </Compile>
+    <Compile Include="HeshbonKovetz.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
     <Compile Include="HeshbonOPolisa.cs">
       <DependentUpon>ModelPensions.tt</DependentUpon>
     </Compile>
-    <Compile Include="IshKesherYeshutMaasik.cs">
+    <Compile Include="IshKesherMaasik.cs">
       <DependentUpon>ModelPensions.tt</DependentUpon>
     </Compile>
-    <Compile Include="IshKesherYeshutMetafel.cs">
+    <Compile Include="IshKesherMetafel.cs">
       <DependentUpon>ModelPensions.tt</DependentUpon>
     </Compile>
-    <Compile Include="IshKesherYeshutYatzran.cs">
+    <Compile Include="IshKesherYatzran.cs">
       <DependentUpon>ModelPensions.tt</DependentUpon>
     </Compile>
     <Compile Include="Kisui.cs">
@@ -112,7 +118,13 @@
     <Compile Include="LUT.cs">
       <DependentUpon>ModelPensions.tt</DependentUpon>
     </Compile>
+    <Compile Include="Maasik.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
     <Compile Include="MasluleiHashkaa.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Metafel.cs">
       <DependentUpon>ModelPensions.tt</DependentUpon>
     </Compile>
     <Compile Include="Mevutach.cs">
@@ -145,12 +157,6 @@
     <Compile Include="Mutav.cs">
       <DependentUpon>ModelPensions.tt</DependentUpon>
     </Compile>
-    <Compile Include="Mutzar.cs">
-      <DependentUpon>ModelPensions.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MutzarKovetz.cs">
-      <DependentUpon>ModelPensions.tt</DependentUpon>
-    </Compile>
     <Compile Include="PerutHafkadaAchrona.cs">
       <DependentUpon>ModelPensions.tt</DependentUpon>
     </Compile>
@@ -174,6 +180,9 @@
     <Compile Include="Sheer.cs">
       <DependentUpon>ModelPensions.tt</DependentUpon>
     </Compile>
+    <Compile Include="sysdiagram.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
     <Compile Include="Tosafot.cs">
       <DependentUpon>ModelPensions.tt</DependentUpon>
     </Compile>
@@ -181,12 +190,6 @@
       <DependentUpon>ModelPensions.tt</DependentUpon>
     </Compile>
     <Compile Include="Yatzran.cs">
-      <DependentUpon>ModelPensions.tt</DependentUpon>
-    </Compile>
-    <Compile Include="YeshutMaasik.cs">
-      <DependentUpon>ModelPensions.tt</DependentUpon>
-    </Compile>
-    <Compile Include="YeshutMetafel.cs">
       <DependentUpon>ModelPensions.tt</DependentUpon>
     </Compile>
     <Compile Include="YitraLefiGilPrisha.cs">

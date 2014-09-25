@@ -12,19 +12,13 @@ namespace DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class YeshutMetafel
+    public partial class HeshbonKovetz
     {
-        public YeshutMetafel()
-        {
-            this.IshKesherYeshutMetafels = new HashSet<IshKesherYeshutMetafel>();
-        }
-    
-        public int YeshutMetafel_Id { get; set; }
         public int Kovetz_Id { get; set; }
-        public Nullable<int> KOD_MEZAHE_METAFEL { get; set; }
-        public string SHEM_METAFEL { get; set; }
+        public int HeshbonOPolisa_Id { get; set; }
+        public Nullable<System.DateTime> InsertDate { get; set; }
     
-        public virtual ICollection<IshKesherYeshutMetafel> IshKesherYeshutMetafels { get; set; }
         public virtual Kovetz Kovetz { get; set; }
+        public virtual HeshbonOPolisa HeshbonOPolisa { get; set; }
     }
 }

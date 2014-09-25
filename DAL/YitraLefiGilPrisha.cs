@@ -26,7 +26,7 @@ namespace DAL
         public Nullable<decimal> TZVIRAT_CHISACHON_CHAZUYA_LELO_PREMIYOT { get; set; }
         public Nullable<decimal> SHEUR_PNS_ZIKNA_TZFUYA { get; set; }
     
-        public virtual HeshbonOPolisa HeshbonOPolisa { get; set; }
         public virtual ICollection<Kupa> Kupas { get; set; }
+        public virtual HeshbonOPolisa HeshbonOPolisa { get; set; }
     }
 }

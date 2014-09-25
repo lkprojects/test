@@ -27,7 +27,7 @@ namespace DAL
         public int PirteiTaktziv_Id { get; set; }
         public int HeshbonOPolisa_Id { get; set; }
         public int Oved_SUG_TOCHNIT_O_CHESHBON { get; set; }
-        public string Oved_MPR_MAASIK_BE_YATZRAN { get; set; }
+        public Nullable<int> Maasik_id { get; set; }
         public Nullable<int> Oved_STATUS_MAASIK { get; set; }
         public Nullable<int> Oved_SUG_BAAL_HAPOLISA_SHE_EINO_HAMEVUTACH { get; set; }
         public string Oved_MISPAR_BAAL_POLISA_SHEEINO_MEVUTAH { get; set; }
@@ -65,12 +65,13 @@ namespace DAL
         public Nullable<decimal> HotzaotBafoalLehodeshDivoach_TOTAL_DMEI_NIHUL_POLISA_O_HESHBON { get; set; }
         public Nullable<decimal> HotzaotBafoalLehodeshDivoach_SACH_DMEI_BITUAH_SHENIGBOO { get; set; }
     
-        public virtual HeshbonOPolisa HeshbonOPolisa { get; set; }
         public virtual ICollection<DmeiNihul> DmeiNihuls { get; set; }
         public virtual ICollection<HafkadaAchrona> HafkadaAchronas { get; set; }
         public virtual ICollection<HafkadotMetchilatShana> HafkadotMetchilatShanas { get; set; }
         public virtual ICollection<HafrashotLePolisa> HafrashotLePolisas { get; set; }
+        public virtual Maasik Maasik { get; set; }
         public virtual ICollection<MasluleiHashkaa> MasluleiHashkaas { get; set; }
         public virtual ICollection<Yitrot> Yitrots { get; set; }
+        public virtual HeshbonOPolisa HeshbonOPolisa { get; set; }
     }
 }

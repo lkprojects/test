@@ -145,7 +145,7 @@ namespace MislakaInterface
 
 
             int numerator = Dal.GetFileNumerator();
-            Mutzar lakoachRec = new Mutzar();
+            //Mutzar lakoachRec = new Mutzar();
             string Version = EventsInterface.MimshakKoteretKovetzMISPARGIRSATXML.Item001.ToString().Replace("Item","");
 
             WordTemplate template = new WordTemplate();
