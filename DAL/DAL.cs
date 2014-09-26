@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using log4net;
 using System.Data.Entity;
+using System.Data.Entity.Core;
+using System.Data.Entity.Infrastructure;
 
 namespace DAL
 {
@@ -147,6 +149,7 @@ namespace DAL
                 client.ModifyDate = DateTime.Now;
                 client.LastStatus = (byte)ToStatus;
                 dbCtx.Entry(client).State = EntityState.Modified;
+                dbCtx.Entry(client).Reload();
                 return true;
             }
             else
@@ -167,6 +170,14 @@ namespace DAL
             {
                 dbCtx.SaveChanges();
             }
+            catch (OptimisticConcurrencyException oex)
+            {
+ //               dbCtx.Entry(heshbonOPolisa).Reload();
+//                dbCtx.SaveChanges();
+                ObjectStateEntry entry = oex.StateEntries[0];
+
+            }
+
             catch (System.Data.Entity.Validation.DbEntityValidationException e)
             {
                 string rs = "";
@@ -182,10 +193,11 @@ namespace DAL
                 }
                 // throw new Exception(rs);
             }
-            catch (System.Data.Entity.Infrastructure.DbUpdateException ex)
+            catch (DbUpdateException ex)
             {
                 string rs = ex.Message;
-                rs += "\n" + ex.InnerException.InnerException.ToString();
+                if (ex.InnerException.InnerException != null)
+                    rs += "\n" + ex.InnerException.InnerException.ToString();
                 Console.WriteLine(rs);
                 log.Error(rs);
 
@@ -337,11 +349,14 @@ namespace DAL
             for (int i = 0; i < clients.Count; i++)
             {
                 dbCtx.Entry(clients[i]).State = EntityState.Modified;
+                dbCtx.Entry(clients[i]).Reload();
             }
         }
         public void UpdateClient(Client client)
         {
             dbCtx.Entry(client).State = EntityState.Modified;
+            dbCtx.Entry(client).Reload();
+
         }
 
 
@@ -376,6 +391,7 @@ namespace DAL
             {
                 clientYatzran.HasData = hasData;
                 dbCtx.Entry(clientYatzran).State = EntityState.Modified;
+                dbCtx.Entry(clientYatzran).Reload();
             }
         }
 
@@ -411,35 +427,61 @@ namespace DAL
 
         public void SaveCustomer(Customer customer)
         {
-            Customer customer_check = new Customer();
-            customer_check =
-                    (from c in dbCtx.Customers
-                     where c.SUG_MEZAHE_LAKOACH == customer.SUG_MEZAHE_LAKOACH &&
-                           c.MISPAR_ZIHUY_LAKOACH == customer.MISPAR_ZIHUY_LAKOACH
-                     select c).FirstOrDefault();
-            if (customer_check == null)
+            string misparZihuyLakoach =
+                (from c in dbCtx.Customers.AsNoTracking()
+                    where c.SUG_MEZAHE_LAKOACH == customer.SUG_MEZAHE_LAKOACH &&
+                        c.MISPAR_ZIHUY_LAKOACH == customer.MISPAR_ZIHUY_LAKOACH
+                    select c.MISPAR_ZIHUY_LAKOACH).FirstOrDefault();
+
+            if (misparZihuyLakoach.Length > 0)
+            {
+                dbCtx.Entry(customer).State = EntityState.Modified;
+                dbCtx.Entry(customer).Reload();
+            }
+            else
             {
                 dbCtx.Customers.Add(customer);
             }
-            else 
-               dbCtx.Entry(customer).State = EntityState.Modified;
-            
         }
 
         public void SaveMaasik(Maasik maasik)
         {
-            Maasik maasik_check = new Maasik();
-            maasik_check =
+            int maasik_Id;
+            maasik_Id =
                     (from m in dbCtx.Maasiks
                      where m.MISPAR_MEZAHE_MAASIK == maasik.MISPAR_MEZAHE_MAASIK &&
                            m.SUG_MEZAHE_MAASIK == maasik.SUG_MEZAHE_MAASIK
-                     select c).FirstOrDefault();
-            if (maasik_check == null)
+                     select m.Maasik_Id).FirstOrDefault();
+            if (maasik_Id > 0)
             {
-                dbCtx.Maasiks.Add(maasik);
+                dbCtx.Entry(maasik).State = EntityState.Modified;
+                dbCtx.Entry(maasik).Reload();
             }
             else
-                dbCtx.Entry(maasik).State = EntityState.Modified;          
+                dbCtx.Maasiks.Add(maasik);
+        }
+
+        public void SaveHeshbonOPolisa(HeshbonOPolisa heshbonOPolisa)
+        {
+            int heshbonOPolisa_Id;
+            heshbonOPolisa_Id =
+                    (from m in dbCtx.HeshbonOPolisas
+                     where m.MISPAR_POLISA_O_HESHBON == heshbonOPolisa.MISPAR_POLISA_O_HESHBON &&
+                           m.KOD_MEZAHE_YATZRAN == heshbonOPolisa.KOD_MEZAHE_YATZRAN
+                     select m.HeshbonOPolisa_Id).FirstOrDefault();
+
+            if (heshbonOPolisa_Id >0)
+                //    dbCtx.Entry(heshbonOPolisa).State = EntityState.Modified;      
+                   dbCtx.DeleteHeshbonOPolisa(heshbonOPolisa_Id);
+            //else
+            //if (heshbonOPolisa_check == null)
+            //{
+            dbCtx.HeshbonOPolisas.Add(heshbonOPolisa);
+//            dbCtx.Entry(heshbonOPolisa).Reload();
+            //}
+            //else
+            //    dbCtx.Entry(heshbonOPolisa).State = EntityState.Modified;      
+            
         }
     }
 }

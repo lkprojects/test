@@ -68,22 +68,25 @@ namespace MislakaInterface
                 ParseMetafel(mimshak.YeshutMetafel);
             }
 
+           // if (dataMode == DataMode.Insert)
+            Dal.Add(kovetz);
+            //Dal.SaveChanges();
+
+            HeshbonKovetz heshbonKovetz;
+            HeshbonOPolisa heshbonOPolisa;
             for (int i = 0; i < mimshak.Mutzarim.Length; i++)
             {
-                ParseCustomer(mimshak.Mutzarim[i]);
-                ParseYeshutMaasik()
-//                ParseMutzar(out mutzar, mimshak.Mutzarim[i], kovetz.Kovetz_Id);
-
-                //mutzarKovetz = new MutzarKovetz();
-                //mutzarKovetz.Kovetz = kovetz;
-                //mutzarKovetz.Mutzar = mutzar;
-                //kovetz.MutzarKovetzs.Add(mutzarKovetz);
-            }
-
-            if (dataMode == DataMode.Insert)
-                Dal.Add(kovetz);
-
-        
+                heshbonKovetz = new HeshbonKovetz();
+                ParseCustomer(mimshak.Mutzarim[i].NetuneiMutzar.YeshutLakoach, mimshak.Mutzarim[i].NetuneiMutzar.KODMEZAHEYATZRAN.ToString());
+                ParseMaasik(mimshak.Mutzarim[i].NetuneiMutzar.YeshutMaasik);
+                for (int j = 0; j < mimshak.Mutzarim[i].HeshbonotOPolisot.Length; j++)
+                {
+                    heshbonOPolisa = ParseHeshbonOPolisa(mimshak.Mutzarim[i].HeshbonotOPolisot[j], mimshak.Mutzarim[i].NetuneiMutzar);
+                    heshbonKovetz.HeshbonOPolisa = heshbonOPolisa;
+                    heshbonKovetz.Kovetz = kovetz;
+                    kovetz.HeshbonKovetzs.Add(heshbonKovetz);
+                }
+            }       
         }
 
         private void ParseMetafel(AchzakotInterface.MimshakYeshutMetafel[] mimshakMetafel)
@@ -94,7 +97,9 @@ namespace MislakaInterface
             for (int i = 0; i < mimshak.YeshutMetafel.Length; i++)
             {
                 metafel = new Metafel();
-                metafel.KOD_MEZAHE_METAFEL = (int)mimshakMetafel[i].KODMEZAHEMETAFEL;
+                if (mimshakMetafel[i].KODMEZAHEMETAFEL != null)
+                    metafel.KOD_MEZAHE_METAFEL = (int)mimshakMetafel[i].KODMEZAHEMETAFEL;
+
                 metafel.SHEM_METAFEL = mimshakMetafel[i].SHEMMETAFEL;
                 Dal.SaveMetafel(metafel);
 
@@ -161,90 +166,41 @@ namespace MislakaInterface
 
         public void SaveChanges()
         {
-            try
-            {
-                Dal.SaveChanges();
-            }
-            catch (System.Data.Entity.Validation.DbEntityValidationException e)
-            {
-                string rs = "";
-                foreach (var eve in e.EntityValidationErrors)
-                {
-                    rs = string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:", eve.Entry.Entity.GetType().Name, eve.Entry.State);
-
-                    foreach (var ve in eve.ValidationErrors)
-                    {
-                        rs += "\n" + string.Format("- Property: \"{0}\", Error: \"{1}\"", ve.PropertyName, ve.ErrorMessage);
-                    }
-                    Console.WriteLine(rs);
-                    log.Error(rs, e);
-                }
-                throw new Exception(rs);
-            }
-            catch (System.Data.Entity.Infrastructure.DbUpdateException ex)
-            {
-                string rs = ex.Message;
-                rs += "\n" + ex.InnerException.InnerException.ToString();
-                Console.WriteLine(rs);
-                log.Error(rs, ex);
-
-                throw new Exception(rs);
-
-            }
-            catch (Exception e)
-            {
-                log.Error("Error Found", e);
-              //  throw new Exception(rs);
-            }
-            
+            Dal.SaveChanges();          
         }
 
-        public void ParseCustomer(AchzakotInterface.MimshakMutzar mimshak)
+        public void ParseCustomer(AchzakotInterface.MimshakMutzarNetuneiMutzarYeshutLakoach mimshakLakoach, string kodMezaheYatzran)
         {
             Customer customer = new Customer();
 
-            //customer.KOD_MEZAHE_METAFEL = mimshak.NetuneiMutzar.KODMEZAHEMETAFEL;
-            //customer.KOD_MEZAHE_YATZRAN = mimshak.NetuneiMutzar.KODMEZAHEYATZRAN;
-            //customer.MISPAR_MISLAKA = mimshak.NetuneiMutzar.MISPARMISLAKA;
-            //customer.SUG_MUTZAR_PENSIONI = mimshak.NetuneiMutzar.SUGMUTZARPENSIONI;
-            customer.E_MAIL = mimshak.NetuneiMutzar.YeshutLakoach.EMAIL;
-            customer.ERETZ = mimshak.NetuneiMutzar.YeshutLakoach.ERETZ;
-            customer.HEAROT = mimshak.NetuneiMutzar.YeshutLakoach.HEAROT;
-            customer.MATZAV_MISHPACHTI = mimshak.NetuneiMutzar.YeshutLakoach.MATZAVMISHPACHTI;
-            customer.MIKUD = mimshak.NetuneiMutzar.YeshutLakoach.MIKUD;
-            customer.MIN = mimshak.NetuneiMutzar.YeshutLakoach.MIN;
-            customer.MISPAR_BAIT = mimshak.NetuneiMutzar.YeshutLakoach.MISPARBAIT;
-            customer.MISPAR_CELLULARI = mimshak.NetuneiMutzar.YeshutLakoach.MISPARCELLULARI;
-            customer.MISPAR_DIRA = mimshak.NetuneiMutzar.YeshutLakoach.MISPARDIRA;
-            customer.MISPAR_FAX = mimshak.NetuneiMutzar.YeshutLakoach.MISPARFAX;
-            customer.MISPAR_KNISA = mimshak.NetuneiMutzar.YeshutLakoach.MISPARKNISA;
-            customer.MISPAR_SHLUCHA = mimshak.NetuneiMutzar.YeshutLakoach.MISPARSHLUCHA;
-            customer.MISPAR_TELEPHONE_KAVI = mimshak.NetuneiMutzar.YeshutLakoach.MISPARTELEPHONEKAVI;
-            customer.MISPAR_YELADIM = mimshak.NetuneiMutzar.YeshutLakoach.MISPARYELADIM;
-            customer.MISPAR_ZIHUY_LAKOACH = mimshak.NetuneiMutzar.YeshutLakoach.MISPARZIHUYLAKOACH;
-            customer.PTIRA = mimshak.NetuneiMutzar.YeshutLakoach.PTIRA;
-            customer.SEMEL_YESHUV = mimshak.NetuneiMutzar.YeshutLakoach.SEMELYESHUV;
-            customer.SHEM_MISHPACHA = mimshak.NetuneiMutzar.YeshutLakoach.SHEMMISHPACHA;
-            customer.SHEM_MISHPACHA_KODEM = mimshak.NetuneiMutzar.YeshutLakoach.SHEMMISHPACHAKODEM;
-            customer.SHEM_PRATI = mimshak.NetuneiMutzar.YeshutLakoach.SHEMPRATI;
-            customer.SHEM_RECHOV = mimshak.NetuneiMutzar.YeshutLakoach.SHEMRECHOV;
-            customer.SHEM_YISHUV = mimshak.NetuneiMutzar.YeshutLakoach.SHEMYISHUV;
-            customer.SUG_MEZAHE_LAKOACH = mimshak.NetuneiMutzar.YeshutLakoach.SUGMEZAHELAKOACH;
-            customer.TA_DOAR = mimshak.NetuneiMutzar.YeshutLakoach.TADOAR;
-            customer.TAARICH_LEYDA = Common.ConvertDate(mimshak.NetuneiMutzar.YeshutLakoach.TAARICHLEYDA);
-            customer.TAARICH_PTIRA = Common.ConvertDate(mimshak.NetuneiMutzar.YeshutLakoach.TAARICHPTIRA);
-
-
-            //if (mimshak.NetuneiMutzar.YeshutMaasik != null)
-            //    ParseYeshutMaasik(customer, mimshak.NetuneiMutzar.YeshutMaasik);
-            
-            //for (int i = 0; i < mimshak.HeshbonotOPolisot.Length; i++)
-            //{
-            //    ParseHeshbonOPolisa(customer, mimshak.HeshbonotOPolisot[i]);
-            //}
+            customer.E_MAIL = mimshakLakoach.EMAIL;
+            customer.ERETZ = mimshakLakoach.ERETZ;
+            customer.HEAROT = mimshakLakoach.HEAROT;
+            customer.MATZAV_MISHPACHTI = mimshakLakoach.MATZAVMISHPACHTI;
+            customer.MIKUD = mimshakLakoach.MIKUD;
+            customer.MIN = mimshakLakoach.MIN;
+            customer.MISPAR_BAIT = mimshakLakoach.MISPARBAIT;
+            customer.MISPAR_CELLULARI = mimshakLakoach.MISPARCELLULARI;
+            customer.MISPAR_DIRA = mimshakLakoach.MISPARDIRA;
+            customer.MISPAR_FAX = mimshakLakoach.MISPARFAX;
+            customer.MISPAR_KNISA = mimshakLakoach.MISPARKNISA;
+            customer.MISPAR_SHLUCHA = mimshakLakoach.MISPARSHLUCHA;
+            customer.MISPAR_TELEPHONE_KAVI = mimshakLakoach.MISPARTELEPHONEKAVI;
+            customer.MISPAR_YELADIM = mimshakLakoach.MISPARYELADIM;
+            customer.MISPAR_ZIHUY_LAKOACH = mimshakLakoach.MISPARZIHUYLAKOACH;
+            customer.PTIRA = mimshakLakoach.PTIRA;
+            customer.SEMEL_YESHUV = mimshakLakoach.SEMELYESHUV;
+            customer.SHEM_MISHPACHA = mimshakLakoach.SHEMMISHPACHA;
+            customer.SHEM_MISHPACHA_KODEM = mimshakLakoach.SHEMMISHPACHAKODEM;
+            customer.SHEM_PRATI = mimshakLakoach.SHEMPRATI;
+            customer.SHEM_RECHOV = mimshakLakoach.SHEMRECHOV;
+            customer.SHEM_YISHUV = mimshakLakoach.SHEMYISHUV;
+            customer.SUG_MEZAHE_LAKOACH = mimshakLakoach.SUGMEZAHELAKOACH;
+            customer.TA_DOAR = mimshakLakoach.TADOAR;
+            customer.TAARICH_LEYDA = Common.ConvertDate(mimshakLakoach.TAARICHLEYDA);
+            customer.TAARICH_PTIRA = Common.ConvertDate(mimshakLakoach.TAARICHPTIRA);
 
             Dal.SaveCustomer(customer);
-
             Client client = Dal.GetClient(customer.MISPAR_ZIHUY_LAKOACH);
 
             if (client != null)
@@ -252,10 +208,10 @@ namespace MislakaInterface
                 client.LastStatus = (byte)ClientStatus.DataLoaded;
                 Dal.UpdateClient(client);
             }
-            Dal.SetClientYatzran(mimshak.NetuneiMutzar.KODMEZAHEYATZRAN.ToString(), customer.MISPAR_ZIHUY_LAKOACH.TrimStart('0'), false);
+            Dal.SetClientYatzran(kodMezaheYatzran, customer.MISPAR_ZIHUY_LAKOACH.TrimStart('0'), false);
         }
         
-        private void ParseYeshutMaasik(AchzakotInterface.MimshakMutzarNetuneiMutzarYeshutMaasik[] mimshakYeshutMaasik)
+        private void ParseMaasik(AchzakotInterface.MimshakMutzarNetuneiMutzarYeshutMaasik[] mimshakYeshutMaasik)
         {
             Maasik maasik;
             for (int i = 0; i < mimshakYeshutMaasik.Length; i++)
@@ -282,39 +238,49 @@ namespace MislakaInterface
                 maasik.SHEM_YISHUV = mimshakYeshutMaasik[i].SHEMYISHUV;
                 maasik.SUG_MEZAHE_MAASIK = mimshakYeshutMaasik[i].SUGMEZAHEMAASIK;
                 maasik.TA_DOAR = mimshakYeshutMaasik[i].TADOAR;
-                ParseIshKesherYeshutMaasik(mimshakYeshutMaasik[i].IshKesherYeshutMaasik, maasik);
+                ParseIshKesherMaasik(mimshakYeshutMaasik[i].IshKesherYeshutMaasik, maasik);
 
                 Dal.SaveMaasik(maasik);
             }
         }
 
-        private void ParseIshKesherYeshutMaasik(AchzakotInterface.MimshakMutzarNetuneiMutzarYeshutMaasikIshKesherYeshutMaasik[] mimshakIshKesherYeshutMaasik,
-                                                Maasik maasik)
+        private void ParseIshKesherMaasik(AchzakotInterface.MimshakMutzarNetuneiMutzarYeshutMaasikIshKesherYeshutMaasik[] mimshakIshKesherYeshutMaasik,
+                                          Maasik maasik)
         {
-            IshKesherMaasik ishKesherYeshutMaasik;
-
-            for (int j = 0; j < mimshakIshKesherYeshutMaasik.Length; j++)
+            IshKesherMaasik ishKesherMaasik;
+            if (mimshakIshKesherYeshutMaasik != null)
             {
-                ishKesherYeshutMaasik = new IshKesherMaasik();
-                ishKesherYeshutMaasik.E_MAIL = mimshakIshKesherYeshutMaasik[j].EMAIL;
-                ishKesherYeshutMaasik.HEAROT = mimshakIshKesherYeshutMaasik[j].HEAROT;
-                ishKesherYeshutMaasik.MISPAR_CELLULARI = mimshakIshKesherYeshutMaasik[j].MISPARCELLULARI;
-                ishKesherYeshutMaasik.MISPAR_FAX = mimshakIshKesherYeshutMaasik[j].MISPARFAX;
-                ishKesherYeshutMaasik.MISPAR_TELEPHONE_KAVI = mimshakIshKesherYeshutMaasik[j].MISPARTELEPHONEKAVI;
-                ishKesherYeshutMaasik.SHEM_MISHPACHA = mimshakIshKesherYeshutMaasik[j].SHEMMISHPACHA;
-                ishKesherYeshutMaasik.SHEM_PRATI = mimshakIshKesherYeshutMaasik[j].SHEMPRATI;
-                ishKesherYeshutMaasik.Maasik = maasik;
+                for (int j = 0; j < mimshakIshKesherYeshutMaasik.Length; j++)
+                {
+                    ishKesherMaasik = new IshKesherMaasik();
+                    ishKesherMaasik.E_MAIL = mimshakIshKesherYeshutMaasik[j].EMAIL;
+                    ishKesherMaasik.HEAROT = mimshakIshKesherYeshutMaasik[j].HEAROT;
+                    ishKesherMaasik.MISPAR_CELLULARI = mimshakIshKesherYeshutMaasik[j].MISPARCELLULARI;
+                    ishKesherMaasik.MISPAR_FAX = mimshakIshKesherYeshutMaasik[j].MISPARFAX;
+                    ishKesherMaasik.MISPAR_TELEPHONE_KAVI = mimshakIshKesherYeshutMaasik[j].MISPARTELEPHONEKAVI;
+                    ishKesherMaasik.SHEM_MISHPACHA = mimshakIshKesherYeshutMaasik[j].SHEMMISHPACHA;
+                    ishKesherMaasik.SHEM_PRATI = mimshakIshKesherYeshutMaasik[j].SHEMPRATI;
 
-                yeshutMaasik.IshKesherYeshutMaasiks.Add(ishKesherYeshutMaasik);
+                    maasik.IshKesherMaasiks.Add(ishKesherMaasik);
+                }
+
             }
         }
-*/
-        private void ParseHeshbonOPolisa(Mutzar mutzar, AchzakotInterface.MimshakMutzarHeshbonOPolisa mimshakMutzarHeshbonOPolisa)
+
+        private HeshbonOPolisa ParseHeshbonOPolisa(AchzakotInterface.MimshakMutzarHeshbonOPolisa mimshakMutzarHeshbonOPolisa,
+                                                   AchzakotInterface.MimshakMutzarNetuneiMutzar netuneiMutzar
+                                                   )
         {
             HeshbonOPolisa heshbonOPolisa = new HeshbonOPolisa();
 
-            heshbonOPolisa.AmitOMevutach_KOD_ZIHUY_LAKOACH = mimshakMutzarHeshbonOPolisa.NetuneiAmitOmevutach.KODZIHUYLAKOACH;
-            heshbonOPolisa.AmitOMevutach_MISPAR_ZIHUY = mimshakMutzarHeshbonOPolisa.NetuneiAmitOmevutach.MISPARZIHUY;
+            if (netuneiMutzar.KODMEZAHEMETAFEL !=null)
+                heshbonOPolisa.KOD_MEZAHE_METAFEL = (int)netuneiMutzar.KODMEZAHEMETAFEL;
+            heshbonOPolisa.KOD_MEZAHE_YATZRAN = netuneiMutzar.KODMEZAHEYATZRAN;
+            heshbonOPolisa.MISPAR_MISLAKA = netuneiMutzar.MISPARMISLAKA;
+            heshbonOPolisa.SUG_MUTZAR_PENSIONI = netuneiMutzar.SUGMUTZARPENSIONI;
+
+            heshbonOPolisa.SUG_MEZAHE_LAKOACH = mimshakMutzarHeshbonOPolisa.NetuneiAmitOmevutach.KODZIHUYLAKOACH;
+            heshbonOPolisa.MISPAR_ZIHUY_LAKOACH = mimshakMutzarHeshbonOPolisa.NetuneiAmitOmevutach.MISPARZIHUY;
             heshbonOPolisa.ASMACHTA_MEKORIT = mimshakMutzarHeshbonOPolisa.ASMACHTAMEKORIT;
             if (mimshakMutzarHeshbonOPolisa.MaslulBituach != null)
             {
@@ -368,9 +334,11 @@ namespace MislakaInterface
             ParseKisuim(heshbonOPolisa, mimshakMutzarHeshbonOPolisa.Kisuim);
 
             ParseTaktziv(heshbonOPolisa, mimshakMutzarHeshbonOPolisa.PirteiTaktziv);
-            mutzar.HeshbonOPolisas.Add(heshbonOPolisa);
+            Dal.SaveHeshbonOPolisa(heshbonOPolisa);
+
+            return heshbonOPolisa;
         }
-        */
+        
         private void ParseTaktziv(HeshbonOPolisa heshbonOPolisa, AchzakotInterface.MimshakMutzarHeshbonOPolisaPirteiTaktziv[] mimshakMutzarHeshbonOPolisaPirteiTaktziv)
         {
             PirteiTaktziv taktziv;

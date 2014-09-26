@@ -16,8 +16,8 @@ namespace DAL
     {
         public Maasik()
         {
-            this.IshKesherMaasiks = new HashSet<IshKesherMaasik>();
             this.PirteiTaktzivs = new HashSet<PirteiTaktziv>();
+            this.IshKesherMaasiks = new HashSet<IshKesherMaasik>();
         }
     
         public int Maasik_Id { get; set; }
@@ -42,7 +42,7 @@ namespace DAL
         public string E_MAIL { get; set; }
         public string HEAROT { get; set; }
     
-        public virtual ICollection<IshKesherMaasik> IshKesherMaasiks { get; set; }
         public virtual ICollection<PirteiTaktziv> PirteiTaktzivs { get; set; }
+        public virtual ICollection<IshKesherMaasik> IshKesherMaasiks { get; set; }
     }
 }

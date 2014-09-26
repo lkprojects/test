@@ -285,10 +285,10 @@
           </Key>
           <Property Name="HeshbonOPolisa_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="KOD-MEZAHE-YATZRAN" Type="int" Nullable="false" />
-          <Property Name="KOD-MEZAHE-METAFEL" Type="int" />
+          <Property Name="KOD-MEZAHE-METAFEL" Type="int" Nullable="false" />
           <Property Name="SUG-MUTZAR-PENSIONI" Type="int" Nullable="false" />
-          <Property Name="MISPAR-ZIHUY-LAKOACH" Type="varchar" MaxLength="12" Nullable="false" />
           <Property Name="SUG-MEZAHE-LAKOACH" Type="int" Nullable="false" />
+          <Property Name="MISPAR-ZIHUY-LAKOACH" Type="varchar" MaxLength="12" Nullable="false" />
           <Property Name="MISPAR-MISLAKA" Type="varchar" MaxLength="36" />
           <Property Name="ASMACHTA-MEKORIT" Type="varchar" MaxLength="30" />
           <Property Name="MISPAR-POLISA-O-HESHBON" Type="varchar" MaxLength="20" Nullable="false" />
@@ -306,7 +306,6 @@
           <Property Name="SHEM-MASLUL-HABITUAH" Type="varchar" MaxLength="60" />
           <Property Name="ShiabudIkul_HUTAL-SHIABUD" Type="int" Nullable="false" />
           <Property Name="ShiabudIkul_HUTAL-IKUL" Type="int" Nullable="false" />
-          <Property Name="AmitOMevutach_MISPAR-ZIHUY" Type="varchar" MaxLength="12" Nullable="false" />
           <Property Name="Tsua_SHEUR-TSUA-NETO" Type="decimal" Precision="5" Scale="2" />
           <Property Name="Tsua_SHEUR-TSUA-BRUTO-CHS-1" Type="decimal" Precision="5" Scale="2" />
           <Property Name="Tsua_ACHUZ-TSUA-BRUTO-CHS-2" Type="decimal" Precision="5" Scale="2" />
@@ -322,10 +321,10 @@
         </EntityType>
         <EntityType Name="IshKesherMaasik">
           <Key>
-            <PropertyRef Name="IshKesherYeshutMaasik_Id" />
+            <PropertyRef Name="IshKesherMaasik_Id" />
           </Key>
-          <Property Name="IshKesherYeshutMaasik_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="YeshutMaasik_Id" Type="int" Nullable="false" />
+          <Property Name="IshKesherMaasik_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Maasik_Id" Type="int" Nullable="false" />
           <Property Name="SHEM-PRATI" Type="varchar" MaxLength="20" />
           <Property Name="SHEM-MISHPACHA" Type="varchar" MaxLength="20" />
           <Property Name="MISPAR-TELEPHONE-KAVI" Type="varchar" MaxLength="11" />
@@ -787,7 +786,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_HeshbonOPolisa_Metafel">
-          <End Role="Metafel" Type="Self.Metafel" Multiplicity="0..1" />
+          <End Role="Metafel" Type="Self.Metafel" Multiplicity="1" />
           <End Role="HeshbonOPolisa" Type="Self.HeshbonOPolisa" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Metafel">
@@ -1026,6 +1025,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="Maasik_IshKesherMaasik">
+          <End Role="Maasik" Type="Self.Maasik" Multiplicity="1" />
+          <End Role="IshKesherMaasik" Type="Self.IshKesherMaasik" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Maasik">
+              <PropertyRef Name="Maasik_Id" />
+            </Principal>
+            <Dependent Role="IshKesherMaasik">
+              <PropertyRef Name="Maasik_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="PirteiTaktziv_DmeiNihul">
           <End Role="PirteiTaktziv" Type="Self.PirteiTaktziv" Multiplicity="1" />
           <End Role="DmeiNihul" Type="Self.DmeiNihul" Multiplicity="*" />
@@ -1134,18 +1145,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="YeshutMaasik_IshKesherYeshutMaasik">
-          <End Role="Maasik" Type="Self.Maasik" Multiplicity="1" />
-          <End Role="IshKesherMaasik" Type="Self.IshKesherMaasik" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Maasik">
-              <PropertyRef Name="Maasik_Id" />
-            </Principal>
-            <Dependent Role="IshKesherMaasik">
-              <PropertyRef Name="YeshutMaasik_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="YeshutMetafel_IshKesherYeshutMetafel">
           <End Role="Metafel" Type="Self.Metafel" Multiplicity="1" />
           <End Role="IshKesherMetafel" Type="Self.IshKesherMetafel" Multiplicity="*" />
@@ -1203,6 +1202,9 @@
         <Function Name="ChangeClientStatusByFileNumber" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="MisparKovetz" Type="varchar" Mode="In" />
           <Parameter Name="NewStatus" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteHeshbonOPolisa" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="HeshbonOPolisa_Id" Type="int" Mode="In" />
         </Function>
         <Function Name="DequeueEvent" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="MISPAR_ZIHUY" Type="varchar" Mode="In" />
@@ -1343,6 +1345,10 @@
             <End Role="Kisui" EntitySet="Kisui" />
             <End Role="Tosafot" EntitySet="Tosafot" />
           </AssociationSet>
+          <AssociationSet Name="Maasik_IshKesherMaasik" Association="Self.Maasik_IshKesherMaasik">
+            <End Role="Maasik" EntitySet="Maasik" />
+            <End Role="IshKesherMaasik" EntitySet="IshKesherMaasik" />
+          </AssociationSet>
           <AssociationSet Name="PirteiTaktziv_DmeiNihul" Association="Self.PirteiTaktziv_DmeiNihul">
             <End Role="PirteiTaktziv" EntitySet="PirteiTaktziv" />
             <End Role="DmeiNihul" EntitySet="DmeiNihul" />
@@ -1378,10 +1384,6 @@
           <AssociationSet Name="RequestPerYatzran_Request" Association="Self.RequestPerYatzran_Request">
             <End Role="Request" EntitySet="Request" />
             <End Role="RequestPerYatzran" EntitySet="RequestPerYatzran" />
-          </AssociationSet>
-          <AssociationSet Name="YeshutMaasik_IshKesherYeshutMaasik" Association="Self.YeshutMaasik_IshKesherYeshutMaasik">
-            <End Role="Maasik" EntitySet="Maasik" />
-            <End Role="IshKesherMaasik" EntitySet="IshKesherMaasik" />
           </AssociationSet>
           <AssociationSet Name="YeshutMetafel_IshKesherYeshutMetafel" Association="Self.YeshutMetafel_IshKesherYeshutMetafel">
             <End Role="Metafel" EntitySet="Metafel" />
@@ -1643,21 +1645,6 @@
           <NavigationProperty Name="Kovetz" Relationship="Self.HeshbonKovetz_Kovetz" FromRole="HeshbonKovetz" ToRole="Kovetz" />
           <NavigationProperty Name="HeshbonOPolisa" Relationship="PensionsModel.HeshbonKovetz_HeshbonOPolisa" FromRole="HeshbonKovetz" ToRole="HeshbonOPolisa" />
         </EntityType>
-        <EntityType Name="IshKesherMaasik">
-          <Key>
-            <PropertyRef Name="IshKesherYeshutMaasik_Id" />
-          </Key>
-          <Property Name="IshKesherYeshutMaasik_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="YeshutMaasik_Id" Type="Int32" Nullable="false" />
-          <Property Name="SHEM_PRATI" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="SHEM_MISHPACHA" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="MISPAR_TELEPHONE_KAVI" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
-          <Property Name="MISPAR_CELLULARI" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
-          <Property Name="MISPAR_FAX" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
-          <Property Name="E_MAIL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="HEAROT" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Maasik" Relationship="Self.YeshutMaasik_IshKesherYeshutMaasik" FromRole="IshKesherMaasik" ToRole="Maasik" />
-        </EntityType>
         <EntityType Name="IshKesherMetafel">
           <Key>
             <PropertyRef Name="IshKesherMetafel_Id" />
@@ -1847,8 +1834,8 @@
           <Property Name="MISPAR_FAX" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
           <Property Name="E_MAIL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="HEAROT" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="IshKesherMaasiks" Relationship="Self.YeshutMaasik_IshKesherYeshutMaasik" FromRole="Maasik" ToRole="IshKesherMaasik" />
           <NavigationProperty Name="PirteiTaktzivs" Relationship="Self.FK_PirteiTaktziv_Maasik" FromRole="Maasik" ToRole="PirteiTaktziv" />
+          <NavigationProperty Name="IshKesherMaasiks" Relationship="PensionsModel.Maasik_IshKesherMaasik" FromRole="Maasik" ToRole="IshKesherMaasik" />
         </EntityType>
         <EntityType Name="MasluleiHashkaa">
           <Key>
@@ -2266,18 +2253,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="YeshutMaasik_IshKesherYeshutMaasik">
-          <End Role="Maasik" Type="Self.Maasik" Multiplicity="1" />
-          <End Role="IshKesherMaasik" Type="Self.IshKesherMaasik" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Maasik">
-              <PropertyRef Name="Maasik_Id" />
-            </Principal>
-            <Dependent Role="IshKesherMaasik">
-              <PropertyRef Name="YeshutMaasik_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="YeshutMetafel_IshKesherYeshutMetafel">
           <End Role="Metafel" Type="Self.Metafel" Multiplicity="1" />
           <End Role="IshKesherMetafel" Type="Self.IshKesherMetafel" Multiplicity="*" />
@@ -2428,7 +2403,6 @@
           <EntitySet Name="HafrashotLePolisas" EntityType="Self.HafrashotLePolisa" />
           <EntitySet Name="Halvaas" EntityType="Self.Halvaa" />
           <EntitySet Name="HeshbonKovetzs" EntityType="Self.HeshbonKovetz" />
-          <EntitySet Name="IshKesherMaasiks" EntityType="Self.IshKesherMaasik" />
           <EntitySet Name="IshKesherMetafels" EntityType="Self.IshKesherMetafel" />
           <EntitySet Name="IshKesherYatzrans" EntityType="Self.IshKesherYatzran" />
           <EntitySet Name="Kisuis" EntityType="Self.Kisui" />
@@ -2500,10 +2474,6 @@
             <End Role="Kovetz" EntitySet="Kovetzs" />
             <End Role="HeshbonKovetz" EntitySet="HeshbonKovetzs" />
           </AssociationSet>
-          <AssociationSet Name="YeshutMaasik_IshKesherYeshutMaasik" Association="Self.YeshutMaasik_IshKesherYeshutMaasik">
-            <End Role="Maasik" EntitySet="Maasiks" />
-            <End Role="IshKesherMaasik" EntitySet="IshKesherMaasiks" />
-          </AssociationSet>
           <AssociationSet Name="YeshutMetafel_IshKesherYeshutMetafel" Association="Self.YeshutMetafel_IshKesherYeshutMetafel">
             <End Role="Metafel" EntitySet="Metafels" />
             <End Role="IshKesherMetafel" EntitySet="IshKesherMetafels" />
@@ -2565,6 +2535,14 @@
           <Parameter Name="numerator" Mode="InOut" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="Clients" EntityType="PensionsModel.Client" />
+          <FunctionImport Name="DeleteHeshbonOPolisa">
+          <Parameter Name="HeshbonOPolisa_Id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="IshKesherMaasiks" EntityType="PensionsModel.IshKesherMaasik" />
+          <AssociationSet Name="Maasik_IshKesherMaasik" Association="PensionsModel.Maasik_IshKesherMaasik">
+            <End Role="Maasik" EntitySet="Maasiks" />
+            <End Role="IshKesherMaasik" EntitySet="IshKesherMaasiks" />
+          </AssociationSet>
           <EntitySet Name="Customers" EntityType="PensionsModel.Customer" />
           <EntitySet Name="HeshbonOPolisas" EntityType="PensionsModel.HeshbonOPolisa" />
           <AssociationSet Name="FK_HeshbonOPolisa_Yatzran" Association="PensionsModel.FK_HeshbonOPolisa_Yatzran">
@@ -2615,7 +2593,7 @@
             <End Role="HeshbonOPolisa" EntitySet="HeshbonOPolisas" />
             <End Role="YitraLefiGilPrisha" EntitySet="YitraLefiGilPrishas" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <EntityType Name="Client">
           <Key>
             <PropertyRef Name="Client_Id" />
@@ -2639,6 +2617,33 @@
           <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifyDate" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
+        <EntityType Name="IshKesherMaasik">
+          <Key>
+            <PropertyRef Name="IshKesherMaasik_Id" />
+          </Key>
+          <Property Name="IshKesherMaasik_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Maasik_Id" Type="Int32" Nullable="false" />
+          <Property Name="SHEM_PRATI" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="SHEM_MISHPACHA" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="MISPAR_TELEPHONE_KAVI" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="MISPAR_CELLULARI" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="MISPAR_FAX" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="E_MAIL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="HEAROT" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Maasik" Relationship="PensionsModel.Maasik_IshKesherMaasik" FromRole="IshKesherMaasik" ToRole="Maasik" />
+        </EntityType>
+        <Association Name="Maasik_IshKesherMaasik">
+          <End Type="PensionsModel.Maasik" Role="Maasik" Multiplicity="1" />
+          <End Type="PensionsModel.IshKesherMaasik" Role="IshKesherMaasik" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Maasik">
+              <PropertyRef Name="Maasik_Id" />
+            </Principal>
+            <Dependent Role="IshKesherMaasik">
+              <PropertyRef Name="Maasik_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityType Name="Customer">
           <Key>
             <PropertyRef Name="MISPAR_ZIHUY_LAKOACH" />
@@ -2676,12 +2681,12 @@
           <Key>
             <PropertyRef Name="HeshbonOPolisa_Id" />
           </Key>
-          <Property Name="HeshbonOPolisa_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HeshbonOPolisa_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" ConcurrencyMode="Fixed" />
           <Property Name="KOD_MEZAHE_YATZRAN" Type="Int32" Nullable="false" />
-          <Property Name="KOD_MEZAHE_METAFEL" Type="Int32" />
+          <Property Name="KOD_MEZAHE_METAFEL" Type="Int32" Nullable="false" />
           <Property Name="SUG_MUTZAR_PENSIONI" Type="Int32" Nullable="false" />
-          <Property Name="MISPAR_ZIHUY_LAKOACH" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="false" />
           <Property Name="SUG_MEZAHE_LAKOACH" Type="Int32" Nullable="false" />
+          <Property Name="MISPAR_ZIHUY_LAKOACH" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="false" />
           <Property Name="MISPAR_MISLAKA" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
           <Property Name="ASMACHTA_MEKORIT" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="MISPAR_POLISA_O_HESHBON" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
@@ -2699,7 +2704,6 @@
           <Property Name="SHEM_MASLUL_HABITUAH" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
           <Property Name="ShiabudIkul_HUTAL_SHIABUD" Type="Int32" Nullable="false" />
           <Property Name="ShiabudIkul_HUTAL_IKUL" Type="Int32" Nullable="false" />
-          <Property Name="AmitOMevutach_MISPAR_ZIHUY" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="false" />
           <Property Name="Tsua_SHEUR_TSUA_NETO" Type="Decimal" Precision="5" Scale="2" />
           <Property Name="Tsua_SHEUR_TSUA_BRUTO_CHS_1" Type="Decimal" Precision="5" Scale="2" />
           <Property Name="Tsua_ACHUZ_TSUA_BRUTO_CHS_2" Type="Decimal" Precision="5" Scale="2" />
@@ -2776,7 +2780,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_HeshbonOPolisa_Metafel">
-          <End Type="PensionsModel.Metafel" Role="Metafel" Multiplicity="0..1" />
+          <End Type="PensionsModel.Metafel" Role="Metafel" Multiplicity="1" />
           <End Type="PensionsModel.HeshbonOPolisa" Role="HeshbonOPolisa" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Metafel">
@@ -2871,7 +2875,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -3105,21 +3109,6 @@
                 <ScalarProperty Name="Kovetz_Id" ColumnName="Kovetz_Id" />
                 <ScalarProperty Name="HeshbonOPolisa_Id" ColumnName="HeshbonOPolisa_Id" />
                 <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="IshKesherMaasiks">
-            <EntityTypeMapping TypeName="PensionsModel.IshKesherMaasik">
-              <MappingFragment StoreEntitySet="IshKesherMaasik">
-                <ScalarProperty Name="IshKesherYeshutMaasik_Id" ColumnName="IshKesherYeshutMaasik_Id" />
-                <ScalarProperty Name="YeshutMaasik_Id" ColumnName="YeshutMaasik_Id" />
-                <ScalarProperty Name="SHEM_PRATI" ColumnName="SHEM-PRATI" />
-                <ScalarProperty Name="SHEM_MISHPACHA" ColumnName="SHEM-MISHPACHA" />
-                <ScalarProperty Name="MISPAR_TELEPHONE_KAVI" ColumnName="MISPAR-TELEPHONE-KAVI" />
-                <ScalarProperty Name="MISPAR_CELLULARI" ColumnName="MISPAR-CELLULARI" />
-                <ScalarProperty Name="MISPAR_FAX" ColumnName="MISPAR-FAX" />
-                <ScalarProperty Name="E_MAIL" ColumnName="E-MAIL" />
-                <ScalarProperty Name="HEAROT" ColumnName="HEAROT" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3600,6 +3589,22 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="DeleteHeshbonOPolisa" FunctionName="PensionsModel.Store.DeleteHeshbonOPolisa" />
+          <EntitySetMapping Name="IshKesherMaasiks">
+            <EntityTypeMapping TypeName="PensionsModel.IshKesherMaasik">
+              <MappingFragment StoreEntitySet="IshKesherMaasik">
+                <ScalarProperty Name="HEAROT" ColumnName="HEAROT" />
+                <ScalarProperty Name="E_MAIL" ColumnName="E-MAIL" />
+                <ScalarProperty Name="MISPAR_FAX" ColumnName="MISPAR-FAX" />
+                <ScalarProperty Name="MISPAR_CELLULARI" ColumnName="MISPAR-CELLULARI" />
+                <ScalarProperty Name="MISPAR_TELEPHONE_KAVI" ColumnName="MISPAR-TELEPHONE-KAVI" />
+                <ScalarProperty Name="SHEM_MISHPACHA" ColumnName="SHEM-MISHPACHA" />
+                <ScalarProperty Name="SHEM_PRATI" ColumnName="SHEM-PRATI" />
+                <ScalarProperty Name="Maasik_Id" ColumnName="Maasik_Id" />
+                <ScalarProperty Name="IshKesherMaasik_Id" ColumnName="IshKesherMaasik_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="PensionsModel.Customer">
               <MappingFragment StoreEntitySet="Customer">
@@ -3647,7 +3652,6 @@
                 <ScalarProperty Name="Tsua_ACHUZ_TSUA_BRUTO_CHS_2" ColumnName="Tsua_ACHUZ-TSUA-BRUTO-CHS-2" />
                 <ScalarProperty Name="Tsua_SHEUR_TSUA_BRUTO_CHS_1" ColumnName="Tsua_SHEUR-TSUA-BRUTO-CHS-1" />
                 <ScalarProperty Name="Tsua_SHEUR_TSUA_NETO" ColumnName="Tsua_SHEUR-TSUA-NETO" />
-                <ScalarProperty Name="AmitOMevutach_MISPAR_ZIHUY" ColumnName="AmitOMevutach_MISPAR-ZIHUY" />
                 <ScalarProperty Name="ShiabudIkul_HUTAL_IKUL" ColumnName="ShiabudIkul_HUTAL-IKUL" />
                 <ScalarProperty Name="ShiabudIkul_HUTAL_SHIABUD" ColumnName="ShiabudIkul_HUTAL-SHIABUD" />
                 <ScalarProperty Name="SHEM_MASLUL_HABITUAH" ColumnName="SHEM-MASLUL-HABITUAH" />
@@ -3665,8 +3669,8 @@
                 <ScalarProperty Name="MISPAR_POLISA_O_HESHBON" ColumnName="MISPAR-POLISA-O-HESHBON" />
                 <ScalarProperty Name="ASMACHTA_MEKORIT" ColumnName="ASMACHTA-MEKORIT" />
                 <ScalarProperty Name="MISPAR_MISLAKA" ColumnName="MISPAR-MISLAKA" />
-                <ScalarProperty Name="SUG_MEZAHE_LAKOACH" ColumnName="SUG-MEZAHE-LAKOACH" />
                 <ScalarProperty Name="MISPAR_ZIHUY_LAKOACH" ColumnName="MISPAR-ZIHUY-LAKOACH" />
+                <ScalarProperty Name="SUG_MEZAHE_LAKOACH" ColumnName="SUG-MEZAHE-LAKOACH" />
                 <ScalarProperty Name="SUG_MUTZAR_PENSIONI" ColumnName="SUG-MUTZAR-PENSIONI" />
                 <ScalarProperty Name="KOD_MEZAHE_METAFEL" ColumnName="KOD-MEZAHE-METAFEL" />
                 <ScalarProperty Name="KOD_MEZAHE_YATZRAN" ColumnName="KOD-MEZAHE-YATZRAN" />

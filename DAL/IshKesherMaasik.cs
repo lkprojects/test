@@ -14,8 +14,8 @@ namespace DAL
     
     public partial class IshKesherMaasik
     {
-        public int IshKesherYeshutMaasik_Id { get; set; }
-        public int YeshutMaasik_Id { get; set; }
+        public int IshKesherMaasik_Id { get; set; }
+        public int Maasik_Id { get; set; }
         public string SHEM_PRATI { get; set; }
         public string SHEM_MISHPACHA { get; set; }
         public string MISPAR_TELEPHONE_KAVI { get; set; }

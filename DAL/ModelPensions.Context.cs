@@ -44,7 +44,6 @@ namespace DAL
         public virtual DbSet<HafrashotLePolisa> HafrashotLePolisas { get; set; }
         public virtual DbSet<Halvaa> Halvaas { get; set; }
         public virtual DbSet<HeshbonKovetz> HeshbonKovetzs { get; set; }
-        public virtual DbSet<IshKesherMaasik> IshKesherMaasiks { get; set; }
         public virtual DbSet<IshKesherMetafel> IshKesherMetafels { get; set; }
         public virtual DbSet<IshKesherYatzran> IshKesherYatzrans { get; set; }
         public virtual DbSet<Kisui> Kisuis { get; set; }
@@ -69,6 +68,7 @@ namespace DAL
         public virtual DbSet<YitraLeTkufa> YitraLeTkufas { get; set; }
         public virtual DbSet<Yitrot> Yitrots { get; set; }
         public virtual DbSet<Client> Clients { get; set; }
+        public virtual DbSet<IshKesherMaasik> IshKesherMaasiks { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<HeshbonOPolisa> HeshbonOPolisas { get; set; }
     
@@ -114,6 +114,15 @@ namespace DAL
         public virtual int GetFileNumerator(ObjectParameter numerator)
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GetFileNumerator", numerator);
+        }
+    
+        public virtual int DeleteHeshbonOPolisa(Nullable<int> heshbonOPolisa_Id)
+        {
+            var heshbonOPolisa_IdParameter = heshbonOPolisa_Id.HasValue ?
+                new ObjectParameter("HeshbonOPolisa_Id", heshbonOPolisa_Id) :
+                new ObjectParameter("HeshbonOPolisa_Id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteHeshbonOPolisa", heshbonOPolisa_IdParameter);
         }
     }
 }

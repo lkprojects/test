@@ -29,10 +29,10 @@ namespace DAL
     
         public int HeshbonOPolisa_Id { get; set; }
         public int KOD_MEZAHE_YATZRAN { get; set; }
-        public Nullable<int> KOD_MEZAHE_METAFEL { get; set; }
+        public int KOD_MEZAHE_METAFEL { get; set; }
         public int SUG_MUTZAR_PENSIONI { get; set; }
-        public string MISPAR_ZIHUY_LAKOACH { get; set; }
         public int SUG_MEZAHE_LAKOACH { get; set; }
+        public string MISPAR_ZIHUY_LAKOACH { get; set; }
         public string MISPAR_MISLAKA { get; set; }
         public string ASMACHTA_MEKORIT { get; set; }
         public string MISPAR_POLISA_O_HESHBON { get; set; }
@@ -50,7 +50,6 @@ namespace DAL
         public string SHEM_MASLUL_HABITUAH { get; set; }
         public int ShiabudIkul_HUTAL_SHIABUD { get; set; }
         public int ShiabudIkul_HUTAL_IKUL { get; set; }
-        public string AmitOMevutach_MISPAR_ZIHUY { get; set; }
         public Nullable<decimal> Tsua_SHEUR_TSUA_NETO { get; set; }
         public Nullable<decimal> Tsua_SHEUR_TSUA_BRUTO_CHS_1 { get; set; }
         public Nullable<decimal> Tsua_ACHUZ_TSUA_BRUTO_CHS_2 { get; set; }

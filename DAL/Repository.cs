@@ -15,7 +15,7 @@ namespace WebSite.Models
         {
             List<HeshbonOPolisa> polisas = 
                    ( from h in dbCtx.HeshbonOPolisas
-                    where h.AmitOMevutach_MISPAR_ZIHUY == TeudatZehut
+                    where h.MISPAR_ZIHUY_LAKOACH == TeudatZehut
                      select h).ToList<HeshbonOPolisa>();
 
             return polisas;
@@ -25,7 +25,7 @@ namespace WebSite.Models
         {
             HeshbonOPolisa p = null;
             p = (from h in dbCtx.HeshbonOPolisas
-                 where h.AmitOMevutach_MISPAR_ZIHUY == client.TeudatZehut
+                 where h.MISPAR_ZIHUY_LAKOACH == client.TeudatZehut
                  select h).SingleOrDefault();
 
             return p;
