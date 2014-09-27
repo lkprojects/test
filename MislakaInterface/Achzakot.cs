@@ -74,7 +74,7 @@ namespace MislakaInterface
 
             HeshbonKovetz heshbonKovetz;
             HeshbonOPolisa heshbonOPolisa;
-            Customer customer;
+            Customer customer = new Customer();
             for (int i = 0; i < mimshak.Mutzarim.Length; i++)
             {
                 customer = ParseCustomer(mimshak.Mutzarim[i].NetuneiMutzar.YeshutLakoach, mimshak.Mutzarim[i].NetuneiMutzar.KODMEZAHEYATZRAN.ToString());
@@ -95,7 +95,15 @@ namespace MislakaInterface
                     kovetz.HeshbonKovetzs.Add(heshbonKovetz);
                 }
 
-            }       
+                Client client = Dal.GetClient(customer.MISPAR_ZIHUY_LAKOACH);
+                if (client.LastStatus != (byte)ClientStatus.DataLoaded)
+                {
+                    client.LastStatus = (byte)ClientStatus.DataLoaded;
+                    Dal.UpdateClient(client);
+                }
+                Dal.SetClientYatzran(customer.KOD_MEZAHE_YATZRAN.ToString(), customer.MISPAR_ZIHUY_LAKOACH.TrimStart('0'), true);
+            }
+
         }
 
         private void ParseMetafel(AchzakotInterface.MimshakYeshutMetafel[] mimshakMetafel)
@@ -209,17 +217,7 @@ namespace MislakaInterface
             customer.TAARICH_LEYDA = Common.ConvertDate(mimshakLakoach.TAARICHLEYDA);
             customer.TAARICH_PTIRA = Common.ConvertDate(mimshakLakoach.TAARICHPTIRA);
 
-            //Dal.SaveCustomer(customer);
-            //Client client = Dal.GetClient(customer.MISPAR_ZIHUY_LAKOACH);
-
-            //if (client != null)
-            //{
-            //    client.LastStatus = (byte)ClientStatus.DataLoaded;
-            //    Dal.UpdateClient(client);
-            //}
-            //Dal.SetClientYatzran(kodMezaheYatzran, customer.MISPAR_ZIHUY_LAKOACH.TrimStart('0'), false);
-
-            return customer;
+             return customer;
         }
         
         private void ParseMaasik(AchzakotInterface.MimshakMutzarNetuneiMutzarYeshutMaasik[] mimshakYeshutMaasik)
