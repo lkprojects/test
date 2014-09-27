@@ -134,7 +134,11 @@ namespace DAL
 
         public Client GetClient(string misparZihuy)
         {
-            return dbCtx.Clients.SingleOrDefault(p => p.TeudatZehut == misparZihuy);
+            misparZihuy = misparZihuy.TrimStart('0');
+            Client client = (from c in dbCtx.Clients
+                             where c.TeudatZehut.Contains(misparZihuy)
+                             select c).FirstOrDefault();
+            return client;
         }
 
         public bool ChangeClientStatus(string MisparZihuy, ClientStatus ToStatus)
@@ -355,18 +359,20 @@ namespace DAL
         public void UpdateClient(Client client)
         {
             dbCtx.Entry(client).State = EntityState.Modified;
-            dbCtx.Entry(client).Reload();
+            //dbCtx.Entry(client).Reload();
 
         }
 
 
         public void SetClientYatzran(string kodYatzran, string MisparZihuy, bool? hasData)
         {
+            MisparZihuy = MisparZihuy.TrimStart('0');
+
             // Check if the Client-Yatzran correlation already exists
             ClientYatzran clientYatzran =  
                 (from cy in dbCtx.ClientYatzrans
                  join c in dbCtx.Clients on cy.Client_Id equals c.Client_Id
-                 where c.TeudatZehut == MisparZihuy && cy.KodYatzran == kodYatzran
+                 where c.TeudatZehut.Contains(MisparZihuy) && cy.KodYatzran == kodYatzran
                  select cy).FirstOrDefault();
             
             // If record does not exist - add a new client-Yatran correlation
@@ -375,7 +381,7 @@ namespace DAL
                 // Get the client id that matches the "Teudat Zehut"
                 int clientId =
                     (from c in dbCtx.Clients
-                     where c.TeudatZehut == MisparZihuy
+                     where c.TeudatZehut.Contains(MisparZihuy)
                      select c.Client_Id).FirstOrDefault();
                 if (clientId > 0)
                 {
