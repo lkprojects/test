@@ -139,11 +139,14 @@
         </EntityType>
         <EntityType Name="Customer">
           <Key>
-            <PropertyRef Name="MISPAR-ZIHUY-LAKOACH" />
-            <PropertyRef Name="SUG-MEZAHE-LAKOACH" />
+            <PropertyRef Name="Customer_Id" />
           </Key>
+          <Property Name="Customer_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MISPAR-ZIHUY-LAKOACH" Type="varchar" MaxLength="12" Nullable="false" />
           <Property Name="SUG-MEZAHE-LAKOACH" Type="int" Nullable="false" />
+          <Property Name="KOD-MEZAHE-YATZRAN" Type="int" />
+          <Property Name="KOD-MEZAHE-METAFEL" Type="int" />
+          <Property Name="SUG-MUTZAR-PENSIONI" Type="int" />
           <Property Name="SHEM-PRATI" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="SHEM-MISHPACHA-KODEM" Type="varchar" MaxLength="20" />
           <Property Name="SHEM-MISHPACHA" Type="varchar" MaxLength="20" Nullable="false" />
@@ -284,11 +287,7 @@
             <PropertyRef Name="HeshbonOPolisa_Id" />
           </Key>
           <Property Name="HeshbonOPolisa_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="KOD-MEZAHE-YATZRAN" Type="int" Nullable="false" />
-          <Property Name="KOD-MEZAHE-METAFEL" Type="int" Nullable="false" />
-          <Property Name="SUG-MUTZAR-PENSIONI" Type="int" Nullable="false" />
-          <Property Name="SUG-MEZAHE-LAKOACH" Type="int" Nullable="false" />
-          <Property Name="MISPAR-ZIHUY-LAKOACH" Type="varchar" MaxLength="12" Nullable="false" />
+          <Property Name="Customer_Id" Type="int" Nullable="false" />
           <Property Name="MISPAR-MISLAKA" Type="varchar" MaxLength="36" />
           <Property Name="ASMACHTA-MEKORIT" Type="varchar" MaxLength="30" />
           <Property Name="MISPAR-POLISA-O-HESHBON" Type="varchar" MaxLength="20" Nullable="false" />
@@ -493,6 +492,7 @@
             <PropertyRef Name="Maasik_Id" />
           </Key>
           <Property Name="Maasik_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Customer_Id" Type="int" Nullable="false" />
           <Property Name="MPR-MAASIK-BE-YATZRAN" Type="varchar" MaxLength="15" Nullable="false" />
           <Property Name="SUG-MEZAHE-MAASIK" Type="int" Nullable="false" />
           <Property Name="MISPAR-MEZAHE-MAASIK" Type="varchar" MaxLength="15" Nullable="false" />
@@ -771,41 +771,39 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Customer_Metafel">
+          <End Role="Metafel" Type="Self.Metafel" Multiplicity="0..1" />
+          <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Metafel">
+              <PropertyRef Name="KOD-MEZAHE-METAFEL" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="KOD-MEZAHE-METAFEL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Customer_Yatzran">
+          <End Role="Yatzran" Type="Self.Yatzran" Multiplicity="0..1" />
+          <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Yatzran">
+              <PropertyRef Name="KOD-MEZAHE_YATZRAN" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="KOD-MEZAHE-YATZRAN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_HeshbonOPolisa_Customer">
           <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
           <End Role="HeshbonOPolisa" Type="Self.HeshbonOPolisa" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Customer">
-              <PropertyRef Name="MISPAR-ZIHUY-LAKOACH" />
-              <PropertyRef Name="SUG-MEZAHE-LAKOACH" />
+              <PropertyRef Name="Customer_Id" />
             </Principal>
             <Dependent Role="HeshbonOPolisa">
-              <PropertyRef Name="MISPAR-ZIHUY-LAKOACH" />
-              <PropertyRef Name="SUG-MEZAHE-LAKOACH" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_HeshbonOPolisa_Metafel">
-          <End Role="Metafel" Type="Self.Metafel" Multiplicity="1" />
-          <End Role="HeshbonOPolisa" Type="Self.HeshbonOPolisa" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Metafel">
-              <PropertyRef Name="KOD-MEZAHE-METAFEL" />
-            </Principal>
-            <Dependent Role="HeshbonOPolisa">
-              <PropertyRef Name="KOD-MEZAHE-METAFEL" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_HeshbonOPolisa_Yatzran">
-          <End Role="Yatzran" Type="Self.Yatzran" Multiplicity="1" />
-          <End Role="HeshbonOPolisa" Type="Self.HeshbonOPolisa" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Yatzran">
-              <PropertyRef Name="KOD-MEZAHE_YATZRAN" />
-            </Principal>
-            <Dependent Role="HeshbonOPolisa">
-              <PropertyRef Name="KOD-MEZAHE-YATZRAN" />
+              <PropertyRef Name="Customer_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1261,16 +1259,16 @@
             <End Role="GoremPone" EntitySet="GoremPone" />
             <End Role="FileErrorDetail" EntitySet="FileErrorDetail" />
           </AssociationSet>
+          <AssociationSet Name="FK_Customer_Metafel" Association="Self.FK_Customer_Metafel">
+            <End Role="Metafel" EntitySet="Metafel" />
+            <End Role="Customer" EntitySet="Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customer_Yatzran" Association="Self.FK_Customer_Yatzran">
+            <End Role="Yatzran" EntitySet="Yatzran" />
+            <End Role="Customer" EntitySet="Customer" />
+          </AssociationSet>
           <AssociationSet Name="FK_HeshbonOPolisa_Customer" Association="Self.FK_HeshbonOPolisa_Customer">
             <End Role="Customer" EntitySet="Customer" />
-            <End Role="HeshbonOPolisa" EntitySet="HeshbonOPolisa" />
-          </AssociationSet>
-          <AssociationSet Name="FK_HeshbonOPolisa_Metafel" Association="Self.FK_HeshbonOPolisa_Metafel">
-            <End Role="Metafel" EntitySet="Metafel" />
-            <End Role="HeshbonOPolisa" EntitySet="HeshbonOPolisa" />
-          </AssociationSet>
-          <AssociationSet Name="FK_HeshbonOPolisa_Yatzran" Association="Self.FK_HeshbonOPolisa_Yatzran">
-            <End Role="Yatzran" EntitySet="Yatzran" />
             <End Role="HeshbonOPolisa" EntitySet="HeshbonOPolisa" />
           </AssociationSet>
           <AssociationSet Name="FK_IshKesherYatzran_Yatzran" Association="Self.FK_IshKesherYatzran_Yatzran">
@@ -1455,7 +1453,7 @@
           <Property Name="KOD_MEZAHE_YATZRAN" Type="Int32" Nullable="false" />
           <Property Name="SHEM_YATZRAN" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="IshKesherYatzrans" Relationship="Self.FK_IshKesherYatzran_Yatzran" FromRole="Yatzran" ToRole="IshKesherYatzran" />
-          <NavigationProperty Name="HeshbonOPolisas" Relationship="PensionsModel.FK_HeshbonOPolisa_Yatzran" FromRole="Yatzran" ToRole="HeshbonOPolisa" />
+          <NavigationProperty Name="Customers" Relationship="PensionsModel.FK_Customer_Yatzran" FromRole="Yatzran" ToRole="Customer" />
         </EntityType>
         <EntityType Name="FeedbackFile">
           <Key>
@@ -1809,34 +1807,6 @@
           <Property Name="TOTAL_SCHUM_MITZVTABER_TZFUY_LEGIL_PRISHA_MECHUSHAV_HAMEYOAD_LEKITZBA_LELO_PREMIYOT" Type="Decimal" Precision="15" Scale="2" />
           <NavigationProperty Name="YitraLefiGilPrisha" Relationship="Self.YitraLefiGilPrisha_Kupa" FromRole="Kupa" ToRole="YitraLefiGilPrisha" />
         </EntityType>
-        <EntityType Name="Maasik">
-          <Key>
-            <PropertyRef Name="Maasik_Id" />
-          </Key>
-          <Property Name="Maasik_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MPR_MAASIK_BE_YATZRAN" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="SUG_MEZAHE_MAASIK" Type="Int32" Nullable="false" />
-          <Property Name="MISPAR_MEZAHE_MAASIK" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="MISPAR_TIK_NIKUIIM" Type="Int32" />
-          <Property Name="SHEM_MAASIK" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
-          <Property Name="ERETZ" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Name="SHEM_YISHUV" Type="String" MaxLength="17" FixedLength="false" Unicode="false" />
-          <Property Name="SEMEL_YESHUV" Type="Int32" />
-          <Property Name="SHEM_RECHOV" Type="String" MaxLength="24" FixedLength="false" Unicode="false" />
-          <Property Name="MISPAR_BAIT" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="MISPAR_KNISA" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="MISPAR_DIRA" Type="Int32" />
-          <Property Name="MIKUD" Type="Int32" />
-          <Property Name="TA_DOAR" Type="Int32" />
-          <Property Name="MISPAR_TELEPHONE_KAVI" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
-          <Property Name="MISPAR_SHLUCHA" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
-          <Property Name="MISPAR_CELLULARI" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
-          <Property Name="MISPAR_FAX" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
-          <Property Name="E_MAIL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="HEAROT" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="PirteiTaktzivs" Relationship="Self.FK_PirteiTaktziv_Maasik" FromRole="Maasik" ToRole="PirteiTaktziv" />
-          <NavigationProperty Name="IshKesherMaasiks" Relationship="PensionsModel.Maasik_IshKesherMaasik" FromRole="Maasik" ToRole="IshKesherMaasik" />
-        </EntityType>
         <EntityType Name="MasluleiHashkaa">
           <Key>
             <PropertyRef Name="MasluleiHashkaa_Id" />
@@ -1858,7 +1828,7 @@
           <Property Name="KOD_MEZAHE_METAFEL" Type="Int32" Nullable="false" />
           <Property Name="SHEM_METAFEL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="IshKesherMetafels" Relationship="Self.YeshutMetafel_IshKesherYeshutMetafel" FromRole="Metafel" ToRole="IshKesherMetafel" />
-          <NavigationProperty Name="HeshbonOPolisas" Relationship="PensionsModel.FK_HeshbonOPolisa_Metafel" FromRole="Metafel" ToRole="HeshbonOPolisa" />
+          <NavigationProperty Name="Customers" Relationship="PensionsModel.FK_Customer_Metafel" FromRole="Metafel" ToRole="Customer" />
         </EntityType>
         <EntityType Name="Mevutach">
           <Key>
@@ -2001,10 +1971,10 @@
           <NavigationProperty Name="HafkadaAchronas" Relationship="Self.PirteiTaktziv_HafkadaAchrona" FromRole="PirteiTaktziv" ToRole="HafkadaAchrona" />
           <NavigationProperty Name="HafkadotMetchilatShanas" Relationship="Self.PirteiTaktziv_HafkadotMetchilatShana" FromRole="PirteiTaktziv" ToRole="HafkadotMetchilatShana" />
           <NavigationProperty Name="HafrashotLePolisas" Relationship="Self.PirteiTaktziv_HafrashotLePolisa" FromRole="PirteiTaktziv" ToRole="HafrashotLePolisa" />
-          <NavigationProperty Name="Maasik" Relationship="Self.FK_PirteiTaktziv_Maasik" FromRole="PirteiTaktziv" ToRole="Maasik" />
           <NavigationProperty Name="MasluleiHashkaas" Relationship="Self.PirteiTaktziv_MasluleiHashkaa" FromRole="PirteiTaktziv" ToRole="MasluleiHashkaa" />
           <NavigationProperty Name="Yitrots" Relationship="Self.PirteiTaktziv_Yitrot" FromRole="PirteiTaktziv" ToRole="Yitrot" />
           <NavigationProperty Name="HeshbonOPolisa" Relationship="PensionsModel.HeshbonOPolisa_PirteiTaktziv" FromRole="PirteiTaktziv" ToRole="HeshbonOPolisa" />
+          <NavigationProperty Name="Maasik" Relationship="PensionsModel.FK_PirteiTaktziv_Maasik" FromRole="PirteiTaktziv" ToRole="Maasik" />
         </EntityType>
         <EntityType Name="Sheer">
           <Key>
@@ -2325,18 +2295,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PirteiTaktziv_Maasik">
-          <End Role="Maasik" Type="Self.Maasik" Multiplicity="0..1" />
-          <End Role="PirteiTaktziv" Type="Self.PirteiTaktziv" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Maasik">
-              <PropertyRef Name="Maasik_Id" />
-            </Principal>
-            <Dependent Role="PirteiTaktziv">
-              <PropertyRef Name="Maasik_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="PirteiTaktziv_MasluleiHashkaa">
           <End Role="PirteiTaktziv" Type="Self.PirteiTaktziv" Multiplicity="1" />
           <End Role="MasluleiHashkaa" Type="Self.MasluleiHashkaa" Multiplicity="*" />
@@ -2408,7 +2366,6 @@
           <EntitySet Name="Kisuis" EntityType="Self.Kisui" />
           <EntitySet Name="Kovetzs" EntityType="Self.Kovetz" />
           <EntitySet Name="Kupas" EntityType="Self.Kupa" />
-          <EntitySet Name="Maasiks" EntityType="Self.Maasik" />
           <EntitySet Name="MasluleiHashkaas" EntityType="Self.MasluleiHashkaa" />
           <EntitySet Name="Metafels" EntityType="Self.Metafel" />
           <EntitySet Name="Mevutaches" EntityType="Self.Mevutach" />
@@ -2498,10 +2455,6 @@
             <End Role="YitraLefiGilPrisha" EntitySet="YitraLefiGilPrishas" />
             <End Role="Kupa" EntitySet="Kupas" />
           </AssociationSet>
-          <AssociationSet Name="FK_PirteiTaktziv_Maasik" Association="Self.FK_PirteiTaktziv_Maasik">
-            <End Role="Maasik" EntitySet="Maasiks" />
-            <End Role="PirteiTaktziv" EntitySet="PirteiTaktzivs" />
-          </AssociationSet>
           <AssociationSet Name="PirteiTaktziv_MasluleiHashkaa" Association="Self.PirteiTaktziv_MasluleiHashkaa">
             <End Role="PirteiTaktziv" EntitySet="PirteiTaktzivs" />
             <End Role="MasluleiHashkaa" EntitySet="MasluleiHashkaas" />
@@ -2539,15 +2492,16 @@
           <Parameter Name="HeshbonOPolisa_Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="IshKesherMaasiks" EntityType="PensionsModel.IshKesherMaasik" />
-          <AssociationSet Name="Maasik_IshKesherMaasik" Association="PensionsModel.Maasik_IshKesherMaasik">
-            <End Role="Maasik" EntitySet="Maasiks" />
-            <End Role="IshKesherMaasik" EntitySet="IshKesherMaasiks" />
-          </AssociationSet>
           <EntitySet Name="Customers" EntityType="PensionsModel.Customer" />
           <EntitySet Name="HeshbonOPolisas" EntityType="PensionsModel.HeshbonOPolisa" />
-          <AssociationSet Name="FK_HeshbonOPolisa_Yatzran" Association="PensionsModel.FK_HeshbonOPolisa_Yatzran">
+          <EntitySet Name="Maasiks" EntityType="PensionsModel.Maasik" />
+          <AssociationSet Name="FK_Customer_Yatzran" Association="PensionsModel.FK_Customer_Yatzran">
             <End Role="Yatzran" EntitySet="Yatzrans" />
-            <End Role="HeshbonOPolisa" EntitySet="HeshbonOPolisas" />
+            <End Role="Customer" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customer_Metafel" Association="PensionsModel.FK_Customer_Metafel">
+            <End Role="Metafel" EntitySet="Metafels" />
+            <End Role="Customer" EntitySet="Customers" />
           </AssociationSet>
           <AssociationSet Name="FK_HeshbonOPolisa_Customer" Association="PensionsModel.FK_HeshbonOPolisa_Customer">
             <End Role="Customer" EntitySet="Customers" />
@@ -2560,10 +2514,6 @@
           <AssociationSet Name="HeshbonKovetz_HeshbonOPolisa" Association="PensionsModel.HeshbonKovetz_HeshbonOPolisa">
             <End Role="HeshbonOPolisa" EntitySet="HeshbonOPolisas" />
             <End Role="HeshbonKovetz" EntitySet="HeshbonKovetzs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_HeshbonOPolisa_Metafel" Association="PensionsModel.FK_HeshbonOPolisa_Metafel">
-            <End Role="Metafel" EntitySet="Metafels" />
-            <End Role="HeshbonOPolisa" EntitySet="HeshbonOPolisas" />
           </AssociationSet>
           <AssociationSet Name="HeshbonOPolisa_Kisui" Association="PensionsModel.HeshbonOPolisa_Kisui">
             <End Role="HeshbonOPolisa" EntitySet="HeshbonOPolisas" />
@@ -2592,6 +2542,14 @@
           <AssociationSet Name="HeshbonOPolisa_YitraLefiGilPrisha" Association="PensionsModel.HeshbonOPolisa_YitraLefiGilPrisha">
             <End Role="HeshbonOPolisa" EntitySet="HeshbonOPolisas" />
             <End Role="YitraLefiGilPrisha" EntitySet="YitraLefiGilPrishas" />
+          </AssociationSet>
+          <AssociationSet Name="Maasik_IshKesherMaasik" Association="PensionsModel.Maasik_IshKesherMaasik">
+            <End Role="Maasik" EntitySet="Maasiks" />
+            <End Role="IshKesherMaasik" EntitySet="IshKesherMaasiks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PirteiTaktziv_Maasik" Association="PensionsModel.FK_PirteiTaktziv_Maasik">
+            <End Role="Maasik" EntitySet="Maasiks" />
+            <End Role="PirteiTaktziv" EntitySet="PirteiTaktzivs" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Client">
@@ -2632,25 +2590,16 @@
           <Property Name="HEAROT" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Maasik" Relationship="PensionsModel.Maasik_IshKesherMaasik" FromRole="IshKesherMaasik" ToRole="Maasik" />
         </EntityType>
-        <Association Name="Maasik_IshKesherMaasik">
-          <End Type="PensionsModel.Maasik" Role="Maasik" Multiplicity="1" />
-          <End Type="PensionsModel.IshKesherMaasik" Role="IshKesherMaasik" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Maasik">
-              <PropertyRef Name="Maasik_Id" />
-            </Principal>
-            <Dependent Role="IshKesherMaasik">
-              <PropertyRef Name="Maasik_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Customer">
           <Key>
-            <PropertyRef Name="MISPAR_ZIHUY_LAKOACH" />
-            <PropertyRef Name="SUG_MEZAHE_LAKOACH" />
+            <PropertyRef Name="Customer_Id" />
           </Key>
+          <Property Name="Customer_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MISPAR_ZIHUY_LAKOACH" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="false" />
           <Property Name="SUG_MEZAHE_LAKOACH" Type="Int32" Nullable="false" />
+          <Property Name="KOD_MEZAHE_YATZRAN" Type="Int32" />
+          <Property Name="KOD_MEZAHE_METAFEL" Type="Int32" />
+          <Property Name="SUG_MUTZAR_PENSIONI" Type="Int32" />
           <Property Name="SHEM_PRATI" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="SHEM_MISHPACHA_KODEM" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="SHEM_MISHPACHA" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
@@ -2675,18 +2624,16 @@
           <Property Name="E_MAIL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="HEAROT" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="MISPAR_YELADIM" Type="Int32" />
+          <NavigationProperty Name="Yatzran" Relationship="PensionsModel.FK_Customer_Yatzran" FromRole="Customer" ToRole="Yatzran" />
+          <NavigationProperty Name="Metafel" Relationship="PensionsModel.FK_Customer_Metafel" FromRole="Customer" ToRole="Metafel" />
           <NavigationProperty Name="HeshbonOPolisas" Relationship="PensionsModel.FK_HeshbonOPolisa_Customer" FromRole="Customer" ToRole="HeshbonOPolisa" />
         </EntityType>
         <EntityType Name="HeshbonOPolisa">
           <Key>
             <PropertyRef Name="HeshbonOPolisa_Id" />
           </Key>
-          <Property Name="HeshbonOPolisa_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" ConcurrencyMode="Fixed" />
-          <Property Name="KOD_MEZAHE_YATZRAN" Type="Int32" Nullable="false" />
-          <Property Name="KOD_MEZAHE_METAFEL" Type="Int32" Nullable="false" />
-          <Property Name="SUG_MUTZAR_PENSIONI" Type="Int32" Nullable="false" />
-          <Property Name="SUG_MEZAHE_LAKOACH" Type="Int32" Nullable="false" />
-          <Property Name="MISPAR_ZIHUY_LAKOACH" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="HeshbonOPolisa_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Customer_Id" Type="Int32" Nullable="false" />
           <Property Name="MISPAR_MISLAKA" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
           <Property Name="ASMACHTA_MEKORIT" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="MISPAR_POLISA_O_HESHBON" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
@@ -2716,11 +2663,9 @@
           <Property Name="Mishloach_MISPAR_DIRA" Type="Int32" />
           <Property Name="Mishloach_MIKUD" Type="Int32" />
           <Property Name="Mishloach_TA_DOAR" Type="Int32" />
-          <NavigationProperty Name="Yatzran" Relationship="PensionsModel.FK_HeshbonOPolisa_Yatzran" FromRole="HeshbonOPolisa" ToRole="Yatzran" />
           <NavigationProperty Name="Customer" Relationship="PensionsModel.FK_HeshbonOPolisa_Customer" FromRole="HeshbonOPolisa" ToRole="Customer" />
           <NavigationProperty Name="Halvaas" Relationship="PensionsModel.HeshbonOPolisa_Halvaa" FromRole="HeshbonOPolisa" ToRole="Halvaa" />
           <NavigationProperty Name="HeshbonKovetzs" Relationship="PensionsModel.HeshbonKovetz_HeshbonOPolisa" FromRole="HeshbonOPolisa" ToRole="HeshbonKovetz" />
-          <NavigationProperty Name="Metafel" Relationship="PensionsModel.FK_HeshbonOPolisa_Metafel" FromRole="HeshbonOPolisa" ToRole="Metafel" />
           <NavigationProperty Name="Kisuis" Relationship="PensionsModel.HeshbonOPolisa_Kisui" FromRole="HeshbonOPolisa" ToRole="Kisui" />
           <NavigationProperty Name="MeyupeKoaches" Relationship="PensionsModel.HeshbonOPolisa_MeyupeKoach" FromRole="HeshbonOPolisa" ToRole="MeyupeKoach" />
           <NavigationProperty Name="Mitryots" Relationship="PensionsModel.HeshbonOPolisa_Mitryot" FromRole="HeshbonOPolisa" ToRole="Mitryot" />
@@ -2729,15 +2674,56 @@
           <NavigationProperty Name="Tvias" Relationship="PensionsModel.HeshbonOPolisa_Tvia" FromRole="HeshbonOPolisa" ToRole="Tvia" />
           <NavigationProperty Name="YitraLefiGilPrishas" Relationship="PensionsModel.HeshbonOPolisa_YitraLefiGilPrisha" FromRole="HeshbonOPolisa" ToRole="YitraLefiGilPrisha" />
         </EntityType>
-        <Association Name="FK_HeshbonOPolisa_Yatzran">
-          <End Type="PensionsModel.Yatzran" Role="Yatzran" Multiplicity="1" />
-          <End Type="PensionsModel.HeshbonOPolisa" Role="HeshbonOPolisa" Multiplicity="*" />
+        <EntityType Name="Maasik">
+          <Key>
+            <PropertyRef Name="Maasik_Id" />
+          </Key>
+          <Property Name="Maasik_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Customer_Id" Type="Int32" Nullable="false" />
+          <Property Name="MPR_MAASIK_BE_YATZRAN" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="SUG_MEZAHE_MAASIK" Type="Int32" Nullable="false" />
+          <Property Name="MISPAR_MEZAHE_MAASIK" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="MISPAR_TIK_NIKUIIM" Type="Int32" />
+          <Property Name="SHEM_MAASIK" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="ERETZ" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="SHEM_YISHUV" Type="String" MaxLength="17" FixedLength="false" Unicode="false" />
+          <Property Name="SEMEL_YESHUV" Type="Int32" />
+          <Property Name="SHEM_RECHOV" Type="String" MaxLength="24" FixedLength="false" Unicode="false" />
+          <Property Name="MISPAR_BAIT" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="MISPAR_KNISA" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="MISPAR_DIRA" Type="Int32" />
+          <Property Name="MIKUD" Type="Int32" />
+          <Property Name="TA_DOAR" Type="Int32" />
+          <Property Name="MISPAR_TELEPHONE_KAVI" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="MISPAR_SHLUCHA" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="MISPAR_CELLULARI" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="MISPAR_FAX" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="E_MAIL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="HEAROT" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="IshKesherMaasiks" Relationship="PensionsModel.Maasik_IshKesherMaasik" FromRole="Maasik" ToRole="IshKesherMaasik" />
+          <NavigationProperty Name="PirteiTaktzivs" Relationship="PensionsModel.FK_PirteiTaktziv_Maasik" FromRole="Maasik" ToRole="PirteiTaktziv" />
+        </EntityType>
+        <Association Name="FK_Customer_Yatzran">
+          <End Type="PensionsModel.Yatzran" Role="Yatzran" Multiplicity="0..1" />
+          <End Type="PensionsModel.Customer" Role="Customer" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Yatzran">
               <PropertyRef Name="KOD_MEZAHE_YATZRAN" />
             </Principal>
-            <Dependent Role="HeshbonOPolisa">
+            <Dependent Role="Customer">
               <PropertyRef Name="KOD_MEZAHE_YATZRAN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Customer_Metafel">
+          <End Type="PensionsModel.Metafel" Role="Metafel" Multiplicity="0..1" />
+          <End Type="PensionsModel.Customer" Role="Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Metafel">
+              <PropertyRef Name="KOD_MEZAHE_METAFEL" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="KOD_MEZAHE_METAFEL" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2746,12 +2732,10 @@
           <End Type="PensionsModel.HeshbonOPolisa" Role="HeshbonOPolisa" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Customer">
-              <PropertyRef Name="MISPAR_ZIHUY_LAKOACH" />
-              <PropertyRef Name="SUG_MEZAHE_LAKOACH" />
+              <PropertyRef Name="Customer_Id" />
             </Principal>
             <Dependent Role="HeshbonOPolisa">
-              <PropertyRef Name="MISPAR_ZIHUY_LAKOACH" />
-              <PropertyRef Name="SUG_MEZAHE_LAKOACH" />
+              <PropertyRef Name="Customer_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2776,18 +2760,6 @@
             </Principal>
             <Dependent Role="HeshbonKovetz">
               <PropertyRef Name="HeshbonOPolisa_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_HeshbonOPolisa_Metafel">
-          <End Type="PensionsModel.Metafel" Role="Metafel" Multiplicity="1" />
-          <End Type="PensionsModel.HeshbonOPolisa" Role="HeshbonOPolisa" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Metafel">
-              <PropertyRef Name="KOD_MEZAHE_METAFEL" />
-            </Principal>
-            <Dependent Role="HeshbonOPolisa">
-              <PropertyRef Name="KOD_MEZAHE_METAFEL" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2872,6 +2844,30 @@
             </Principal>
             <Dependent Role="YitraLefiGilPrisha">
               <PropertyRef Name="HeshbonOPolisa_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Maasik_IshKesherMaasik">
+          <End Type="PensionsModel.Maasik" Role="Maasik" Multiplicity="1" />
+          <End Type="PensionsModel.IshKesherMaasik" Role="IshKesherMaasik" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Maasik">
+              <PropertyRef Name="Maasik_Id" />
+            </Principal>
+            <Dependent Role="IshKesherMaasik">
+              <PropertyRef Name="Maasik_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PirteiTaktziv_Maasik">
+          <End Type="PensionsModel.Maasik" Role="Maasik" Multiplicity="0..1" />
+          <End Type="PensionsModel.PirteiTaktziv" Role="PirteiTaktziv" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Maasik">
+              <PropertyRef Name="Maasik_Id" />
+            </Principal>
+            <Dependent Role="PirteiTaktziv">
+              <PropertyRef Name="Maasik_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3272,33 +3268,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Maasiks">
-            <EntityTypeMapping TypeName="PensionsModel.Maasik">
-              <MappingFragment StoreEntitySet="Maasik">
-                <ScalarProperty Name="Maasik_Id" ColumnName="Maasik_Id" />
-                <ScalarProperty Name="MPR_MAASIK_BE_YATZRAN" ColumnName="MPR-MAASIK-BE-YATZRAN" />
-                <ScalarProperty Name="SUG_MEZAHE_MAASIK" ColumnName="SUG-MEZAHE-MAASIK" />
-                <ScalarProperty Name="MISPAR_MEZAHE_MAASIK" ColumnName="MISPAR-MEZAHE-MAASIK" />
-                <ScalarProperty Name="MISPAR_TIK_NIKUIIM" ColumnName="MISPAR-TIK-NIKUIIM" />
-                <ScalarProperty Name="SHEM_MAASIK" ColumnName="SHEM-MAASIK" />
-                <ScalarProperty Name="ERETZ" ColumnName="ERETZ" />
-                <ScalarProperty Name="SHEM_YISHUV" ColumnName="SHEM-YISHUV" />
-                <ScalarProperty Name="SEMEL_YESHUV" ColumnName="SEMEL-YESHUV" />
-                <ScalarProperty Name="SHEM_RECHOV" ColumnName="SHEM-RECHOV" />
-                <ScalarProperty Name="MISPAR_BAIT" ColumnName="MISPAR-BAIT" />
-                <ScalarProperty Name="MISPAR_KNISA" ColumnName="MISPAR-KNISA" />
-                <ScalarProperty Name="MISPAR_DIRA" ColumnName="MISPAR-DIRA" />
-                <ScalarProperty Name="MIKUD" ColumnName="MIKUD" />
-                <ScalarProperty Name="TA_DOAR" ColumnName="TA-DOAR" />
-                <ScalarProperty Name="MISPAR_TELEPHONE_KAVI" ColumnName="MISPAR-TELEPHONE-KAVI" />
-                <ScalarProperty Name="MISPAR_SHLUCHA" ColumnName="MISPAR-SHLUCHA" />
-                <ScalarProperty Name="MISPAR_CELLULARI" ColumnName="MISPAR-CELLULARI" />
-                <ScalarProperty Name="MISPAR_FAX" ColumnName="MISPAR-FAX" />
-                <ScalarProperty Name="E_MAIL" ColumnName="E-MAIL" />
-                <ScalarProperty Name="HEAROT" ColumnName="HEAROT" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="MasluleiHashkaas">
             <EntityTypeMapping TypeName="PensionsModel.MasluleiHashkaa">
               <MappingFragment StoreEntitySet="MasluleiHashkaa">
@@ -3632,8 +3601,12 @@
                 <ScalarProperty Name="SHEM_MISHPACHA" ColumnName="SHEM-MISHPACHA" />
                 <ScalarProperty Name="SHEM_MISHPACHA_KODEM" ColumnName="SHEM-MISHPACHA-KODEM" />
                 <ScalarProperty Name="SHEM_PRATI" ColumnName="SHEM-PRATI" />
+                <ScalarProperty Name="SUG_MUTZAR_PENSIONI" ColumnName="SUG-MUTZAR-PENSIONI" />
+                <ScalarProperty Name="KOD_MEZAHE_METAFEL" ColumnName="KOD-MEZAHE-METAFEL" />
+                <ScalarProperty Name="KOD_MEZAHE_YATZRAN" ColumnName="KOD-MEZAHE-YATZRAN" />
                 <ScalarProperty Name="SUG_MEZAHE_LAKOACH" ColumnName="SUG-MEZAHE-LAKOACH" />
                 <ScalarProperty Name="MISPAR_ZIHUY_LAKOACH" ColumnName="MISPAR-ZIHUY-LAKOACH" />
+                <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3669,12 +3642,36 @@
                 <ScalarProperty Name="MISPAR_POLISA_O_HESHBON" ColumnName="MISPAR-POLISA-O-HESHBON" />
                 <ScalarProperty Name="ASMACHTA_MEKORIT" ColumnName="ASMACHTA-MEKORIT" />
                 <ScalarProperty Name="MISPAR_MISLAKA" ColumnName="MISPAR-MISLAKA" />
-                <ScalarProperty Name="MISPAR_ZIHUY_LAKOACH" ColumnName="MISPAR-ZIHUY-LAKOACH" />
-                <ScalarProperty Name="SUG_MEZAHE_LAKOACH" ColumnName="SUG-MEZAHE-LAKOACH" />
-                <ScalarProperty Name="SUG_MUTZAR_PENSIONI" ColumnName="SUG-MUTZAR-PENSIONI" />
-                <ScalarProperty Name="KOD_MEZAHE_METAFEL" ColumnName="KOD-MEZAHE-METAFEL" />
-                <ScalarProperty Name="KOD_MEZAHE_YATZRAN" ColumnName="KOD-MEZAHE-YATZRAN" />
+                <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
                 <ScalarProperty Name="HeshbonOPolisa_Id" ColumnName="HeshbonOPolisa_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Maasiks">
+            <EntityTypeMapping TypeName="PensionsModel.Maasik">
+              <MappingFragment StoreEntitySet="Maasik">
+                <ScalarProperty Name="HEAROT" ColumnName="HEAROT" />
+                <ScalarProperty Name="E_MAIL" ColumnName="E-MAIL" />
+                <ScalarProperty Name="MISPAR_FAX" ColumnName="MISPAR-FAX" />
+                <ScalarProperty Name="MISPAR_CELLULARI" ColumnName="MISPAR-CELLULARI" />
+                <ScalarProperty Name="MISPAR_SHLUCHA" ColumnName="MISPAR-SHLUCHA" />
+                <ScalarProperty Name="MISPAR_TELEPHONE_KAVI" ColumnName="MISPAR-TELEPHONE-KAVI" />
+                <ScalarProperty Name="TA_DOAR" ColumnName="TA-DOAR" />
+                <ScalarProperty Name="MIKUD" ColumnName="MIKUD" />
+                <ScalarProperty Name="MISPAR_DIRA" ColumnName="MISPAR-DIRA" />
+                <ScalarProperty Name="MISPAR_KNISA" ColumnName="MISPAR-KNISA" />
+                <ScalarProperty Name="MISPAR_BAIT" ColumnName="MISPAR-BAIT" />
+                <ScalarProperty Name="SHEM_RECHOV" ColumnName="SHEM-RECHOV" />
+                <ScalarProperty Name="SEMEL_YESHUV" ColumnName="SEMEL-YESHUV" />
+                <ScalarProperty Name="SHEM_YISHUV" ColumnName="SHEM-YISHUV" />
+                <ScalarProperty Name="ERETZ" ColumnName="ERETZ" />
+                <ScalarProperty Name="SHEM_MAASIK" ColumnName="SHEM-MAASIK" />
+                <ScalarProperty Name="MISPAR_TIK_NIKUIIM" ColumnName="MISPAR-TIK-NIKUIIM" />
+                <ScalarProperty Name="MISPAR_MEZAHE_MAASIK" ColumnName="MISPAR-MEZAHE-MAASIK" />
+                <ScalarProperty Name="SUG_MEZAHE_MAASIK" ColumnName="SUG-MEZAHE-MAASIK" />
+                <ScalarProperty Name="MPR_MAASIK_BE_YATZRAN" ColumnName="MPR-MAASIK-BE-YATZRAN" />
+                <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
+                <ScalarProperty Name="Maasik_Id" ColumnName="Maasik_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -69,9 +69,9 @@ namespace DAL
         public virtual ICollection<HafkadaAchrona> HafkadaAchronas { get; set; }
         public virtual ICollection<HafkadotMetchilatShana> HafkadotMetchilatShanas { get; set; }
         public virtual ICollection<HafrashotLePolisa> HafrashotLePolisas { get; set; }
-        public virtual Maasik Maasik { get; set; }
         public virtual ICollection<MasluleiHashkaa> MasluleiHashkaas { get; set; }
         public virtual ICollection<Yitrot> Yitrots { get; set; }
         public virtual HeshbonOPolisa HeshbonOPolisa { get; set; }
+        public virtual Maasik Maasik { get; set; }
     }
 }

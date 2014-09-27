@@ -425,37 +425,89 @@ namespace DAL
             }
         }
 
-        public void SaveCustomer(Customer customer)
+        public void SaveCustomer(ref Customer customer )
         {
-            string misparZihuyLakoach =
-                (from c in dbCtx.Customers.AsNoTracking()
-                    where c.SUG_MEZAHE_LAKOACH == customer.SUG_MEZAHE_LAKOACH &&
-                        c.MISPAR_ZIHUY_LAKOACH == customer.MISPAR_ZIHUY_LAKOACH
-                    select c.MISPAR_ZIHUY_LAKOACH).FirstOrDefault();
+            int SugMezaheLakoach = customer.SUG_MEZAHE_LAKOACH;
+            string MisparZihuyLakoach = customer.MISPAR_ZIHUY_LAKOACH;
+            int? sugMutzarPensioni = customer.SUG_MUTZAR_PENSIONI;
+            int? kodMezaheYatzran = customer.KOD_MEZAHE_YATZRAN;
+            int? kodMezaheMetafel = customer.KOD_MEZAHE_METAFEL;
 
-            if (misparZihuyLakoach.Length > 0)
-            {
-                dbCtx.Entry(customer).State = EntityState.Modified;
-                dbCtx.Entry(customer).Reload();
-            }
-            else
+            Customer Customer_check =
+                (from c in dbCtx.Customers
+                 where    c.SUG_MEZAHE_LAKOACH == SugMezaheLakoach 
+                       && c.MISPAR_ZIHUY_LAKOACH == MisparZihuyLakoach
+//                     && c.SUG_MUTZAR_PENSIONI == sugMutzarPensioni 
+                       && c.KOD_MEZAHE_YATZRAN == kodMezaheYatzran
+//                     && c.KOD_MEZAHE_METAFEL == kodMezaheMetafel
+                 select c).FirstOrDefault();
+
+            if (Customer_check == null)
             {
                 dbCtx.Customers.Add(customer);
             }
+            else
+            {
+                customer.Customer_Id = Customer_check.Customer_Id;
+
+                Customer_check.SHEM_PRATI = customer.SHEM_PRATI;
+                Customer_check.SHEM_MISHPACHA_KODEM = customer.SHEM_MISHPACHA_KODEM;
+                Customer_check.SHEM_MISHPACHA =  customer.SHEM_MISHPACHA;
+                Customer_check.MIN = customer.MIN;
+                Customer_check.TAARICH_LEYDA = customer.TAARICH_LEYDA;
+                Customer_check.PTIRA = customer.PTIRA;
+                Customer_check.TAARICH_PTIRA = customer.TAARICH_PTIRA;
+                Customer_check.MATZAV_MISHPACHTI = customer.MATZAV_MISHPACHTI;
+                Customer_check.ERETZ = customer.ERETZ;
+                Customer_check.SHEM_YISHUV = customer.SHEM_YISHUV;
+                Customer_check.SEMEL_YESHUV = customer.SEMEL_YESHUV;
+                Customer_check.SHEM_RECHOV = customer.SHEM_RECHOV;
+                Customer_check.MISPAR_BAIT = customer.MISPAR_BAIT;
+                Customer_check.MISPAR_KNISA = customer.MISPAR_KNISA;
+                Customer_check.MISPAR_DIRA = customer.MISPAR_DIRA;
+                Customer_check.MIKUD = customer.MIKUD;
+                Customer_check.TA_DOAR = customer.TA_DOAR;
+                Customer_check.MISPAR_TELEPHONE_KAVI = customer.MISPAR_TELEPHONE_KAVI;
+                Customer_check.MISPAR_SHLUCHA = customer.MISPAR_SHLUCHA;
+                Customer_check.MISPAR_CELLULARI = customer.MISPAR_CELLULARI;
+                Customer_check.MISPAR_FAX = customer.MISPAR_FAX;
+                Customer_check.E_MAIL = customer.E_MAIL;
+                Customer_check.HEAROT = customer.HEAROT;
+                Customer_check.MISPAR_YELADIM = customer.MISPAR_YELADIM;
+
+                dbCtx.Entry(Customer_check).State = EntityState.Modified;
+            }         
         }
 
         public void SaveMaasik(Maasik maasik)
         {
-            int maasik_Id;
-            maasik_Id =
+            Maasik maasik_check =
                     (from m in dbCtx.Maasiks
                      where m.MISPAR_MEZAHE_MAASIK == maasik.MISPAR_MEZAHE_MAASIK &&
                            m.SUG_MEZAHE_MAASIK == maasik.SUG_MEZAHE_MAASIK
-                     select m.Maasik_Id).FirstOrDefault();
-            if (maasik_Id > 0)
+                     select m).FirstOrDefault();
+            if (maasik_check != null)
             {
-                dbCtx.Entry(maasik).State = EntityState.Modified;
-                dbCtx.Entry(maasik).Reload();
+                maasik_check.MPR_MAASIK_BE_YATZRAN = maasik.MPR_MAASIK_BE_YATZRAN;
+                maasik_check.MISPAR_TIK_NIKUIIM = maasik.MISPAR_TIK_NIKUIIM;
+                maasik_check.SHEM_MAASIK = maasik.SHEM_MAASIK;
+                maasik_check.ERETZ = maasik.ERETZ;
+                maasik_check.SHEM_YISHUV = maasik.SHEM_YISHUV;
+                maasik_check.SEMEL_YESHUV = maasik.SEMEL_YESHUV;
+                maasik_check.SHEM_RECHOV = maasik.SHEM_RECHOV;
+                maasik_check.MISPAR_BAIT = maasik.MISPAR_BAIT;
+                maasik_check.MISPAR_KNISA = maasik.MISPAR_KNISA;
+                maasik_check.MISPAR_DIRA = maasik.MISPAR_DIRA;
+                maasik_check.MIKUD = maasik.MIKUD;
+                maasik_check.TA_DOAR = maasik.TA_DOAR;
+                maasik_check.MISPAR_TELEPHONE_KAVI = maasik.MISPAR_TELEPHONE_KAVI;
+                maasik_check.MISPAR_SHLUCHA = maasik.MISPAR_SHLUCHA;
+                maasik_check.MISPAR_CELLULARI = maasik.MISPAR_CELLULARI;
+                maasik_check.MISPAR_FAX = maasik.MISPAR_FAX;
+                maasik_check.E_MAIL = maasik.E_MAIL;
+                maasik_check.HEAROT = maasik.HEAROT;
+
+                dbCtx.Entry(maasik_check).State = EntityState.Modified;
             }
             else
                 dbCtx.Maasiks.Add(maasik);
@@ -467,7 +519,7 @@ namespace DAL
             heshbonOPolisa_Id =
                     (from m in dbCtx.HeshbonOPolisas
                      where m.MISPAR_POLISA_O_HESHBON == heshbonOPolisa.MISPAR_POLISA_O_HESHBON &&
-                           m.KOD_MEZAHE_YATZRAN == heshbonOPolisa.KOD_MEZAHE_YATZRAN
+                           m.TAARICH_HITZTARFUT_MUTZAR == heshbonOPolisa.TAARICH_HITZTARFUT_MUTZAR
                      select m.HeshbonOPolisa_Id).FirstOrDefault();
 
             if (heshbonOPolisa_Id >0)
@@ -476,7 +528,7 @@ namespace DAL
             //else
             //if (heshbonOPolisa_check == null)
             //{
-            dbCtx.HeshbonOPolisas.Add(heshbonOPolisa);
+//            dbCtx.HeshbonOPolisas.Add(heshbonOPolisa);
 //            dbCtx.Entry(heshbonOPolisa).Reload();
             //}
             //else

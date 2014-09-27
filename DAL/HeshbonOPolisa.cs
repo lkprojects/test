@@ -28,11 +28,7 @@ namespace DAL
         }
     
         public int HeshbonOPolisa_Id { get; set; }
-        public int KOD_MEZAHE_YATZRAN { get; set; }
-        public int KOD_MEZAHE_METAFEL { get; set; }
-        public int SUG_MUTZAR_PENSIONI { get; set; }
-        public int SUG_MEZAHE_LAKOACH { get; set; }
-        public string MISPAR_ZIHUY_LAKOACH { get; set; }
+        public int Customer_Id { get; set; }
         public string MISPAR_MISLAKA { get; set; }
         public string ASMACHTA_MEKORIT { get; set; }
         public string MISPAR_POLISA_O_HESHBON { get; set; }
@@ -63,11 +59,9 @@ namespace DAL
         public Nullable<int> Mishloach_MIKUD { get; set; }
         public Nullable<int> Mishloach_TA_DOAR { get; set; }
     
-        public virtual Yatzran Yatzran { get; set; }
         public virtual Customer Customer { get; set; }
         public virtual ICollection<Halvaa> Halvaas { get; set; }
         public virtual ICollection<HeshbonKovetz> HeshbonKovetzs { get; set; }
-        public virtual Metafel Metafel { get; set; }
         public virtual ICollection<Kisui> Kisuis { get; set; }
         public virtual ICollection<MeyupeKoach> MeyupeKoaches { get; set; }
         public virtual ICollection<Mitryot> Mitryots { get; set; }

@@ -49,7 +49,6 @@ namespace DAL
         public virtual DbSet<Kisui> Kisuis { get; set; }
         public virtual DbSet<Kovetz> Kovetzs { get; set; }
         public virtual DbSet<Kupa> Kupas { get; set; }
-        public virtual DbSet<Maasik> Maasiks { get; set; }
         public virtual DbSet<MasluleiHashkaa> MasluleiHashkaas { get; set; }
         public virtual DbSet<Metafel> Metafels { get; set; }
         public virtual DbSet<Mevutach> Mevutaches { get; set; }
@@ -71,6 +70,7 @@ namespace DAL
         public virtual DbSet<IshKesherMaasik> IshKesherMaasiks { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<HeshbonOPolisa> HeshbonOPolisas { get; set; }
+        public virtual DbSet<Maasik> Maasiks { get; set; }
     
         public virtual int ChangeClientStatus(ObjectParameter mISPAR_ZIHUY, Nullable<int> fromStatus, Nullable<int> toStatus, Nullable<int> kovetz_id)
         {

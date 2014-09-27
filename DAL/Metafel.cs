@@ -17,13 +17,13 @@ namespace DAL
         public Metafel()
         {
             this.IshKesherMetafels = new HashSet<IshKesherMetafel>();
-            this.HeshbonOPolisas = new HashSet<HeshbonOPolisa>();
+            this.Customers = new HashSet<Customer>();
         }
     
         public int KOD_MEZAHE_METAFEL { get; set; }
         public string SHEM_METAFEL { get; set; }
     
         public virtual ICollection<IshKesherMetafel> IshKesherMetafels { get; set; }
-        public virtual ICollection<HeshbonOPolisa> HeshbonOPolisas { get; set; }
+        public virtual ICollection<Customer> Customers { get; set; }
     }
 }
