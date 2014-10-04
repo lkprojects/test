@@ -1,0 +1,368 @@
+﻿@model List<DAL.HeshbonOPolisa>
+
+@{
+    ViewBag.Title = "מצב החסכונות שלי";
+}
+
+<script>
+    $(document).ready
+    (
+      function () {
+
+          @for(var i = 1; i <= Model.Count(); i++)
+    {
+    <text>
+          $("#flip</text>@i<text>").click(function () {
+              $("#panel</text>@i<text>").slideToggle("fast");
+          });
+
+          $("#details</text>@i<text>").click(function () {
+              if ($(this).text() != "סגור X")
+                  $(this).html("סגור X");
+              else
+                  $(this).html("לפרטים &#8678;");
+
+              if ($(this).offset().top > 300)
+                  $('html, body').animate({
+                      scrollTop: $(this).offset().top
+                  }, 10);
+
+          });
+          </text>
+    }
+      }
+    );
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Create jqxTabs.
+        $('.jqxTabs').jqxTabs({ rtl: true, width: '100%', height: '100%', position: 'top' });
+        $('.jqxTabs').jqxTabs({ animationType: 'fade' });
+    });
+</script>
+<table class="DetailsTable" style="width:800px">
+    <tbody>
+        <tr class="DetailsTableHeader" style="width:800px">
+            <td>סוג מוצר פנסיוני</td>
+            <td>מספר חשבון</td>
+            <td>מנוהל ע"י</td>
+            <td>מצב הפוליסה</td>
+            <td>תאריך הצטרפות</td>
+            <td>סוג קרן הפנסיה/פוליסה</td>
+            <td>שכר לפוליסה</td>
+            <td>סה"כ חסכון מצטבר</td>
+            <td></td>
+        </tr>
+        @{ int num = 0;
+         string panel, flip, details;
+         string sug_keren;
+         string date;
+         string date2;
+         DateTime dateTime;
+         decimal sum = 0;
+        }
+        @foreach (var account in Model)
+        {
+            num++;
+            panel = "panel" + num.ToString();
+            flip = "flip" + num.ToString();
+            details = "details" + num.ToString();
+            sug_keren = ViewBag.LUT.Get("SUG-KEREN-PENSIA", account.SUG_KEREN_PENSIA);
+            if (sug_keren == "")
+            {
+                sug_keren = ViewBag.LUT.Get("SUG-POLISA", account.SUG_POLISA);
+            }
+            date = ((DateTime)account.TAARICH_HITZTARFUT_MUTZAR).ToString("dd/MM/yyyy");
+
+            sum = 0;
+            for (int i = 0; i < account.PirteiTaktzivs.Count; i++)
+            {
+                for (int j = 0; j < account.PirteiTaktzivs.ToList()[i].Yitrots.Count; j++)
+                {
+                    for (int k = 0; k < account.PirteiTaktzivs.ToList()[i].Yitrots.ToList()[j].PerutYitrots.Count; k++)
+                    {
+                        sum += (decimal)account.PirteiTaktzivs.ToList()[i].Yitrots.ToList()[j].PerutYitrots.ToList()[k].TOTAL_CHISACHON_MTZBR;
+                    }
+                }
+            }
+            <tr class="DetailsTableBody">
+                <td class="DetailsTableBody">@ViewBag.LUT.Get("SUG-MUTZAR-PENSIONI", account.Customer.SUG_MUTZAR_PENSIONI)</td>
+                <td class="DetailsTableBody">@account.MISPAR_POLISA_O_HESHBON</td>
+                <td class="DetailsTableBody">@account.Customer.Yatzran.SHEM_YATZRAN</td>
+                <td class="DetailsTableBody">@ViewBag.LUT.Get("STATUS-POLISA-O-CHESHBON", account.STATUS_POLISA_O_CHESHBON)</td>
+                <td class="DetailsTableBody">@date</td>
+                <td class="DetailsTableBody">@sug_keren</td>
+                <td class="DetailsTableBody">@account.PirteiTaktzivs.Sum(x => x.Haasaka_SACHAR_POLISA)</td>
+                <td class="DetailsTableBody">@sum</td>
+                <td class="DetailsTableBody">
+                    <div id="@Html.Raw(flip)">
+                        <a href="#">
+                            <p id="@Html.Raw(details)" style="font-weight:bold">לפרטים &#8678;</p>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="9">
+                    <div id="@Html.Raw(panel)" style="display:none; margin-left:10px; margin-right:10px; margin-top:5px; margin-bottom:5px;">
+                        <div class='jqxTabs'>
+                            <ul>
+                                <li>צבירות</li>
+                                <li>הפקדות</li>
+                                <li>הפקדה אחרונה</li>
+                                <li>דמי ניהול</li>
+                                <li>המרכיב הביטוחי</li>
+                                <li>השקעות ורווחים</li>
+                            </ul>
+                            <div class="TabsDiv">
+                                <table class="InnerTable">
+                                    <thead>
+                                        <tr class="InnerTableHeader">
+                                            <td class="InnerTableHeader">סה"כ ערכי פדיון</td>
+                                            <td class="InnerTableHeader">סה"כ חסכון מצטבר</td>
+                                            <td class="InnerTableHeader">סוג הפרשה ליתרה</td>
+                                            <td class="InnerTableHeader">סוג יתרה</td>
+                                        </tr>
+                                    </thead>
+                                    @for (int i = 0; i < account.PirteiTaktzivs.Count(); i++)
+                                    {
+                                        for (int j = 0; j < account.PirteiTaktzivs.ToList()[i].Yitrots.Count(); j++)
+                                        {
+                                            for (int k = 0; k < account.PirteiTaktzivs.ToList()[i].Yitrots.ToList()[j].PerutYitrots.Count(); k++)
+                                            {
+                                                <tr class="InnerTableBody">
+                                                    <td class="InnerTableBody">@account.PirteiTaktzivs.ToList()[i].Yitrots.ToList()[j].PerutYitrots.ToList()[k].TOTAL_ERKEI_PIDION</td>
+                                                    <td class="InnerTableBody">@account.PirteiTaktzivs.ToList()[i].Yitrots.ToList()[j].PerutYitrots.ToList()[k].TOTAL_CHISACHON_MTZBR</td>
+                                                    <td class="InnerTableBody">@ViewBag.LUT.Get("KOD-SUG-HAFRASHA", account.PirteiTaktzivs.ToList()[i].Yitrots.ToList()[j].PerutYitrots.ToList()[k].KOD_SUG_HAFRASHA)</td>
+                                                    <td class="InnerTableBody">@ViewBag.LUT.Get("KOD-SUG-ITRA", account.PirteiTaktzivs.ToList()[i].Yitrots.ToList()[j].PerutYitrots.ToList()[k].KOD_SUG_ITRA)</td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                </table>
+                            </div>
+
+                            <div class="TabsDiv">
+                                <table class="InnerTable">
+                                    <thead>
+                                        <tr class="InnerTableHeader">
+                                            <td class="InnerTableHeader">סוג המפקיד</td>
+                                            <td class="InnerTableHeader">שם משלם</td>
+                                            <td class="InnerTableHeader">זיהוי משלם</td>
+                                            <td class="InnerTableHeader">אמצעי תשלום</td>
+                                            <td class="InnerTableHeader">תדירות התשלום</td>
+                                            <td class="InnerTableHeader">סוג הפרשה</td>
+                                            <td class="InnerTableHeader">אחוז הפרשה</td>
+                                        </tr>
+                                    </thead>
+                                    @for (int i = 0; i < account.PirteiTaktzivs.Count(); i++)
+                                    {
+                                        for (int j = 0; j < account.PirteiTaktzivs.ToList()[i].HafrashotLePolisas.Count(); j++)
+                                        {
+                                            <tr class="InnerTableBody">
+                                                <td class="InnerTableBody">@ViewBag.LUT.Get("SUG-HAMAFKID", account.PirteiTaktzivs.ToList()[i].HafrashotLePolisas.ToList()[j].SUG_HAMAFKID)</td>
+                                                <td class="InnerTableBody">@account.PirteiTaktzivs.ToList()[i].Gvia_SHEM_MESHALEM</td>
+                                                <td class="InnerTableBody">
+                                                    @ViewBag.LUT.Get("Gvia_SUG-TEUDA-MESHALEM", account.PirteiTaktzivs.ToList()[i].Gvia_SUG_TEUDA_MESHALEM)
+                                                @account.PirteiTaktzivs.ToList()[i].Gvia_MISPAR_ZIHUY_MESHALEM
+                                            </td>
+                                            <td class="InnerTableBody">@ViewBag.LUT.Get("Gvia_KOD-EMTZAEI-TASHLUM", account.PirteiTaktzivs.ToList()[i].Gvia_KOD_EMTZAEI_TASHLUM)</td>
+                                            <td class="InnerTableBody">@ViewBag.LUT.Get("Gvia_TADIRUT-TASHLUM", account.PirteiTaktzivs.ToList()[i].Gvia_TADIRUT_TASHLUM)</td>
+                                            <td class="InnerTableBody">@ViewBag.LUT.Get("SUG-HAFRASHA", account.PirteiTaktzivs.ToList()[i].HafrashotLePolisas.ToList()[j].SUG_HAFRASHA)</td>
+                                            <td class="InnerTableBody">@account.PirteiTaktzivs.ToList()[i].HafrashotLePolisas.ToList()[j].ACHUZ_HAFRASHA</td>
+                                        </tr>
+                                        }
+                                    }
+                                </table>
+                            </div>
+                            <div class="TabsDiv">
+                                <table class="InnerTable">
+                                    <thead>
+                                        <tr class="InnerTableHeader">
+                                            <td class="InnerTableHeader">סה"כ הפקדה אחרונה לחיסכון המצטבר</td>
+                                            <td class="InnerTableHeader">בגין שכר(חודש+שנה)</td>
+                                            <td class="InnerTableHeader">סה"כ סכום ששולם</td>
+                                            <td class="InnerTableHeader">סוג מפקיד</td>
+                                            <td class="InnerTableHeader">סוג הפרשה</td>
+                                            <td class="InnerTableHeader">סוג הפקדה</td>
+                                            <td class="InnerTableHeader">אופן הפקדה</td>
+                                            <td class="InnerTableHeader">סה"כ הפקדה אחרונה</td>
+                                            <td class="InnerTableHeader">תאריך הפקדה אחרון</td>
+                                        </tr>
+                                    </thead>
+                                    @for (int i = 0; i < account.PirteiTaktzivs.Count(); i++)
+                                    {
+                                        for (int j = 0; j < account.PirteiTaktzivs.ToList()[i].HafkadaAchronas.Count(); j++)
+                                        {
+                                            for (int k = 0; k < account.PirteiTaktzivs.ToList()[i].HafkadaAchronas.ToList()[j].PerutHafkadaAchronas.Count(); k++)
+                                            {
+                                                if (account.PirteiTaktzivs.ToList()[i].HafkadaAchronas.ToList()[j].TAARICH_HAFKADA_ACHARON != null)
+                                                {
+                                                    date = ((DateTime)account.PirteiTaktzivs.ToList()[i].HafkadaAchronas.ToList()[j].TAARICH_HAFKADA_ACHARON).ToString("dd/MM/yyyy");
+                                                }
+                                                else { date = ""; }
+                                                <tr class="InnerTableBody">
+                                                    <td class="InnerTableBody">@account.PirteiTaktzivs.ToList()[i].HafkadaAchronas.ToList()[j].TOTAL_HAFKADA_ACHRONA</td>
+                                                    <td class="InnerTableBody">@account.PirteiTaktzivs.ToList()[i].HafkadaAchronas.ToList()[j].PerutHafkadaAchronas.ToList()[k].CHODESH_SACHAR</td>
+                                                    <td class="InnerTableBody">@account.PirteiTaktzivs.ToList()[i].HafkadaAchronas.ToList()[j].PerutHafkadaAchronas.ToList()[k].SCHUM_HAFKADA_SHESHULAM</td>
+                                                    <td class="InnerTableBody">@ViewBag.LUT.Get("SUG-MAFKID", account.PirteiTaktzivs.ToList()[i].HafkadaAchronas.ToList()[j].PerutHafkadaAchronas.ToList()[k].SUG_MAFKID)</td>
+                                                    <td class="InnerTableBody">@ViewBag.LUT.Get("SUG-HAFRASHA", account.PirteiTaktzivs.ToList()[i].HafkadaAchronas.ToList()[j].PerutHafkadaAchronas.ToList()[k].SUG_HAFRASHA)</td>
+                                                    <td class="InnerTableBody">@ViewBag.LUT.Get("KOD-SUG-HAFKADA", account.PirteiTaktzivs.ToList()[i].HafkadaAchronas.ToList()[j].PerutHafkadaAchronas.ToList()[k].KOD_SUG_HAFKADA)</td>
+                                                    <td class="InnerTableBody">@ViewBag.LUT.Get("SUG-HAFKADA", account.PirteiTaktzivs.ToList()[i].HafkadaAchronas.ToList()[j].SUG_HAFKADA)</td>
+                                                    <td class="InnerTableBody">@account.PirteiTaktzivs.ToList()[i].HafkadaAchronas.ToList()[j].TOTAL_HAFKADA</td>
+                                                    <td class="InnerTableBody">@date</td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                </table>
+                            </div>
+                            <div class="TabsDiv">
+                                <table class="InnerTable">
+                                    <thead>
+                                        <tr class="InnerTableHeader">
+                                            <td class="InnerTableHeader">תאריך נכונות דמי הניהול</td>
+                                            <td class="InnerTableHeader">סך דמי הניהול שנגבו בפועל מהפוליסה</td>
+                                            <td class="InnerTableHeader">סך דמי ניהול אחרים</td>
+                                            <td class="InnerTableHeader">סך דמי הניהול מצבירה שנגבו בפועל</td>
+                                            <td class="InnerTableHeader">שיעור דמי ניהול מצבירה בפועל</td>
+                                            <td class="InnerTableHeader">סך דמי ניהול מהפקדה שנגבו בפועל</td>
+                                            <td class="InnerTableHeader">שיעור דמי ניהול מהפקדה בפועל</td>
+                                        </tr>
+                                    </thead>
+                                    @for (int i = 0; i < account.PirteiTaktzivs.Count(); i++)
+                                    {
+                                        <tr class="InnerTableBody">
+                                            <td class="InnerTableBody">
+                                                @{
+                                        dateTime = DateTime.MinValue; //.ToString("dd/MM/yyyy");
+                                        for (int j = 0; j < account.PirteiTaktzivs.ToList()[i].DmeiNihuls.Count(); j++)
+                                        {
+                                            if (dateTime < (DateTime)account.PirteiTaktzivs.ToList()[i].DmeiNihuls.ToList()[j].TAARICH_NECHONUT_SHEUR_DNHL)
+                                            {
+                                                dateTime = (DateTime)account.PirteiTaktzivs.ToList()[i].DmeiNihuls.ToList()[j].TAARICH_NECHONUT_SHEUR_DNHL;
+                                            }
+                                        }
+                                        if (dateTime == DateTime.MinValue)
+                                        { date = ""; }
+                                        else
+                                        { date = dateTime.ToString("dd/MM/yyyy"); }
+                                                }
+                                                @date
+                                            </td>
+                                            <td class="InnerTableBody">@account.PirteiTaktzivs.ToList()[i].HotzaotBafoalLehodeshDivoach_TOTAL_DMEI_NIHUL_POLISA_O_HESHBON</td>
+                                            <td class="InnerTableBody">@account.PirteiTaktzivs.ToList()[i].HotzaotBafoalLehodeshDivoach_SACH_DMEI_NIHUL_ACHERIM</td>
+                                            <td class="InnerTableBody">@account.PirteiTaktzivs.ToList()[i].HotzaotBafoalLehodeshDivoach_TOTAL_DMEI_NIHUL_TZVIRA</td>
+                                            <td class="InnerTableBody">@account.PirteiTaktzivs.ToList()[i].HotzaotBafoalLehodeshDivoach_SHEUR_DMEI_NIHUL_TZVIRA</td>
+                                            <td class="InnerTableBody">@account.PirteiTaktzivs.ToList()[i].HotzaotBafoalLehodeshDivoach_TOTAL_DMEI_NIHUL_HAFKADA</td>
+                                            <td class="InnerTableBody">@account.PirteiTaktzivs.ToList()[i].HotzaotBafoalLehodeshDivoach_SHEUR_DMEI_NIHUL_HAFKADA</td>
+                                        </tr>
+                                    }
+                                </table>
+                            </div>
+                            <div class="TabsDiv">
+                                <table class="InnerTable">
+                                    <thead>
+                                        <tr class="InnerTableHeader">
+                                            <td class="InnerTableHeader">משלם הכיסוי</td>
+                                            <td class="InnerTableHeader">תאריך תום הכיסוי</td>
+                                            <td class="InnerTableHeader">תאריך תחילת הכיסוי</td>
+                                            <td class="InnerTableHeader">האם סכום הביטוח כולל את החיסכון המצטבר</td>
+                                            <td class="InnerTableHeader">סוג מסלול לסוג ביטוח</td>
+                                            <td class="InnerTableHeader">סוג הצמדה של סכום הביטוח</td>
+                                            <td class="InnerTableHeader">סוג כיסוי</td>
+                                            <td class="InnerTableHeader">שם כיסוי</td>
+                                            <td class="InnerTableHeader">מס' כיסוי</td>
+                                        </tr>
+                                    </thead>
+                                    @for (int i = 0; i < account.Kisuis.Count(); i++)
+                                    {
+                                        if (account.Kisuis.ToList()[i].Mutzar_TAARICH_TCHILAT_KISUY != null)
+                                            { date = ((DateTime)(account.Kisuis.ToList()[i].Mutzar_TAARICH_TCHILAT_KISUY)).ToString("dd/MM/yyyy"); }
+                                        else
+                                            { date = ""; }
+                                        
+                                        if (account.Kisuis.ToList()[i].Mutzar_TAARICH_TOM_KISUY != null)
+                                            { date2 = ((DateTime)(account.Kisuis.ToList()[i].Mutzar_TAARICH_TOM_KISUY)).ToString("dd/MM/yyyy"); }
+                                        else
+                                            { date2 = ""; }
+
+                                        <tr class="InnerTableBody">
+                                            <td class="InnerTableBody">@ViewBag.LUT.Get("Mutzar_MESHALEM-HAKISUY", @account.Kisuis.ToList()[i].Mutzar_MESHALEM_HAKISUY)</td>
+                                            <td class="InnerTableBody">@date2</td>
+                                            <td class="InnerTableBody">@date</td>
+                                            <td class="InnerTableBody">@ViewBag.LUT.Get("Yesodi_IND-SCHUM-BITUAH-KOLEL-CHISACHON", @account.Kisuis.ToList()[i].Yesodi_IND_SCHUM_BITUAH_KOLEL_CHISACHON)</td>
+                                            <td class="InnerTableBody">@ViewBag.LUT.Get("Yesodi_SUG-MASLUL-LEBITUAH", @account.Kisuis.ToList()[i].Yesodi_SUG_MASLUL_LEBITUAH)</td>
+                                            <td class="InnerTableBody">@ViewBag.LUT.Get("Yesodi_SUG-HATZMADA-SCHUM-BITUAH", @account.Kisuis.ToList()[i].Yesodi_SUG_HATZMADA_SCHUM_BITUAH)</td>
+                                            <td class="InnerTableBody">@ViewBag.LUT.Get("SUG-KISUI-ETZEL-YATZRAN", @account.Kisuis.ToList()[i].SUG_KISUI_ETZEL_YATZRAN)</td>
+                                            <td class="InnerTableBody">@account.Kisuis.ToList()[i].SHEM_KISUI_YATZRAN</td>
+                                            <td class="InnerTableBody">@(i + 1)</td>
+                                        </tr>
+                                    }
+                                </table>
+                                <table class="InnerTable">
+                                    <thead>
+                                        <tr class="InnerTableHeader">
+                                            <td class="InnerTableHeader">תדירות שינוי דמי הביטוח בשנים</td>
+                                            <td class="InnerTableHeader">דמי ביטוח לתשלום בפועל</td>
+                                            <td class="InnerTableHeader">סכום ביטוח</td>
+                                            <td class="InnerTableHeader">האם קיימת התניה בדמי הביטוח</td>
+                                            <td class="InnerTableHeader">האם ניתנה הנחה בדמי הביטוח</td>
+                                            <td class="InnerTableHeader">קוד מעשן</td>
+                                            <td class="InnerTableHeader">סוג ההחרגה</td>
+                                            <td class="InnerTableHeader">האם יש החרגה</td>
+                                            <td class="InnerTableHeader">מס' כיסוי</td>
+                                        </tr>
+                                    </thead>
+                                    @for (int i = 0; i < account.Kisuis.Count(); i++)
+                                    {
+                                        <tr class="InnerTableBody">
+                                            <td class="InnerTableBody">@account.Kisuis.ToList()[i].Mutzar_TADIRUT_SHINUY_DMEI_HABITUAH_BESHANIM</td>
+                                            <td class="InnerTableBody">@account.Kisuis.ToList()[i].Mutzar_DMEI_BITUAH_LETASHLUM_BAPOAL</td>
+                                            <td class="InnerTableBody">@account.Kisuis.ToList()[i].Mutzar_SCHUM_BITUACH</td>
+                                            <td class="InnerTableBody">@ViewBag.LUT.Get("Mutzar_HATNAYA-LAHANACHA-DMEI-BITUAH", @account.Kisuis.ToList()[i].Mutzar_HATNAYA_LAHANACHA_DMEI_BITUAH)</td>
+                                            <td class="InnerTableBody">@ViewBag.LUT.Get("Mutzar_HANACHA", @account.Kisuis.ToList()[i].Mutzar_HANACHA)</td>
+                                            <td class="InnerTableBody">@ViewBag.LUT.Get("Mutzar_KOD-ISHUN", @account.Kisuis.ToList()[i].Mutzar_KOD_ISHUN)</td>
+                                            <td class="InnerTableBody">@ViewBag.LUT.Get("Mutzar_SUG-HACHRAGA", @account.Kisuis.ToList()[i].Mutzar_SUG_HACHRAGA)</td>
+                                            <td class="InnerTableBody">@ViewBag.LUT.Get("Mutzar_HACHRAGA", @account.Kisuis.ToList()[i].Mutzar_HACHRAGA)</td>
+                                            <td class="InnerTableBody">@(i + 1)</td>
+                                    </tr>
+                                    }
+                                </table>
+                            </div>
+                            <div class="TabsDiv">
+                                <table class="InnerTable">
+                                    <thead>
+                                        <tr class="InnerTableHeader">
+                                            <td class="InnerTableHeader">סכום צבירה במסלול</td>
+                                            <td class="InnerTableHeader">שם מסלול ההשקעה</td>
+                                            <td class="InnerTableHeader">אחוז ההפקדה השוטפת המופנה למסלול השקעה</td>
+                                            <td class="InnerTableHeader">קוד סוג הפרשה</td>
+                                            <td class="InnerTableHeader">שיעור תשואה נטו שנזקפה למוצר כולו מתחילת השנה</td>
+                                        </tr>
+                                    </thead>
+                                    @for (int i = 0; i < account.PirteiTaktzivs.Count(); i++)
+                                    {
+                                        for (int j = 0; j < account.PirteiTaktzivs.ToList()[i].MasluleiHashkaas.Count() ; j++)
+                                        {
+                                        <tr class="InnerTableBody">
+                                            <td class="InnerTableBody">@account.PirteiTaktzivs.ToList()[i].MasluleiHashkaas.ToList()[j].SCHUM_TZVIRA_BAMASLUL</td>
+                                            <td class="InnerTableBody">@account.PirteiTaktzivs.ToList()[i].MasluleiHashkaas.ToList()[j].SHEM_MASLUL_HASHKAA</td>
+                                            <td class="InnerTableBody">@account.PirteiTaktzivs.ToList()[i].MasluleiHashkaas.ToList()[j].ACHUZ_HAFKADA_LEHASHKAA%</td>
+                                            <td class="InnerTableBody">@ViewBag.LUT.Get("KOD-SUG-HAFRASHA", @account.PirteiTaktzivs.ToList()[i].MasluleiHashkaas.ToList()[j].KOD_SUG_HAFRASHA)</td>
+                                            <td class="InnerTableBody">@account.Tsua_SHEUR_TSUA_NETO%</td>
+                                        </tr>
+                                        }
+                                    }
+                                </table>
+                            </div>
+
+                        </div>
+                        <hr />
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

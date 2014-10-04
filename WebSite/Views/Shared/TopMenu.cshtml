@@ -1,7 +1,58 @@
-﻿<ul>
-    <li class="TopMenuItem"><a class="TopMenuItemLink" href="#">התיק הפנסיוני</a></li>
-    <li class="TopMenuItem"><a class="TopMenuItemLink" href="#">דו"חות</a></li>
-    <li class="TopMenuItem"><a class="TopMenuItemLink" href="#">ניתוח תיק</a></li>
-    <li class="TopMenuItem"><a class="TopMenuItemLink" href="#">צור קשר</a></li>
-    <li class="TopMenuItem"><a class="TopMenuItemLink" href="#">עזרה</a></li>
-</ul>
+﻿
+<script type="text/javascript">
+            $(document).ready(function () {
+                // Create a jqxMenu
+                $("#jqxMenu").jqxMenu({ rtl: true, width: '100%'});
+                $("#jqxMenu").css('visibility', 'visible');
+                $("#jqxMenu").jqxMenu({ animationShowDuration: 300, animationHideDuration: 200, animationShowDelay: 200 });
+                $("#jqxMenu").jqxMenu({ enableHover: true });
+                $("#jqxMenu").jqxMenu({ autoOpen: true });
+                $("#jqxMenu").jqxMenu({ showTopLevelArrows: false });
+            });
+</script>
+
+<div id='jqxMenu' style='visibility: hidden;'>
+    <ul>
+        <li style="margin-left:20px;"><a href="#">דף הבית</a></li>
+        <li style="margin-left:20px;">
+            מוקד ידע
+            <ul style='width: 200px;'>
+                <li><a href="#">חדשות ועדכונים</a></li>
+                <li><a href="#">רישום לקבלת עדכונים בדוא"ל</a></li>
+                <li><a href="#">מושגים בתחום הפנסיה</a></li>
+                <li><a href="#">מאמרים</a></li>
+                <li><a href="#">קישורים רלוונטים</a></li>
+                <li><a href="#">מחשבונים</a></li>
+            </ul>
+        </li>
+        <li style="margin-left:20px;">
+            תמיכה
+            <ul style='width: 200px;'>
+                <li><a href="#">בקשה לקבלת תמיכה</a></li>
+                <li><a href="#">מוקד שירות ותמיכה</a></li>
+                <li><a href="#">שאלות ותשובות</a></li>
+                <li><a href="#">יעוץ פנסיוני אישי</a></li>
+            </ul>
+        </li>
+        <li style="margin-left:20px;">
+            עזרה
+            <ul style='width: 200px;'>
+                <li><a href="#">מדריך למשתמש באתר</a></li>
+                <li><a href="#">סרטון הדרכה</a></li>
+                <li><a href="#">מושגים בתחום הפנסיה</a></li>
+            </ul>
+        </li>
+        <li style="margin-left:20px;">
+            אודותינו
+            <ul style='width: 180px;'>
+                <li><a href="#">על החברה</a></li>
+                <li><a href="#">מן העיתונות</a></li>
+                <li><a href="#Inestor">המשקיעים</a></li>
+                <li><a href="#">שותפות עיסקית</a></li>
+                <li><a href="#Careers">קריירה</a></li>
+                <li><a href="#ContactUs">צור קשר</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+    </div>

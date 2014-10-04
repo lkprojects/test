@@ -1,249 +1,147 @@
-﻿
-
-header, footer, nav, section {
-    display: block;
+﻿header {
+	display: block;
+}
+footer {
+	display: block;
+}
+nav {
+	display: block;
+}
+section {
+	display: block;
+}
+.header {
+	top: 0px; 
+}
+.logo {
+	margin: 0px; width: 200px; height:50px; line-height: 0px; border: 1px solid black;
+}
+.UserArea {
+	top: -45px; width: 200px; line-height: 0px; float: left; position: relative;border: 1px solid black;
+}
+.PersonalDetailsLinks {
+	font-size: 12px; 
+}
+body {
+	font-family: Arial; direction: rtl;
+}
+#container {
+	margin: 0px; padding: 0px;
+}
+#SideMenu {
+	top: 0px; width: 200px; height: 600px; right: 0px; font-weight: bold; float: right; 
+}
+.ProductGroupMenuItem {
+	background: rgb(113, 134, 156); width: 150px; height: 17px; color: white; padding-right: 10px; font-size: 12px; font-weight: bold; margin-top: 10px; margin-right: 20px;
+}
+.ProductMenuItem {
+	background: rgb(232, 240, 240); width: 150px; height: 17px; padding-right: 10px; font-size: 12px; font-weight: normal;
+}
+#Disconnect {
+	margin-right: 20px;
+}
+#content {
+	
+}
+#footer {
+	text-align: center; clear: both; font-size: 11px;
+}
+.TopMenu {
+	  float: right; border: 1px solid black; width: 100%; top: -50px; position:relative; height:50px;
 }
 
+.ProductMenuItemLink {
+	color: rgb(0, 51, 102); font-size: 12px; text-decoration: none;
+}
+.TotalsBarDiv {
+	width: 100%; right: 200px; margin-left: 40px;
+}
+.TotalsBarTable {
+	border: 1px solid black; border-image: none; width: 700px; font-size: 12px; font-weight: bold; border-collapse: collapse; -ms-word-wrap: break-word;
+}
 
-/* Styles for my site
------------------------------------------------------------*/
+.TotalsBarTableTopRow {
+	
+}
+.TotalsBarTableBottomRow {
+	font-size: 20px;
+}
+.TotalsBarItem {
+	padding: 5px; border-right-color: black; border-right-width: 1px; border-right-style: solid; border-collapse: collapse;
+}
+.DetailsDivOLD {
+	border: 1px solid currentColor; border-image: none; top: 500px; width: 300px; right: 200px; margin-bottom: 20px; margin-left: 40px; float: right;
+}
+.DetailsDiv {
+	top: 500px; right: 200px; margin-bottom: 20px; margin-left: 40px; float: right;
+}
+.DetailsTable {
+	border: 1px solid currentColor; border-image: none; width: 300px; -ms-word-wrap: break-word;
+}
+.DetailsTableHeader {
+	background: rgb(164, 178, 191); text-align: center; color: white; font-size: 13px; font-weight: bold;
+}
+.DetailsTableBody {
+	font-size: 12px;
+	border: 1px solid black; border-image: none; width: 700px; font-size: 12px;  border-collapse: collapse; -ms-word-wrap: break-word;
+	}
 
-        .header {
-            position:relative;
-            top:0px;
-/*            border:3px solid;*/
-        }
+.TabsDiv {
+float: right; text-align:right; margin-top:10px;
+}
 
-        .logo {
-            width: 200px;
-            margin: 0px 0px 0px 0px ;
-            line-height: 0px;
-        }
+.InnerTable {
+	 border-image: none; -ms-word-wrap: break-word;
+	margin-right:10px; margin-bottom:10px;
+    border: 1px solid black;
+	}
 
-
-        .UserArea{
-            float:left;
-            width: 200px;
-            position:relative;
-            top:-45px;
-            line-height: 0px;
-        }
-
-        .PersonalDetailsLinks {
-            font-size:12px;
-        }
-        body {
-            direction: rtl;
-            font-family:Arial;
-        }
-
-        #container {
-          margin: 0px 0px 0px 0px;
-          padding: 0px 0px 0px 0px;
-        }
-
-        #SideMenu {
-            overflow-y: auto;
-            width: 200px;
-            height: 600px;
-            right:0px;
-            font-weight:bold; 
-            position:relative;
-            top: 0px;
-            float: right;
-
-        }
-        .ProductGroupMenuItem
-        {
-            background:#71869C;
-            color: white;
-            font-size:12px;
-            width:150px;
-            height:17px;
-            margin-top: 10px;
-            margin-right:20px;
-            font-weight:bold;
-            padding-right:10px;
-            
-
-/*            background:#C60000; -- bordo
-            background:#003366; -- darker gray 
-
-#C60000
-                #9EADBB --  gray
-                #455E7A -- very dark gray
-                #003157  -- very very dark gray
-                #c70304 -- -- bordo2
-                #A5B7C9 -- lighter gray
-                #595959 -- dark gray
-                #E3E3E3 -- very light gray
-                #5a5d61 -- dark gray
-    */
-        }
-        .ProductMenuItem
-        {
-            font-size:12px;
-            font-weight:normal;
-            width:150px;
-            background:#E8F0F0;
-            padding-right:10px;
-            height:17px;
-
-        }
-
-        #Disconnect {
-            margin-right: 20px;
-        }
-        #content {
-        }
-
-        #footer {
-            clear: both;
-            text-align: center;
-
-            font-size:11px;
-        }
-
-        .TopMenu {
-            border-bottom:solid;
-            border-width:thin;
-            position:relative;
-            top: 10px;
-            right: 200px;
-            width: 800px;
-        }
-
-        .TopMenuItem
-        {   
-            background:#DDE1E7;
-            color:#003366;
-            display:inline;
-            margin: 20px;
-            border-radius:8px;
-            padding-top:5px;
-            padding-bottom:5px;
-            padding-left:13px;
-            padding-right:13px;
-            border-style:solid;
-            border-width:1px;
-        }
-        .TopMenuItemLink 
-        {
-            text-decoration:none;
-            color:#003366;
-        }
-        .ProductMenuItemLink
-        {
-            color:#003366;
-            text-decoration:none;
-            font-size:12px;
-        }
-        /* Totals Bar*/
-
-        .TotalsBarDiv
-        {
-            margin-left:40px; width:100%; right:200px;
-        }
-        .TotalsBarTable
-        {
-            width:700px; 
-            word-wrap:break-word;
-            font-size:12px;
-            font-weight:bold;
-            border: 1px solid black;
-            border-collapse: collapse;
-        }
-
-        .TotalsBarTableTopRow
-        {
-
-        }
-        .TotalsBarTableBottomRow
-        {
-            font-size:20px;
-        }
-        .TotalsBarItem
-        {
-            padding: 5px 5px 5px 5px;
-            border-right: 1px solid black;
-            border-collapse: collapse;
-        }
-
-        /* Details */
-
-        .DetailsDiv {
-            border: solid;
-            border-width: 1px;
-            width: 300px;
-            float: right;
-            margin-left: 40px;
-            right: 200px;
-            top: 500px;
-            margin-bottom: 20px;
-        }
-        .DetailsTable{
-            width:300px; 
-            word-wrap:break-word;
-        }
-
-        .DetailsTableHeader {
-            text-align: center;
-            font-weight: bold;
-            background: #a4b2bf;
-            color: white;
-        }
-        .DetailsTableBody {
-            font-size:13px;
-        }
+	
+.InnerTableHeader {
+	background: rgb(218, 33, 84); 
+	text-align: center; color: white; font-size: 13px; font-weight: bold;
+	padding-right: 5px;
+	padding-left:5px;
+	}
 
 
+	
+.InnerTableBody {
+	font-size: 12px;
+	 border-image: none; font-size: 12px;  border-collapse: collapse; -ms-word-wrap: break-word;
+    border-bottom-style: 1px solid black;
+	padding-right: 5px;
+	padding-left:5px;
+	}
 
-/* Styles for basic forms
------------------------------------------------------------*/
+	
 fieldset {
-    border: 1px solid #ddd;
-    padding: 0 1.4em 1.4em 1.4em;
-    margin: 0 0 1.5em 0;
+	margin: 0px 0px 1.5em; padding: 0px 1.4em 1.4em; border: 1px solid rgb(221, 221, 221); border-image: none;
 }
-
 legend {
-    font-size: 1.2em;
-    font-weight: bold;
+	font-size: 1.2em; font-weight: bold;
 }
-
 textarea {
-    min-height: 75px;
+	min-height: 75px;
 }
-
 .editor-label {
-    margin: 1em 0 0 0;
+	margin: 1em 0px 0px;
 }
-
 .editor-field {
-    margin: 0.5em 0 0 0;
+	margin: 0.5em 0px 0px;
 }
-
-
-/* Styles for validation helpers
------------------------------------------------------------*/
 .field-validation-error {
-    color: #f00;
+	color: rgb(255, 0, 0);
 }
-
 .field-validation-valid {
-    display: none;
+	display: none;
 }
-
 .input-validation-error {
-    border: 1px solid #f00;
-    background-color: #fee;
+	border: 1px solid rgb(255, 0, 0); border-image: none; background-color: rgb(255, 238, 238);
 }
-
 .validation-summary-errors {
-    font-weight: bold;
-    color: #f00;
+	color: rgb(255, 0, 0); font-weight: bold;
 }
-
 .validation-summary-valid {
-    display: none;
+	display: none;
 }
