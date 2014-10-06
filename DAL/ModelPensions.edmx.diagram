@@ -34,7 +34,6 @@
         <EntityTypeShape EntityType="PensionsModel.Miktsoa_Isuk_Tachviv" Width="1.5" PointX="7.5" PointY="31.875" IsExpanded="true" />
         <EntityTypeShape EntityType="PensionsModel.Mitryot" Width="1.5" PointX="5.25" PointY="45.625" IsExpanded="true" />
         <EntityTypeShape EntityType="PensionsModel.Mutav" Width="1.5" PointX="7.5" PointY="34.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="PensionsModel.PerutHafkadaAchrona" Width="1.5" PointX="14.75" PointY="29.5" IsExpanded="true" />
         <EntityTypeShape EntityType="PensionsModel.PerutYitrot" Width="1.5" PointX="14.75" PointY="43.375" IsExpanded="true" />
         <EntityTypeShape EntityType="PensionsModel.PirteiTaktziv" Width="1.5" PointX="10.25" PointY="31.5" IsExpanded="true" />
         <EntityTypeShape EntityType="PensionsModel.Sheer" Width="1.5" PointX="5.25" PointY="49.875" IsExpanded="true" />
@@ -51,7 +50,6 @@
         <AssociationConnector Association="PensionsModel.RequestErrorDetail_Request" ManuallyRouted="false" />
         <AssociationConnector Association="PensionsModel.RequestPerYatzran_Request" ManuallyRouted="false" />
         <AssociationConnector Association="PensionsModel.PirteiTaktziv_DmeiNihul" ManuallyRouted="false" />
-        <AssociationConnector Association="PensionsModel.HafkadaAchrona_PerutHafkadaAchrona" ManuallyRouted="false" />
         <AssociationConnector Association="PensionsModel.PirteiTaktziv_HafkadaAchrona" ManuallyRouted="false" />
         <AssociationConnector Association="PensionsModel.PirteiTaktziv_HafkadotMetchilatShana" ManuallyRouted="false" />
         <AssociationConnector Association="PensionsModel.PirteiTaktziv_HafrashotLePolisa" ManuallyRouted="false" />
@@ -85,6 +83,8 @@
         <AssociationConnector Association="PensionsModel.HeshbonOPolisa_YitraLefiGilPrisha" />
         <AssociationConnector Association="PensionsModel.Maasik_IshKesherMaasik" />
         <AssociationConnector Association="PensionsModel.FK_PirteiTaktziv_Maasik" />
+        <EntityTypeShape EntityType="PensionsModel.PerutHafkadaAchrona" Width="1.5" PointX="14.75" PointY="29.5" />
+        <AssociationConnector Association="PensionsModel.HafkadaAchrona_PerutHafkadaAchrona" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

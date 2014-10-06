@@ -137,6 +137,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Business\PolisaBL.cs" />
+    <Compile Include="Models\SessionVar.cs" />
     <Compile Include="Models\LUT.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -378,6 +379,7 @@
     <Content Include="Views\AccountDetails\Index.cshtml" />
     <Content Include="Views\AllAccounts\index.cshtml" />
     <Content Include="Views\Shared\SideMenu2.cshtml" />
+    <Content Include="Views\AllAccounts\index2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

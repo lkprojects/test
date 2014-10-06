@@ -522,7 +522,7 @@ namespace MislakaInterface
                     hafkadaAchrona = new HafkadaAchrona(); 
                     hafkadaAchrona.SUG_HAFKADA = mimshakHafkadaAchrona[i].SUGHAFKADA;
                     hafkadaAchrona.TAARICH_ERECH_HAFKADA = Common.ConvertDate(mimshakHafkadaAchrona[i].TAARICHERECHHAFKADA);
-                    hafkadaAchrona.TAARICH_HAFKADA_ACHARON = Common.ConvertDate(mimshakHafkadaAchrona[i].TAARICHHAFKADAACHARON);
+                    hafkadaAchrona.TAARICH_HAFKADA_ACHARON = Common.ConvertDateMonth(mimshakHafkadaAchrona[i].TAARICHHAFKADAACHARON);
                     hafkadaAchrona.TOTAL_HAFKADA = mimshakHafkadaAchrona[i].TOTALHAFKADA;
                     hafkadaAchrona.TOTAL_HAFKADA_ACHRONA = mimshakHafkadaAchrona[i].TOTALHAFKADAACHRONA;
                     ParsePerutHafkadaAchrona(hafkadaAchrona, mimshakHafkadaAchrona[i].PerutHafkadaAchrona);
@@ -539,7 +539,7 @@ namespace MislakaInterface
                 for (int i = 0; i < mimshakPerutHafkadaAchrona.Length; i++)
                 {
                     perutHafkadaAchrona = new PerutHafkadaAchrona(); 
-                    perutHafkadaAchrona.CHODESH_SACHAR = mimshakPerutHafkadaAchrona[i].CHODESHSACHAR;
+                    perutHafkadaAchrona.CHODESH_SACHAR = Common.ConvertDateMonth(mimshakPerutHafkadaAchrona[i].CHODESHSACHAR);
                     perutHafkadaAchrona.KOD_SUG_HAFKADA = mimshakPerutHafkadaAchrona[i].KODSUGHAFKADA;
                     perutHafkadaAchrona.SCHUM_HAFKADA_SHESHULAM = mimshakPerutHafkadaAchrona[i].SCHUMHAFKADASHESHULAM;
                     perutHafkadaAchrona.SUG_HAFRASHA = mimshakPerutHafkadaAchrona[i].SUGHAFRASHA;

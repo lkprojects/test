@@ -28,20 +28,18 @@
         <div class="TopMenu">
             @Html.Partial("TopMenu")
         </div>
-        <br />
-        <div id="SideMenu">
-            @Html.Partial("SideMenu2")
-        </div>
-        <div id="content" style="">
-            <div class="TotalsBarDiv">
-                @Html.Partial("TotalsBar")
+        <div id="UnderMenu">
+            <div id="SideMenu">
+                @Html.Partial("SideMenu2")
             </div>
-            <div class="DetailsDiv">
-                @RenderBody()
+            <div id="content" style="">
+                <div class="DetailsDiv">
+                    @RenderBody()
+                </div>
             </div>
-        </div>
-        <div id="footer">
-            הכסף שלי © כל הזכויות שמורות
+            <div id="footer">
+                הכסף שלי © כל הזכויות שמורות
+            </div>
         </div>
     </div>
 

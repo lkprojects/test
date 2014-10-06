@@ -27,7 +27,7 @@ namespace DAL
         public Nullable<int> SUG_HAFKADA { get; set; }
         public Nullable<decimal> TOTAL_HAFKADA_ACHRONA { get; set; }
     
-        public virtual ICollection<PerutHafkadaAchrona> PerutHafkadaAchronas { get; set; }
         public virtual PirteiTaktziv PirteiTaktziv { get; set; }
+        public virtual ICollection<PerutHafkadaAchrona> PerutHafkadaAchronas { get; set; }
     }
 }

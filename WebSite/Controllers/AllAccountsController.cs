@@ -10,23 +10,35 @@ namespace WebSite.Controllers
 {
     public class AllAccountsController : Controller
     {
-        //
-        // GET: /AllAccounts/
-
+        private List<DAL.HeshbonOPolisa> model;
+        private LUT lut;
         public ActionResult Index()
         {
-            var name = (string)RouteData.Values["id"];
-            var polisaBL = new PolisaBL();
+            string name = (string)RouteData.Values["id"];
+            PolisaBL polisaBL = new PolisaBL();
             DAL.Client client = new DAL.Client();
+
             client.TeudatZehut = "24416422".PadLeft(12, '0');
-            var model = polisaBL.GetPolisas(client);
 
-            if (model == null)
-                return RedirectToAction("NotFound");
+            if (SessionVar.Current.AccountData == null)
+            {
+                model = SessionVar.Current.AccountData = polisaBL.GetPolisas(client);
 
-            LUT lut = new LUT();
-            ViewBag.LUT = lut;
-            string x = lut.Get("Client", "Status", 0);
+                if (model == null)
+                    return RedirectToAction("NotFound");
+
+                SessionVar.Current.AccountData = model;
+            }
+            else
+                model = SessionVar.Current.AccountData;
+
+
+            if (SessionVar.Current.Lut == null)
+            {
+                SessionVar.Current.Lut = new LUT();
+            }
+            ViewBag.LUT = SessionVar.Current.Lut;
+
             return View(model);
         }
 

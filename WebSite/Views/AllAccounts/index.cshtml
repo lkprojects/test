@@ -3,47 +3,44 @@
 @{
     ViewBag.Title = "מצב החסכונות שלי";
 }
+<!-- Handle side menu-->
+<script>
+    $("#SavingsMenuItem").css({ 'color': 'red', 'font-weight': 'bold' });
+    $('#SavingsMenuItem').removeAttr('href');
 
+</script>
+
+<!-- Handle Open/Close details-->
 <script>
     $(document).ready
     (
       function () {
-
-          @for(var i = 1; i <= Model.Count(); i++)
-    {
-    <text>
-          $("#flip</text>@i<text>").click(function () {
+        @for(var i = 1; i <= Model.Count(); i++)
+        { <text>
+          $("#DetailsTableBody</text>@i<text>").click(function () {
               $("#panel</text>@i<text>").slideToggle("fast");
-          });
-
-          $("#details</text>@i<text>").click(function () {
-              if ($(this).text() != "סגור X")
-                  $(this).html("סגור X");
+              if ($("#details</text>@i<text>").html().substring(0, 4) != "סגור")
+                  $("#details</text>@i<text>").html("סגור &#9938;");
               else
-                  $(this).html("לפרטים &#8678;");
+                  $("#details</text>@i<text>").html("לפרטים &#8678;");
 
-              if ($(this).offset().top > 300)
-                  $('html, body').animate({
-                      scrollTop: $(this).offset().top
-                  }, 10);
-
-          });
-          </text>
-    }
+          }); </text>
+        }
       }
     );
 </script>
 
+<!-- Set tabs -->
 <script type="text/javascript">
     $(document).ready(function () {
         // Create jqxTabs.
-        $('.jqxTabs').jqxTabs({ rtl: true, width: '100%', height: '100%', position: 'top' });
+        $('.jqxTabs').jqxTabs({ rtl: true, width: '100%', height: '180', position: 'top' });
         $('.jqxTabs').jqxTabs({ animationType: 'fade' });
     });
 </script>
-<table class="DetailsTable" style="width:800px">
+<table class="DetailsTable">
     <tbody>
-        <tr class="DetailsTableHeader" style="width:800px">
+        <tr class="DetailsTableHeader">
             <td>סוג מוצר פנסיוני</td>
             <td>מספר חשבון</td>
             <td>מנוהל ע"י</td>
@@ -61,8 +58,9 @@
          string date2;
          DateTime dateTime;
          decimal sum = 0;
+         string RowId = "DetailsTableBody";
         }
-        @foreach (var account in Model)
+                @foreach (var account in Model)
         {
             num++;
             panel = "panel" + num.ToString();
@@ -86,7 +84,8 @@
                     }
                 }
             }
-            <tr class="DetailsTableBody">
+            RowId = "DetailsTableBody" + num.ToString();
+            <tr id="@RowId" class="DetailsTableBody">
                 <td class="DetailsTableBody">@ViewBag.LUT.Get("SUG-MUTZAR-PENSIONI", account.Customer.SUG_MUTZAR_PENSIONI)</td>
                 <td class="DetailsTableBody">@account.MISPAR_POLISA_O_HESHBON</td>
                 <td class="DetailsTableBody">@account.Customer.Yatzran.SHEM_YATZRAN</td>
@@ -165,13 +164,13 @@
                                                 <td class="InnerTableBody">@account.PirteiTaktzivs.ToList()[i].Gvia_SHEM_MESHALEM</td>
                                                 <td class="InnerTableBody">
                                                     @ViewBag.LUT.Get("Gvia_SUG-TEUDA-MESHALEM", account.PirteiTaktzivs.ToList()[i].Gvia_SUG_TEUDA_MESHALEM)
-                                                @account.PirteiTaktzivs.ToList()[i].Gvia_MISPAR_ZIHUY_MESHALEM
-                                            </td>
-                                            <td class="InnerTableBody">@ViewBag.LUT.Get("Gvia_KOD-EMTZAEI-TASHLUM", account.PirteiTaktzivs.ToList()[i].Gvia_KOD_EMTZAEI_TASHLUM)</td>
-                                            <td class="InnerTableBody">@ViewBag.LUT.Get("Gvia_TADIRUT-TASHLUM", account.PirteiTaktzivs.ToList()[i].Gvia_TADIRUT_TASHLUM)</td>
-                                            <td class="InnerTableBody">@ViewBag.LUT.Get("SUG-HAFRASHA", account.PirteiTaktzivs.ToList()[i].HafrashotLePolisas.ToList()[j].SUG_HAFRASHA)</td>
-                                            <td class="InnerTableBody">@account.PirteiTaktzivs.ToList()[i].HafrashotLePolisas.ToList()[j].ACHUZ_HAFRASHA</td>
-                                        </tr>
+                                                    @account.PirteiTaktzivs.ToList()[i].Gvia_MISPAR_ZIHUY_MESHALEM
+                                                </td>
+                                                <td class="InnerTableBody">@ViewBag.LUT.Get("Gvia_KOD-EMTZAEI-TASHLUM", account.PirteiTaktzivs.ToList()[i].Gvia_KOD_EMTZAEI_TASHLUM)</td>
+                                                <td class="InnerTableBody">@ViewBag.LUT.Get("Gvia_TADIRUT-TASHLUM", account.PirteiTaktzivs.ToList()[i].Gvia_TADIRUT_TASHLUM)</td>
+                                                <td class="InnerTableBody">@ViewBag.LUT.Get("SUG-HAFRASHA", account.PirteiTaktzivs.ToList()[i].HafrashotLePolisas.ToList()[j].SUG_HAFRASHA)</td>
+                                                <td class="InnerTableBody">@account.PirteiTaktzivs.ToList()[i].HafrashotLePolisas.ToList()[j].ACHUZ_HAFRASHA</td>
+                                            </tr>
                                         }
                                     }
                                 </table>
@@ -199,12 +198,17 @@
                                             {
                                                 if (account.PirteiTaktzivs.ToList()[i].HafkadaAchronas.ToList()[j].TAARICH_HAFKADA_ACHARON != null)
                                                 {
-                                                    date = ((DateTime)account.PirteiTaktzivs.ToList()[i].HafkadaAchronas.ToList()[j].TAARICH_HAFKADA_ACHARON).ToString("dd/MM/yyyy");
+                                                    date = ((DateTime)account.PirteiTaktzivs.ToList()[i].HafkadaAchronas.ToList()[j].TAARICH_HAFKADA_ACHARON).ToString("MM/yyyy");
                                                 }
-                                                else { date = ""; }
+                                                else { date = "";}
+                                                if (account.PirteiTaktzivs.ToList()[i].HafkadaAchronas.ToList()[j].PerutHafkadaAchronas.ToList()[k].CHODESH_SACHAR != null)
+                                                {
+                                                    date2 = ((DateTime)account.PirteiTaktzivs.ToList()[i].HafkadaAchronas.ToList()[j].PerutHafkadaAchronas.ToList()[k].CHODESH_SACHAR).ToString("MM/yyyy");
+                                                }
+                                                else { date2 = "";}
                                                 <tr class="InnerTableBody">
                                                     <td class="InnerTableBody">@account.PirteiTaktzivs.ToList()[i].HafkadaAchronas.ToList()[j].TOTAL_HAFKADA_ACHRONA</td>
-                                                    <td class="InnerTableBody">@account.PirteiTaktzivs.ToList()[i].HafkadaAchronas.ToList()[j].PerutHafkadaAchronas.ToList()[k].CHODESH_SACHAR</td>
+                                                    <td class="InnerTableBody">@date2</td>
                                                     <td class="InnerTableBody">@account.PirteiTaktzivs.ToList()[i].HafkadaAchronas.ToList()[j].PerutHafkadaAchronas.ToList()[k].SCHUM_HAFKADA_SHESHULAM</td>
                                                     <td class="InnerTableBody">@ViewBag.LUT.Get("SUG-MAFKID", account.PirteiTaktzivs.ToList()[i].HafkadaAchronas.ToList()[j].PerutHafkadaAchronas.ToList()[k].SUG_MAFKID)</td>
                                                     <td class="InnerTableBody">@ViewBag.LUT.Get("SUG-HAFRASHA", account.PirteiTaktzivs.ToList()[i].HafkadaAchronas.ToList()[j].PerutHafkadaAchronas.ToList()[k].SUG_HAFRASHA)</td>
@@ -279,14 +283,14 @@
                                     @for (int i = 0; i < account.Kisuis.Count(); i++)
                                     {
                                         if (account.Kisuis.ToList()[i].Mutzar_TAARICH_TCHILAT_KISUY != null)
-                                            { date = ((DateTime)(account.Kisuis.ToList()[i].Mutzar_TAARICH_TCHILAT_KISUY)).ToString("dd/MM/yyyy"); }
+                                        { date = ((DateTime)(account.Kisuis.ToList()[i].Mutzar_TAARICH_TCHILAT_KISUY)).ToString("dd/MM/yyyy"); }
                                         else
-                                            { date = ""; }
-                                        
+                                        { date = ""; }
+
                                         if (account.Kisuis.ToList()[i].Mutzar_TAARICH_TOM_KISUY != null)
-                                            { date2 = ((DateTime)(account.Kisuis.ToList()[i].Mutzar_TAARICH_TOM_KISUY)).ToString("dd/MM/yyyy"); }
+                                        { date2 = ((DateTime)(account.Kisuis.ToList()[i].Mutzar_TAARICH_TOM_KISUY)).ToString("dd/MM/yyyy"); }
                                         else
-                                            { date2 = ""; }
+                                        { date2 = ""; }
 
                                         <tr class="InnerTableBody">
                                             <td class="InnerTableBody">@ViewBag.LUT.Get("Mutzar_MESHALEM-HAKISUY", @account.Kisuis.ToList()[i].Mutzar_MESHALEM_HAKISUY)</td>
@@ -327,7 +331,7 @@
                                             <td class="InnerTableBody">@ViewBag.LUT.Get("Mutzar_SUG-HACHRAGA", @account.Kisuis.ToList()[i].Mutzar_SUG_HACHRAGA)</td>
                                             <td class="InnerTableBody">@ViewBag.LUT.Get("Mutzar_HACHRAGA", @account.Kisuis.ToList()[i].Mutzar_HACHRAGA)</td>
                                             <td class="InnerTableBody">@(i + 1)</td>
-                                    </tr>
+                                        </tr>
                                     }
                                 </table>
                             </div>
@@ -344,15 +348,15 @@
                                     </thead>
                                     @for (int i = 0; i < account.PirteiTaktzivs.Count(); i++)
                                     {
-                                        for (int j = 0; j < account.PirteiTaktzivs.ToList()[i].MasluleiHashkaas.Count() ; j++)
+                                        for (int j = 0; j < account.PirteiTaktzivs.ToList()[i].MasluleiHashkaas.Count(); j++)
                                         {
-                                        <tr class="InnerTableBody">
-                                            <td class="InnerTableBody">@account.PirteiTaktzivs.ToList()[i].MasluleiHashkaas.ToList()[j].SCHUM_TZVIRA_BAMASLUL</td>
-                                            <td class="InnerTableBody">@account.PirteiTaktzivs.ToList()[i].MasluleiHashkaas.ToList()[j].SHEM_MASLUL_HASHKAA</td>
-                                            <td class="InnerTableBody">@account.PirteiTaktzivs.ToList()[i].MasluleiHashkaas.ToList()[j].ACHUZ_HAFKADA_LEHASHKAA%</td>
-                                            <td class="InnerTableBody">@ViewBag.LUT.Get("KOD-SUG-HAFRASHA", @account.PirteiTaktzivs.ToList()[i].MasluleiHashkaas.ToList()[j].KOD_SUG_HAFRASHA)</td>
-                                            <td class="InnerTableBody">@account.Tsua_SHEUR_TSUA_NETO%</td>
-                                        </tr>
+                                            <tr class="InnerTableBody">
+                                                <td class="InnerTableBody">@account.PirteiTaktzivs.ToList()[i].MasluleiHashkaas.ToList()[j].SCHUM_TZVIRA_BAMASLUL</td>
+                                                <td class="InnerTableBody">@account.PirteiTaktzivs.ToList()[i].MasluleiHashkaas.ToList()[j].SHEM_MASLUL_HASHKAA</td>
+                                                <td class="InnerTableBody">@account.PirteiTaktzivs.ToList()[i].MasluleiHashkaas.ToList()[j].ACHUZ_HAFKADA_LEHASHKAA%</td>
+                                                <td class="InnerTableBody">@ViewBag.LUT.Get("KOD-SUG-HAFRASHA", @account.PirteiTaktzivs.ToList()[i].MasluleiHashkaas.ToList()[j].KOD_SUG_HAFRASHA)</td>
+                                                <td class="InnerTableBody">@account.Tsua_SHEUR_TSUA_NETO%</td>
+                                            </tr>
                                         }
                                     }
                                 </table>
@@ -366,3 +370,16 @@
         }
     </tbody>
 </table>
+
+<script type="text/javascript">
+
+    $("tr.DetailsTableBody").hover(
+      function () {
+          $(this).css("background", "rgb(221, 250, 248)");
+      },
+      function () {
+          $(this).css("background", "");
+      }
+    );
+
+</script>

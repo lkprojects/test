@@ -607,7 +607,7 @@
           <Property Name="SUG-HAFRASHA" Type="int" />
           <Property Name="SUG-MAFKID" Type="int" />
           <Property Name="SCHUM-HAFKADA-SHESHULAM" Type="decimal" Precision="15" Scale="2" />
-          <Property Name="CHODESH-SACHAR" Type="varchar" MaxLength="6" />
+          <Property Name="CHODESH-SACHAR" Type="date" />
         </EntityType>
         <EntityType Name="PerutYitrot">
           <Key>
@@ -1580,8 +1580,8 @@
           <Property Name="TAARICH_ERECH_HAFKADA" Type="DateTime" Precision="0" />
           <Property Name="SUG_HAFKADA" Type="Int32" />
           <Property Name="TOTAL_HAFKADA_ACHRONA" Type="Decimal" Precision="15" Scale="2" />
-          <NavigationProperty Name="PerutHafkadaAchronas" Relationship="Self.HafkadaAchrona_PerutHafkadaAchrona" FromRole="HafkadaAchrona" ToRole="PerutHafkadaAchrona" />
           <NavigationProperty Name="PirteiTaktziv" Relationship="Self.PirteiTaktziv_HafkadaAchrona" FromRole="HafkadaAchrona" ToRole="PirteiTaktziv" />
+          <NavigationProperty Name="PerutHafkadaAchronas" Relationship="PensionsModel.HafkadaAchrona_PerutHafkadaAchrona" FromRole="HafkadaAchrona" ToRole="PerutHafkadaAchrona" />
         </EntityType>
         <EntityType Name="HafkadotMetchilatShana">
           <Key>
@@ -1898,19 +1898,6 @@
           <Property Name="MAHUT_MUTAV" Type="Int32" />
           <NavigationProperty Name="Kisui" Relationship="Self.Kisui_Mutav" FromRole="Mutav" ToRole="Kisui" />
         </EntityType>
-        <EntityType Name="PerutHafkadaAchrona">
-          <Key>
-            <PropertyRef Name="PerutHafkadaAchrona_Id" />
-          </Key>
-          <Property Name="PerutHafkadaAchrona_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="HafkadaAchrona_Id" Type="Int32" Nullable="false" />
-          <Property Name="KOD_SUG_HAFKADA" Type="Int32" />
-          <Property Name="SUG_HAFRASHA" Type="Int32" />
-          <Property Name="SUG_MAFKID" Type="Int32" />
-          <Property Name="SCHUM_HAFKADA_SHESHULAM" Type="Decimal" Precision="15" Scale="2" />
-          <Property Name="CHODESH_SACHAR" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="HafkadaAchrona" Relationship="Self.HafkadaAchrona_PerutHafkadaAchrona" FromRole="PerutHafkadaAchrona" ToRole="HafkadaAchrona" />
-        </EntityType>
         <EntityType Name="PerutYitrot">
           <Key>
             <PropertyRef Name="PerutYitrot_Id" />
@@ -2163,18 +2150,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="HafkadaAchrona_PerutHafkadaAchrona">
-          <End Role="HafkadaAchrona" Type="Self.HafkadaAchrona" Multiplicity="1" />
-          <End Role="PerutHafkadaAchrona" Type="Self.PerutHafkadaAchrona" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="HafkadaAchrona">
-              <PropertyRef Name="HafkadaAchrona_Id" />
-            </Principal>
-            <Dependent Role="PerutHafkadaAchrona">
-              <PropertyRef Name="HafkadaAchrona_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="PirteiTaktziv_HafkadaAchrona">
           <End Role="PirteiTaktziv" Type="Self.PirteiTaktziv" Multiplicity="1" />
           <End Role="HafkadaAchrona" Type="Self.HafkadaAchrona" Multiplicity="*" />
@@ -2373,7 +2348,6 @@
           <EntitySet Name="Miktsoa_Isuk_Tachviv" EntityType="Self.Miktsoa_Isuk_Tachviv" />
           <EntitySet Name="Mitryots" EntityType="Self.Mitryot" />
           <EntitySet Name="Mutavs" EntityType="Self.Mutav" />
-          <EntitySet Name="PerutHafkadaAchronas" EntityType="Self.PerutHafkadaAchrona" />
           <EntitySet Name="PerutYitrots" EntityType="Self.PerutYitrot" />
           <EntitySet Name="PirteiTaktzivs" EntityType="Self.PirteiTaktziv" />
           <EntitySet Name="Sheers" EntityType="Self.Sheer" />
@@ -2410,10 +2384,6 @@
           <AssociationSet Name="PirteiTaktziv_DmeiNihul" Association="Self.PirteiTaktziv_DmeiNihul">
             <End Role="PirteiTaktziv" EntitySet="PirteiTaktzivs" />
             <End Role="DmeiNihul" EntitySet="DmeiNihuls" />
-          </AssociationSet>
-          <AssociationSet Name="HafkadaAchrona_PerutHafkadaAchrona" Association="Self.HafkadaAchrona_PerutHafkadaAchrona">
-            <End Role="HafkadaAchrona" EntitySet="HafkadaAchronas" />
-            <End Role="PerutHafkadaAchrona" EntitySet="PerutHafkadaAchronas" />
           </AssociationSet>
           <AssociationSet Name="PirteiTaktziv_HafkadaAchrona" Association="Self.PirteiTaktziv_HafkadaAchrona">
             <End Role="PirteiTaktziv" EntitySet="PirteiTaktzivs" />
@@ -2550,6 +2520,11 @@
           <AssociationSet Name="FK_PirteiTaktziv_Maasik" Association="PensionsModel.FK_PirteiTaktziv_Maasik">
             <End Role="Maasik" EntitySet="Maasiks" />
             <End Role="PirteiTaktziv" EntitySet="PirteiTaktzivs" />
+          </AssociationSet>
+          <EntitySet Name="PerutHafkadaAchronas" EntityType="PensionsModel.PerutHafkadaAchrona" />
+          <AssociationSet Name="HafkadaAchrona_PerutHafkadaAchrona" Association="PensionsModel.HafkadaAchrona_PerutHafkadaAchrona">
+            <End Role="HafkadaAchrona" EntitySet="HafkadaAchronas" />
+            <End Role="PerutHafkadaAchrona" EntitySet="PerutHafkadaAchronas" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Client">
@@ -2868,6 +2843,31 @@
             </Principal>
             <Dependent Role="PirteiTaktziv">
               <PropertyRef Name="Maasik_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="PerutHafkadaAchrona">
+          <Key>
+            <PropertyRef Name="PerutHafkadaAchrona_Id" />
+          </Key>
+          <Property Name="PerutHafkadaAchrona_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HafkadaAchrona_Id" Type="Int32" Nullable="false" />
+          <Property Name="KOD_SUG_HAFKADA" Type="Int32" />
+          <Property Name="SUG_HAFRASHA" Type="Int32" />
+          <Property Name="SUG_MAFKID" Type="Int32" />
+          <Property Name="SCHUM_HAFKADA_SHESHULAM" Type="Decimal" Precision="15" Scale="2" />
+          <Property Name="CHODESH_SACHAR" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="HafkadaAchrona" Relationship="PensionsModel.HafkadaAchrona_PerutHafkadaAchrona" FromRole="PerutHafkadaAchrona" ToRole="HafkadaAchrona" />
+        </EntityType>
+        <Association Name="HafkadaAchrona_PerutHafkadaAchrona">
+          <End Type="PensionsModel.HafkadaAchrona" Role="HafkadaAchrona" Multiplicity="1" />
+          <End Type="PensionsModel.PerutHafkadaAchrona" Role="PerutHafkadaAchrona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HafkadaAchrona">
+              <PropertyRef Name="HafkadaAchrona_Id" />
+            </Principal>
+            <Dependent Role="PerutHafkadaAchrona">
+              <PropertyRef Name="HafkadaAchrona_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3358,19 +3358,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="PerutHafkadaAchronas">
-            <EntityTypeMapping TypeName="PensionsModel.PerutHafkadaAchrona">
-              <MappingFragment StoreEntitySet="PerutHafkadaAchrona">
-                <ScalarProperty Name="PerutHafkadaAchrona_Id" ColumnName="PerutHafkadaAchrona_Id" />
-                <ScalarProperty Name="HafkadaAchrona_Id" ColumnName="HafkadaAchrona_Id" />
-                <ScalarProperty Name="KOD_SUG_HAFKADA" ColumnName="KOD-SUG-HAFKADA" />
-                <ScalarProperty Name="SUG_HAFRASHA" ColumnName="SUG-HAFRASHA" />
-                <ScalarProperty Name="SUG_MAFKID" ColumnName="SUG-MAFKID" />
-                <ScalarProperty Name="SCHUM_HAFKADA_SHESHULAM" ColumnName="SCHUM-HAFKADA-SHESHULAM" />
-                <ScalarProperty Name="CHODESH_SACHAR" ColumnName="CHODESH-SACHAR" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="PerutYitrots">
             <EntityTypeMapping TypeName="PensionsModel.PerutYitrot">
               <MappingFragment StoreEntitySet="PerutYitrot">
@@ -3672,6 +3659,19 @@
                 <ScalarProperty Name="MPR_MAASIK_BE_YATZRAN" ColumnName="MPR-MAASIK-BE-YATZRAN" />
                 <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
                 <ScalarProperty Name="Maasik_Id" ColumnName="Maasik_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PerutHafkadaAchronas">
+            <EntityTypeMapping TypeName="PensionsModel.PerutHafkadaAchrona">
+              <MappingFragment StoreEntitySet="PerutHafkadaAchrona">
+                <ScalarProperty Name="CHODESH_SACHAR" ColumnName="CHODESH-SACHAR" />
+                <ScalarProperty Name="SCHUM_HAFKADA_SHESHULAM" ColumnName="SCHUM-HAFKADA-SHESHULAM" />
+                <ScalarProperty Name="SUG_MAFKID" ColumnName="SUG-MAFKID" />
+                <ScalarProperty Name="SUG_HAFRASHA" ColumnName="SUG-HAFRASHA" />
+                <ScalarProperty Name="KOD_SUG_HAFKADA" ColumnName="KOD-SUG-HAFKADA" />
+                <ScalarProperty Name="HafkadaAchrona_Id" ColumnName="HafkadaAchrona_Id" />
+                <ScalarProperty Name="PerutHafkadaAchrona_Id" ColumnName="PerutHafkadaAchrona_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

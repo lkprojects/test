@@ -20,7 +20,7 @@ namespace DAL
         public Nullable<int> SUG_HAFRASHA { get; set; }
         public Nullable<int> SUG_MAFKID { get; set; }
         public Nullable<decimal> SCHUM_HAFKADA_SHESHULAM { get; set; }
-        public string CHODESH_SACHAR { get; set; }
+        public Nullable<System.DateTime> CHODESH_SACHAR { get; set; }
     
         public virtual HafkadaAchrona HafkadaAchrona { get; set; }
     }
