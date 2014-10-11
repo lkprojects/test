@@ -18,6 +18,7 @@
           <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" />
           <Property Name="MobilePhoneNumber" Type="varchar" MaxLength="20" />
           <Property Name="AddressStreetName" Type="varchar" MaxLength="100" />
           <Property Name="AddressStreetNumber" Type="varchar" MaxLength="10" />
@@ -76,6 +77,7 @@
           </Key>
           <Property Name="KOD-MEZAHE_YATZRAN" Type="int" Nullable="false" />
           <Property Name="SHEM-YATZRAN" Type="varchar" MaxLength="100" />
+          <Property Name="SHEM-YATZRAN-SHORT" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="FeedbackFile">
           <Key>
@@ -1446,15 +1448,6 @@
           <Property Name="Code" Type="Int32" Nullable="false" />
           <Property Name="Value" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="Yatzran">
-          <Key>
-            <PropertyRef Name="KOD_MEZAHE_YATZRAN" />
-          </Key>
-          <Property Name="KOD_MEZAHE_YATZRAN" Type="Int32" Nullable="false" />
-          <Property Name="SHEM_YATZRAN" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="IshKesherYatzrans" Relationship="Self.FK_IshKesherYatzran_Yatzran" FromRole="Yatzran" ToRole="IshKesherYatzran" />
-          <NavigationProperty Name="Customers" Relationship="PensionsModel.FK_Customer_Yatzran" FromRole="Yatzran" ToRole="Customer" />
-        </EntityType>
         <EntityType Name="FeedbackFile">
           <Key>
             <PropertyRef Name="FeedbackFile_ID" />
@@ -1691,7 +1684,7 @@
           <Property Name="MISPAR_FAX" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
           <Property Name="E_MAIL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="HEAROT" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Yatzran" Relationship="Self.FK_IshKesherYatzran_Yatzran" FromRole="IshKesherYatzran" ToRole="Yatzran" />
+          <NavigationProperty Name="Yatzran" Relationship="PensionsModel.FK_IshKesherYatzran_Yatzran" FromRole="IshKesherYatzran" ToRole="Yatzran" />
         </EntityType>
         <EntityType Name="Kisui">
           <Key>
@@ -2066,18 +2059,6 @@
           <NavigationProperty Name="PirteiTaktziv" Relationship="Self.PirteiTaktziv_Yitrot" FromRole="Yitrot" ToRole="PirteiTaktziv" />
           <NavigationProperty Name="YitraLeTkufas" Relationship="Self.Yitrot_YitraLeTkufa" FromRole="Yitrot" ToRole="YitraLeTkufa" />
         </EntityType>
-        <Association Name="FK_IshKesherYatzran_Yatzran">
-          <End Role="Yatzran" Type="Self.Yatzran" Multiplicity="1" />
-          <End Role="IshKesherYatzran" Type="Self.IshKesherYatzran" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Yatzran">
-              <PropertyRef Name="KOD_MEZAHE_YATZRAN" />
-            </Principal>
-            <Dependent Role="IshKesherYatzran">
-              <PropertyRef Name="KOD_MEZAHE_YATZRAN" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="GoremPone_FeedbackFile">
           <End Role="FeedbackFile" Type="Self.FeedbackFile" Multiplicity="0..1" />
           <End Role="GoremPone" Type="Self.GoremPone" Multiplicity="*" />
@@ -2323,7 +2304,6 @@
           <EntitySet Name="ClientYatzrans" EntityType="Self.ClientYatzran" />
           <EntitySet Name="Configs" EntityType="Self.Config" />
           <EntitySet Name="LUTs" EntityType="Self.LUT" />
-          <EntitySet Name="Yatzrans" EntityType="Self.Yatzran" />
           <EntitySet Name="FeedbackFiles" EntityType="Self.FeedbackFile" />
           <EntitySet Name="FileErrorDetails" EntityType="Self.FileErrorDetail" />
           <EntitySet Name="Requests" EntityType="Self.Request" />
@@ -2357,10 +2337,6 @@
           <EntitySet Name="YitraLefiGilPrishas" EntityType="Self.YitraLefiGilPrisha" />
           <EntitySet Name="YitraLeTkufas" EntityType="Self.YitraLeTkufa" />
           <EntitySet Name="Yitrots" EntityType="Self.Yitrot" />
-          <AssociationSet Name="FK_IshKesherYatzran_Yatzran" Association="Self.FK_IshKesherYatzran_Yatzran">
-            <End Role="Yatzran" EntitySet="Yatzrans" />
-            <End Role="IshKesherYatzran" EntitySet="IshKesherYatzrans" />
-          </AssociationSet>
           <AssociationSet Name="GoremPone_FeedbackFile" Association="Self.GoremPone_FeedbackFile">
             <End Role="FeedbackFile" EntitySet="FeedbackFiles" />
             <End Role="GoremPone" EntitySet="GoremPones" />
@@ -2457,7 +2433,6 @@
           <FunctionImport Name="GetFileNumerator">
           <Parameter Name="numerator" Mode="InOut" Type="Int32" />
           </FunctionImport>
-          <EntitySet Name="Clients" EntityType="PensionsModel.Client" />
           <FunctionImport Name="DeleteHeshbonOPolisa">
           <Parameter Name="HeshbonOPolisa_Id" Mode="In" Type="Int32" />
           </FunctionImport>
@@ -2465,10 +2440,6 @@
           <EntitySet Name="Customers" EntityType="PensionsModel.Customer" />
           <EntitySet Name="HeshbonOPolisas" EntityType="PensionsModel.HeshbonOPolisa" />
           <EntitySet Name="Maasiks" EntityType="PensionsModel.Maasik" />
-          <AssociationSet Name="FK_Customer_Yatzran" Association="PensionsModel.FK_Customer_Yatzran">
-            <End Role="Yatzran" EntitySet="Yatzrans" />
-            <End Role="Customer" EntitySet="Customers" />
-          </AssociationSet>
           <AssociationSet Name="FK_Customer_Metafel" Association="PensionsModel.FK_Customer_Metafel">
             <End Role="Metafel" EntitySet="Metafels" />
             <End Role="Customer" EntitySet="Customers" />
@@ -2526,30 +2497,17 @@
             <End Role="HafkadaAchrona" EntitySet="HafkadaAchronas" />
             <End Role="PerutHafkadaAchrona" EntitySet="PerutHafkadaAchronas" />
           </AssociationSet>
+          <EntitySet Name="Clients" EntityType="PensionsModel.Client" />
+          <EntitySet Name="Yatzrans" EntityType="PensionsModel.Yatzran" />
+          <AssociationSet Name="FK_Customer_Yatzran" Association="PensionsModel.FK_Customer_Yatzran">
+            <End Role="Yatzran" EntitySet="Yatzrans" />
+            <End Role="Customer" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IshKesherYatzran_Yatzran" Association="PensionsModel.FK_IshKesherYatzran_Yatzran">
+            <End Role="Yatzran" EntitySet="Yatzrans" />
+            <End Role="IshKesherYatzran" EntitySet="IshKesherYatzrans" />
+          </AssociationSet>
           </EntityContainer>
-        <EntityType Name="Client">
-          <Key>
-            <PropertyRef Name="Client_Id" />
-          </Key>
-          <Property Name="Client_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LastStatus" Type="Byte" Nullable="false" />
-          <Property Name="LastFileNumber" Type="String" MaxLength="27" FixedLength="false" Unicode="false" />
-          <Property Name="LastRecordNumber" Type="String" MaxLength="70" FixedLength="false" Unicode="false" />
-          <Property Name="LastKodEirua" Type="Int32" />
-          <Property Name="TeudatZehut" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="MobilePhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="AddressStreetName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="AddressStreetNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="AddressCity" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="MaritalStatus" Type="Byte" />
-          <Property Name="BirthDate" Type="DateTime" Precision="0" />
-          <Property Name="Gender" Type="Byte" />
-          <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ModifyDate" Type="DateTime" Nullable="false" Precision="3" />
-        </EntityType>
         <EntityType Name="IshKesherMaasik">
           <Key>
             <PropertyRef Name="IshKesherMaasik_Id" />
@@ -2599,9 +2557,9 @@
           <Property Name="E_MAIL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="HEAROT" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="MISPAR_YELADIM" Type="Int32" />
-          <NavigationProperty Name="Yatzran" Relationship="PensionsModel.FK_Customer_Yatzran" FromRole="Customer" ToRole="Yatzran" />
           <NavigationProperty Name="Metafel" Relationship="PensionsModel.FK_Customer_Metafel" FromRole="Customer" ToRole="Metafel" />
           <NavigationProperty Name="HeshbonOPolisas" Relationship="PensionsModel.FK_HeshbonOPolisa_Customer" FromRole="Customer" ToRole="HeshbonOPolisa" />
+          <NavigationProperty Name="Yatzran" Relationship="PensionsModel.FK_Customer_Yatzran" FromRole="Customer" ToRole="Yatzran" />
         </EntityType>
         <EntityType Name="HeshbonOPolisa">
           <Key>
@@ -2678,18 +2636,6 @@
           <NavigationProperty Name="IshKesherMaasiks" Relationship="PensionsModel.Maasik_IshKesherMaasik" FromRole="Maasik" ToRole="IshKesherMaasik" />
           <NavigationProperty Name="PirteiTaktzivs" Relationship="PensionsModel.FK_PirteiTaktziv_Maasik" FromRole="Maasik" ToRole="PirteiTaktziv" />
         </EntityType>
-        <Association Name="FK_Customer_Yatzran">
-          <End Type="PensionsModel.Yatzran" Role="Yatzran" Multiplicity="0..1" />
-          <End Type="PensionsModel.Customer" Role="Customer" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Yatzran">
-              <PropertyRef Name="KOD_MEZAHE_YATZRAN" />
-            </Principal>
-            <Dependent Role="Customer">
-              <PropertyRef Name="KOD_MEZAHE_YATZRAN" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Customer_Metafel">
           <End Type="PensionsModel.Metafel" Role="Metafel" Multiplicity="0..1" />
           <End Type="PensionsModel.Customer" Role="Customer" Multiplicity="*" />
@@ -2871,6 +2817,64 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="Client_Id" />
+          </Key>
+          <Property Name="Client_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LastStatus" Type="Byte" Nullable="false" />
+          <Property Name="LastFileNumber" Type="String" MaxLength="27" FixedLength="false" Unicode="false" />
+          <Property Name="LastRecordNumber" Type="String" MaxLength="70" FixedLength="false" Unicode="false" />
+          <Property Name="LastKodEirua" Type="Int32" />
+          <Property Name="TeudatZehut" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MobilePhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="AddressStreetName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="AddressStreetNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="AddressCity" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="MaritalStatus" Type="Byte" />
+          <Property Name="BirthDate" Type="DateTime" Precision="0" />
+          <Property Name="Gender" Type="Byte" />
+          <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifyDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="Yatzran">
+          <Key>
+            <PropertyRef Name="KOD_MEZAHE_YATZRAN" />
+          </Key>
+          <Property Name="KOD_MEZAHE_YATZRAN" Type="Int32" Nullable="false" />
+          <Property Name="SHEM_YATZRAN" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="SHEM_YATZRAN_SHORT" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Customers" Relationship="PensionsModel.FK_Customer_Yatzran" FromRole="Yatzran" ToRole="Customer" />
+          <NavigationProperty Name="IshKesherYatzrans" Relationship="PensionsModel.FK_IshKesherYatzran_Yatzran" FromRole="Yatzran" ToRole="IshKesherYatzran" />
+        </EntityType>
+        <Association Name="FK_Customer_Yatzran">
+          <End Type="PensionsModel.Yatzran" Role="Yatzran" Multiplicity="0..1" />
+          <End Type="PensionsModel.Customer" Role="Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Yatzran">
+              <PropertyRef Name="KOD_MEZAHE_YATZRAN" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="KOD_MEZAHE_YATZRAN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IshKesherYatzran_Yatzran">
+          <End Type="PensionsModel.Yatzran" Role="Yatzran" Multiplicity="1" />
+          <End Type="PensionsModel.IshKesherYatzran" Role="IshKesherYatzran" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Yatzran">
+              <PropertyRef Name="KOD_MEZAHE_YATZRAN" />
+            </Principal>
+            <Dependent Role="IshKesherYatzran">
+              <PropertyRef Name="KOD_MEZAHE_YATZRAN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2916,14 +2920,6 @@
                 <ScalarProperty Name="ColumnName" ColumnName="ColumnName" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="Value" ColumnName="Value" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Yatzrans">
-            <EntityTypeMapping TypeName="PensionsModel.Yatzran">
-              <MappingFragment StoreEntitySet="Yatzran">
-                <ScalarProperty Name="KOD_MEZAHE_YATZRAN" ColumnName="KOD-MEZAHE_YATZRAN" />
-                <ScalarProperty Name="SHEM_YATZRAN" ColumnName="SHEM-YATZRAN" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3521,30 +3517,6 @@
           <FunctionImportMapping FunctionImportName="ChangeClientStatusByFileNumber" FunctionName="PensionsModel.Store.ChangeClientStatusByFileNumber" />
           <FunctionImportMapping FunctionImportName="DequeueEvent" FunctionName="PensionsModel.Store.DequeueEvent" />
           <FunctionImportMapping FunctionImportName="GetFileNumerator" FunctionName="PensionsModel.Store.GetFileNumerator" />
-          <EntitySetMapping Name="Clients">
-            <EntityTypeMapping TypeName="PensionsModel.Client">
-              <MappingFragment StoreEntitySet="Client">
-                <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
-                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
-                <ScalarProperty Name="Gender" ColumnName="Gender" />
-                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
-                <ScalarProperty Name="MaritalStatus" ColumnName="MaritalStatus" />
-                <ScalarProperty Name="AddressCity" ColumnName="AddressCity" />
-                <ScalarProperty Name="AddressStreetNumber" ColumnName="AddressStreetNumber" />
-                <ScalarProperty Name="AddressStreetName" ColumnName="AddressStreetName" />
-                <ScalarProperty Name="MobilePhoneNumber" ColumnName="MobilePhoneNumber" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="TeudatZehut" ColumnName="TeudatZehut" />
-                <ScalarProperty Name="LastKodEirua" ColumnName="LastKodEirua" />
-                <ScalarProperty Name="LastRecordNumber" ColumnName="LastRecordNumber" />
-                <ScalarProperty Name="LastFileNumber" ColumnName="LastFileNumber" />
-                <ScalarProperty Name="LastStatus" ColumnName="LastStatus" />
-                <ScalarProperty Name="Client_Id" ColumnName="Client_Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="DeleteHeshbonOPolisa" FunctionName="PensionsModel.Store.DeleteHeshbonOPolisa" />
           <EntitySetMapping Name="IshKesherMaasiks">
             <EntityTypeMapping TypeName="PensionsModel.IshKesherMaasik">
@@ -3672,6 +3644,40 @@
                 <ScalarProperty Name="KOD_SUG_HAFKADA" ColumnName="KOD-SUG-HAFKADA" />
                 <ScalarProperty Name="HafkadaAchrona_Id" ColumnName="HafkadaAchrona_Id" />
                 <ScalarProperty Name="PerutHafkadaAchrona_Id" ColumnName="PerutHafkadaAchrona_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Clients">
+            <EntityTypeMapping TypeName="PensionsModel.Client">
+              <MappingFragment StoreEntitySet="Client">
+                <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="MaritalStatus" ColumnName="MaritalStatus" />
+                <ScalarProperty Name="AddressCity" ColumnName="AddressCity" />
+                <ScalarProperty Name="AddressStreetNumber" ColumnName="AddressStreetNumber" />
+                <ScalarProperty Name="AddressStreetName" ColumnName="AddressStreetName" />
+                <ScalarProperty Name="MobilePhoneNumber" ColumnName="MobilePhoneNumber" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="TeudatZehut" ColumnName="TeudatZehut" />
+                <ScalarProperty Name="LastKodEirua" ColumnName="LastKodEirua" />
+                <ScalarProperty Name="LastRecordNumber" ColumnName="LastRecordNumber" />
+                <ScalarProperty Name="LastFileNumber" ColumnName="LastFileNumber" />
+                <ScalarProperty Name="LastStatus" ColumnName="LastStatus" />
+                <ScalarProperty Name="Client_Id" ColumnName="Client_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Yatzrans">
+            <EntityTypeMapping TypeName="PensionsModel.Yatzran">
+              <MappingFragment StoreEntitySet="Yatzran">
+                <ScalarProperty Name="SHEM_YATZRAN_SHORT" ColumnName="SHEM-YATZRAN-SHORT" />
+                <ScalarProperty Name="SHEM_YATZRAN" ColumnName="SHEM-YATZRAN" />
+                <ScalarProperty Name="KOD_MEZAHE_YATZRAN" ColumnName="KOD-MEZAHE_YATZRAN" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

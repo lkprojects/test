@@ -50,8 +50,8 @@ namespace DAL
         public string HEAROT { get; set; }
         public Nullable<int> MISPAR_YELADIM { get; set; }
     
-        public virtual Yatzran Yatzran { get; set; }
         public virtual Metafel Metafel { get; set; }
         public virtual ICollection<HeshbonOPolisa> HeshbonOPolisas { get; set; }
+        public virtual Yatzran Yatzran { get; set; }
     }
 }

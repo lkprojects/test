@@ -16,14 +16,15 @@ namespace DAL
     {
         public Yatzran()
         {
-            this.IshKesherYatzrans = new HashSet<IshKesherYatzran>();
             this.Customers = new HashSet<Customer>();
+            this.IshKesherYatzrans = new HashSet<IshKesherYatzran>();
         }
     
         public int KOD_MEZAHE_YATZRAN { get; set; }
         public string SHEM_YATZRAN { get; set; }
+        public string SHEM_YATZRAN_SHORT { get; set; }
     
-        public virtual ICollection<IshKesherYatzran> IshKesherYatzrans { get; set; }
         public virtual ICollection<Customer> Customers { get; set; }
+        public virtual ICollection<IshKesherYatzran> IshKesherYatzrans { get; set; }
     }
 }

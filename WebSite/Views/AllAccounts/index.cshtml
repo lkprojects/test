@@ -7,7 +7,8 @@
 <script>
     $("#SavingsMenuItem").css({ 'color': 'red', 'font-weight': 'bold' });
     $('#SavingsMenuItem').removeAttr('href');
-
+    var menuItemText = "&#9664; " + $("#SavingsMenuItem").text();
+    $("#SavingsMenuItem").html(menuItemText);
 </script>
 
 <!-- Handle Open/Close details-->
@@ -15,10 +16,12 @@
     $(document).ready
     (
       function () {
-        @for(var i = 1; i <= Model.Count(); i++)
+          @for(var i = 0; i < Model.Count(); i++)
         { <text>
           $("#DetailsTableBody</text>@i<text>").click(function () {
+              $("#DetailsTableBodyDIV</text>@i<text>").slideToggle("fast");
               $("#panel</text>@i<text>").slideToggle("fast");
+
               if ($("#details</text>@i<text>").html().substring(0, 4) != "סגור")
                   $("#details</text>@i<text>").html("סגור &#9938;");
               else
@@ -34,17 +37,110 @@
 <script type="text/javascript">
     $(document).ready(function () {
         // Create jqxTabs.
-        $('.jqxTabs').jqxTabs({ rtl: true, width: '100%', height: '180', position: 'top' });
+        $('.jqxTabs').jqxTabs({ rtl: true, width: '100%', height: '200', position: 'top' });
         $('.jqxTabs').jqxTabs({ animationType: 'fade' });
     });
 </script>
+
+@{
+    // List all Sug Mutzar
+    List<int> SugMutzarDistinct = Model.Select(x => (int)x.Customer.SUG_MUTZAR_PENSIONI).Distinct().ToList();
+    string SugMutzarStr = "";
+    string DetailsTableLines = "";
+    for (int i = 0; i < SugMutzarDistinct.Count(); i++)
+    {
+        SugMutzarStr += "{ value: \"" + SugMutzarDistinct[i].ToString() + "\", label: \""  +
+                        ViewBag.LUT.Get("SUG-MUTZAR-PENSIONI", SugMutzarDistinct[i])  + "\" },";
+    }
+    // Remove the last comma
+    SugMutzarStr = SugMutzarStr.Substring(0,SugMutzarStr.Length-1);
+    
+    List<int> SugMutzarList = Model.Select(x => (int)x.Customer.SUG_MUTZAR_PENSIONI).ToList();
+    for (int i = 0; i < SugMutzarList.Count(); i++)
+    {
+        DetailsTableLines += "{ value: \"" + SugMutzarList[i].ToString() + "\", line: \""  +
+                             "DetailsTableBody" + i.ToString() + "\" },";
+    }
+    // Remove the last comma
+    DetailsTableLines = DetailsTableLines.Substring(0,DetailsTableLines.Length-1);
+
+
+    List<int> accountStatusDistinct = Model.Select(x => (int)x.STATUS_POLISA_O_CHESHBON).Distinct().ToList();
+    string accountStatusStr = "";
+    string accountStatusLines = "";
+    for (int i = 0; i < accountStatusDistinct.Count(); i++)
+    {
+        accountStatusStr += "{ value: \"" + accountStatusDistinct[i].ToString() + "\", label: \"" +
+                            ViewBag.LUT.Get("STATUS-POLISA-O-CHESHBON", accountStatusDistinct[i]) + "\" },";
+    }
+    // Remove the last comma
+    accountStatusStr = accountStatusStr.Substring(0, accountStatusStr.Length - 1);
+
+    List<int> accountStatusList = Model.Select(x => (int)x.STATUS_POLISA_O_CHESHBON).ToList();
+    for (int i = 0; i < accountStatusList.Count(); i++)
+    {
+        accountStatusLines += "{ value: \"" + accountStatusList[i].ToString() + "\", line: \"" +
+                             "DetailsTableBody" + i.ToString() + "\" },";
+    }
+    // Remove the last comma
+    accountStatusLines = accountStatusLines.Substring(0, accountStatusLines.Length - 1);         
+}
+
+<script type="text/javascript">
+
+    function FilterData(SugMutzarLines, accountStatusLines) {
+        var args = event.args;
+        var SugMutzarItem = $('#SugMutzarBox').jqxDropDownList('getSelectedItem').value;
+        var StatusBoxItem = $('#StatusBox').jqxDropDownList('getSelectedItem').value;
+        for (i = 0; i < SugMutzarLines.length; i++) {
+            if ((SugMutzarLines[i].value == SugMutzarItem || SugMutzarItem == "0") &&
+                (accountStatusLines[i].value == StatusBoxItem || StatusBoxItem == "0"))
+                $("#DetailsTableBody" + i.toString()).slideDown("fast");
+            else
+                $("#" + SugMutzarLines[i].line).slideUp("fast");
+        }
+    }
+
+    $(document).ready(function () {
+        var SugMutzarSource = [{ value: "0", label: "<b>  כל סוגי החשבונות  </b>" }, @(Html.Raw(SugMutzarStr))]
+        var SugMutzarLines = [@(Html.Raw(DetailsTableLines))]
+
+        var accountStatusSource = [{ value: "0", label: "<b>  כל מצבי החשבונות  </b>" }, @(Html.Raw(accountStatusStr))]
+        var accountStatusLines = [@(Html.Raw(accountStatusLines))]
+
+        // Create a jqxSugMutzarBox
+
+        $("#SugMutzarBox").jqxDropDownList({ width: 180, source: SugMutzarSource, height: 20, dropDownHeight: 140, rtl: true, selectedIndex: 0 });
+        $("#StatusBox").jqxDropDownList({ width: 180, source: accountStatusSource, height: 20, dropDownHeight: 140, rtl: true, selectedIndex: 0 });
+
+        $("#SugMutzarBox").on('select', function (event) {
+            FilterData(SugMutzarLines, accountStatusLines);
+        });
+
+        $("#StatusBox").on('select', function (event) {
+            FilterData(SugMutzarLines, accountStatusLines);
+        });
+
+    });
+</script>
+<div id="FilterZone">
+    <table>
+        <tr>
+            <td>סנן לפי סוג החשבון:</td>
+            <td><div id="SugMutzarBox"></div></td>
+            <td>סנן לפי מצב החשבון:</td>
+            <td><div id="StatusBox"></div></td>
+        </tr>
+    </table>
+    </div>
+
 <table class="DetailsTable">
     <tbody>
         <tr class="DetailsTableHeader">
-            <td>סוג מוצר פנסיוני</td>
+            <td>סוג החשבון</td>
             <td>מספר חשבון</td>
             <td>מנוהל ע"י</td>
-            <td>מצב הפוליסה</td>
+            <td>מצב החשבון</td>
             <td>תאריך הצטרפות</td>
             <td>סוג קרן הפנסיה/פוליסה</td>
             <td>שכר לפוליסה</td>
@@ -59,10 +155,11 @@
          DateTime dateTime;
          decimal sum = 0;
          string RowId = "DetailsTableBody";
+         string RowId2 = "DetailsTableBodyDIV";             
         }
-                @foreach (var account in Model)
+
+        @foreach (var account in Model)
         {
-            num++;
             panel = "panel" + num.ToString();
             flip = "flip" + num.ToString();
             details = "details" + num.ToString();
@@ -85,10 +182,11 @@
                 }
             }
             RowId = "DetailsTableBody" + num.ToString();
-            <tr id="@RowId" class="DetailsTableBody">
+            RowId2 = "DetailsTableBodyDIV" + num.ToString();
+            <tr id="@RowId" class="DetailsTableBody" style="height:0px;">
                 <td class="DetailsTableBody">@ViewBag.LUT.Get("SUG-MUTZAR-PENSIONI", account.Customer.SUG_MUTZAR_PENSIONI)</td>
                 <td class="DetailsTableBody">@account.MISPAR_POLISA_O_HESHBON</td>
-                <td class="DetailsTableBody">@account.Customer.Yatzran.SHEM_YATZRAN</td>
+                <td class="DetailsTableBody">@account.Customer.Yatzran.SHEM_YATZRAN_SHORT</td>
                 <td class="DetailsTableBody">@ViewBag.LUT.Get("STATUS-POLISA-O-CHESHBON", account.STATUS_POLISA_O_CHESHBON)</td>
                 <td class="DetailsTableBody">@date</td>
                 <td class="DetailsTableBody">@sug_keren</td>
@@ -97,14 +195,14 @@
                 <td class="DetailsTableBody">
                     <div id="@Html.Raw(flip)">
                         <a href="#">
-                            <p id="@Html.Raw(details)" style="font-weight:bold">לפרטים &#8678;</p>
+                            <span id="@Html.Raw(details)" style="font-weight:bold">לפרטים &#8678;</span>
                         </a>
                     </div>
                 </td>
             </tr>
-            <tr>
-                <td colspan="9">
-                    <div id="@Html.Raw(panel)" style="display:none; margin-left:10px; margin-right:10px; margin-top:5px; margin-bottom:5px;">
+            <tr id="@Html.Raw(panel)" style="display:none; margin-left:10px; margin-right:10px;">
+                <td colspan="9" style="height:0px;" >
+                    <div id="@Html.Raw(RowId2)" style="display:none;" >
                         <div class='jqxTabs'>
                             <ul>
                                 <li>צבירות</li>
@@ -114,6 +212,7 @@
                                 <li>המרכיב הביטוחי</li>
                                 <li>השקעות ורווחים</li>
                             </ul>
+                            <!-- צבירות-->
                             <div class="TabsDiv">
                                 <table class="InnerTable">
                                     <thead>
@@ -142,6 +241,7 @@
                                 </table>
                             </div>
 
+                            <!-- הפקדות-->
                             <div class="TabsDiv">
                                 <table class="InnerTable">
                                     <thead>
@@ -175,6 +275,7 @@
                                     }
                                 </table>
                             </div>
+                            <!-- הפקדה אחרונה-->
                             <div class="TabsDiv">
                                 <table class="InnerTable">
                                     <thead>
@@ -200,12 +301,12 @@
                                                 {
                                                     date = ((DateTime)account.PirteiTaktzivs.ToList()[i].HafkadaAchronas.ToList()[j].TAARICH_HAFKADA_ACHARON).ToString("MM/yyyy");
                                                 }
-                                                else { date = "";}
+                                                else { date = ""; }
                                                 if (account.PirteiTaktzivs.ToList()[i].HafkadaAchronas.ToList()[j].PerutHafkadaAchronas.ToList()[k].CHODESH_SACHAR != null)
                                                 {
                                                     date2 = ((DateTime)account.PirteiTaktzivs.ToList()[i].HafkadaAchronas.ToList()[j].PerutHafkadaAchronas.ToList()[k].CHODESH_SACHAR).ToString("MM/yyyy");
                                                 }
-                                                else { date2 = "";}
+                                                else { date2 = ""; }
                                                 <tr class="InnerTableBody">
                                                     <td class="InnerTableBody">@account.PirteiTaktzivs.ToList()[i].HafkadaAchronas.ToList()[j].TOTAL_HAFKADA_ACHRONA</td>
                                                     <td class="InnerTableBody">@date2</td>
@@ -222,6 +323,7 @@
                                     }
                                 </table>
                             </div>
+                            <!-- דמי ניהול-->
                             <div class="TabsDiv">
                                 <table class="InnerTable">
                                     <thead>
@@ -265,6 +367,7 @@
                                     }
                                 </table>
                             </div>
+                            <!-- המרכיב הביטוחי-->
                             <div class="TabsDiv">
                                 <table class="InnerTable">
                                     <thead>
@@ -335,6 +438,7 @@
                                     }
                                 </table>
                             </div>
+                            <!-- השקעות ורווחים-->
                             <div class="TabsDiv">
                                 <table class="InnerTable">
                                     <thead>
@@ -367,6 +471,7 @@
                     </div>
                 </td>
             </tr>
+            num++;
         }
     </tbody>
 </table>

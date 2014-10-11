@@ -31,7 +31,6 @@ namespace DAL
         public virtual DbSet<ClientYatzran> ClientYatzrans { get; set; }
         public virtual DbSet<Config> Configs { get; set; }
         public virtual DbSet<LUT> LUTs { get; set; }
-        public virtual DbSet<Yatzran> Yatzrans { get; set; }
         public virtual DbSet<FeedbackFile> FeedbackFiles { get; set; }
         public virtual DbSet<FileErrorDetail> FileErrorDetails { get; set; }
         public virtual DbSet<Request> Requests { get; set; }
@@ -65,12 +64,13 @@ namespace DAL
         public virtual DbSet<YitraLefiGilPrisha> YitraLefiGilPrishas { get; set; }
         public virtual DbSet<YitraLeTkufa> YitraLeTkufas { get; set; }
         public virtual DbSet<Yitrot> Yitrots { get; set; }
-        public virtual DbSet<Client> Clients { get; set; }
         public virtual DbSet<IshKesherMaasik> IshKesherMaasiks { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<HeshbonOPolisa> HeshbonOPolisas { get; set; }
         public virtual DbSet<Maasik> Maasiks { get; set; }
         public virtual DbSet<PerutHafkadaAchrona> PerutHafkadaAchronas { get; set; }
+        public virtual DbSet<Client> Clients { get; set; }
+        public virtual DbSet<Yatzran> Yatzrans { get; set; }
     
         public virtual int ChangeClientStatus(ObjectParameter mISPAR_ZIHUY, Nullable<int> fromStatus, Nullable<int> toStatus, Nullable<int> kovetz_id)
         {

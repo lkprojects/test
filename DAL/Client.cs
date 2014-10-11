@@ -23,6 +23,7 @@ namespace DAL
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
+        public string Password { get; set; }
         public string MobilePhoneNumber { get; set; }
         public string AddressStreetName { get; set; }
         public string AddressStreetNumber { get; set; }

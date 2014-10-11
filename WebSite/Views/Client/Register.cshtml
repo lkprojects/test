@@ -1,0 +1,139 @@
+﻿@model WebSite.Models.Client
+
+@{
+    ViewBag.Title = "Register";
+}
+
+<h2>Register</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>הרשמה</legend>
+        @Html.AntiForgeryToken()
+        @if (ViewBag.Message != null)
+        {
+            <div style="border:solid 1px green">
+                @ViewBag.Message
+            </div>
+        }
+        <table>
+            <tr>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.FirstName)
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.FirstName)
+                    @Html.ValidationMessageFor(model => model.FirstName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.LastName)
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.LastName)
+                    @Html.ValidationMessageFor(model => model.LastName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Email)
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.Email)
+                    @Html.ValidationMessageFor(model => model.Email)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.ConfirmPassword)
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.ConfirmPassword)
+                    @Html.ValidationMessageFor(model => model.ConfirmPassword)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.TeudatZehut)
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.TeudatZehut)
+                    @Html.ValidationMessageFor(model => model.TeudatZehut)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.MobilePhoneNumber)
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.MobilePhoneNumber)
+                    @Html.ValidationMessageFor(model => model.MobilePhoneNumber)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.AddressStreetName)
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.AddressStreetName)
+                    @Html.ValidationMessageFor(model => model.AddressStreetName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.AddressStreetNumber)
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.AddressStreetNumber)
+                    @Html.ValidationMessageFor(model => model.AddressStreetNumber)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.AddressCity)
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.AddressCity)
+                    @Html.ValidationMessageFor(model => model.AddressCity)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.BirthDate)
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.BirthDate)
+                    @Html.ValidationMessageFor(model => model.BirthDate)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Gender)
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.Gender)
+                    @Html.ValidationMessageFor(model => model.Gender)
+                </td>
+            </tr>
+        </table>
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

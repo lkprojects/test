@@ -1,0 +1,75 @@
+﻿@model IEnumerable<DAL.HafkadotMetchilatShana>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.TAARICH_ERECH_HAFKADA)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.KOD_SUG_HAFKADA)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SUG_HAFRASHA)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SUG_MAFKID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SCHUM_HAFKADA_SHESHULAM)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CHODESH_SACHAR)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ZMAN_PERAON)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PirteiTaktziv.Oved_MISPAR_BAAL_POLISA_SHEEINO_MEVUTAH)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.TAARICH_ERECH_HAFKADA)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.KOD_SUG_HAFKADA)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SUG_HAFRASHA)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SUG_MAFKID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SCHUM_HAFKADA_SHESHULAM)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CHODESH_SACHAR)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ZMAN_PERAON)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PirteiTaktziv.Oved_MISPAR_BAAL_POLISA_SHEEINO_MEVUTAH)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.HafkadotMetchilatShana_Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.HafkadotMetchilatShana_Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.HafkadotMetchilatShana_Id })
+        </td>
+    </tr>
+}
+
+</table>

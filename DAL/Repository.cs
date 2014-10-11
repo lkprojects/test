@@ -15,37 +15,6 @@ namespace WebSite.Models
         {
             dbCtx.Configuration.LazyLoadingEnabled = true;
 
-            /*
-Halvaa
-Kupa
-MeyupeKoach
-Mitryot
-Kisui
-HeshbonOPolisa
-Sheer
-Tvia
-YitraLefiGilPrisha
-Mevutach
-Mutav
-DmeiNihul
-HafkadaAchrona
-Tosafot
-HafkadotMetchilatShana
-HafrashotLePolisa
-MasluleiHashkaa
-PerutHafkadaAchrona
-PerutYitrot
-YitraLeTkufa
-Yitrot
-Maasik
-Customer
-GoremPone
-HeshbonKovetz
-PirteiTaktziv
-
-                                ( from h in dbCtx.HeshbonOPolisas.Include("PirteiTaktziv.Yitrot.PerutYitrot")
-
-             */
             List<HeshbonOPolisa> polisas = 
                    ( from h in dbCtx.HeshbonOPolisas
                           join c in dbCtx.Customers on h.Customer_Id equals c.Customer_Id
@@ -77,6 +46,11 @@ PirteiTaktziv
                    select l).ToList<LUT>();
 
             return lut;
+        }
+
+        public void AddClient (DAL.Client client)
+        {
+            dbCtx.Clients.Add(client);
         }
     
     }

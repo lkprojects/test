@@ -20,7 +20,7 @@ namespace WebSite.Models.Business
             _repository = repository;
         }
 
-        public List<HeshbonOPolisa> GetPolisas(Client client)
+        public List<HeshbonOPolisa> GetPolisas(DAL.Client client)
         {
             
             List<HeshbonOPolisa> polisaList = _repository.GetPolisas(client.TeudatZehut);

@@ -195,6 +195,7 @@ td.DetailsTableHeader {
     width: 700px;
     font-size: 12px;
     border-collapse: collapse;
+    height:25px;
 }
 
 td.DetailsTableBody {
@@ -286,4 +287,10 @@ textarea {
 
 .validation-summary-valid {
     display: none;
+}
+
+#FilterZone {
+    position:relative;
+    z-index:100;
+    top: -50px;
 }
