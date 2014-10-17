@@ -69,6 +69,9 @@
       <DependentUpon>ModelPensions.tt</DependentUpon>
     </Compile>
     <Compile Include="DAL.cs" />
+    <Compile Include="DepositsReport_Result.cs">
+      <DependentUpon>ModelPensions.tt</DependentUpon>
+    </Compile>
     <Compile Include="DmeiNihul.cs">
       <DependentUpon>ModelPensions.tt</DependentUpon>
     </Compile>

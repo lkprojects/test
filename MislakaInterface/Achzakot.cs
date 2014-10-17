@@ -15,6 +15,8 @@ namespace MislakaInterface
 
         private enum DataMode { Insert, Update };
         private DAL.DAL Dal = new DAL.DAL();
+        private Yatzran yatzran;
+        private List<Maasik> maasikList = new List<Maasik>();
 
         public void ParseKovetz(AchzakotInterface.Mimshak mimshak_in, string filename)
         {
@@ -22,13 +24,12 @@ namespace MislakaInterface
 
             mimshak = mimshak_in;
             Kovetz kovetz;
-            DataMode dataMode = DataMode.Insert;
 
             kovetz = Dal.GetKovetzByNumber(mimshak.KoteretKovetz.MISPARHAKOVETZ);
-            if (kovetz != null)
-            {
-                dataMode = DataMode.Update;
-            }
+            //if (kovetz != null)
+            //{
+            //    dataMode = DataMode.Update;
+            //}
 
             kovetz = new Kovetz();
 
@@ -56,7 +57,7 @@ namespace MislakaInterface
             kovetz.LoadDate = DateTime.Now;
             kovetz.FileName = filename;
 
-            Yatzran yatzran = new Yatzran();
+            yatzran = new Yatzran();
             yatzran.KOD_MEZAHE_YATZRAN = mimshak.YeshutYatzran.KODMEZAHEYATZRAN;
             yatzran.SHEM_YATZRAN = mimshak.YeshutYatzran.SHEMYATZRAN;
             Dal.SaveYatzran(yatzran);
@@ -69,7 +70,6 @@ namespace MislakaInterface
             }
 
            // if (dataMode == DataMode.Insert)
-            Dal.Add(kovetz);
             //Dal.SaveChanges();
 
             HeshbonKovetz heshbonKovetz;
@@ -81,18 +81,16 @@ namespace MislakaInterface
                 customer.KOD_MEZAHE_METAFEL = mimshak.Mutzarim[i].NetuneiMutzar.KODMEZAHEMETAFEL;
                 customer.KOD_MEZAHE_YATZRAN = mimshak.Mutzarim[i].NetuneiMutzar.KODMEZAHEYATZRAN;
                 customer.SUG_MUTZAR_PENSIONI = mimshak.Mutzarim[i].NetuneiMutzar.SUGMUTZARPENSIONI;
-                Dal.SaveCustomer(ref customer);
                 ParseMaasik(mimshak.Mutzarim[i].NetuneiMutzar.YeshutMaasik);
                 for (int j = 0; j < mimshak.Mutzarim[i].HeshbonotOPolisot.Length; j++)
                 {
-                    heshbonOPolisa = ParseHeshbonOPolisa(mimshak.Mutzarim[i].HeshbonotOPolisot[j], mimshak.Mutzarim[i].NetuneiMutzar, customer);
-                    if (customer.Customer_Id > 0)
-                        heshbonOPolisa.Customer_Id = customer.Customer_Id;
-                    customer.HeshbonOPolisas.Add(heshbonOPolisa);
+                    heshbonOPolisa = ParseHeshbonOPolisa(mimshak.Mutzarim[i].HeshbonotOPolisot[j], mimshak.Mutzarim[i].NetuneiMutzar);
                     heshbonKovetz = new HeshbonKovetz();
                     heshbonKovetz.HeshbonOPolisa = heshbonOPolisa;
                     heshbonKovetz.Kovetz = kovetz;
                     kovetz.HeshbonKovetzs.Add(heshbonKovetz);
+                    customer.HeshbonOPolisas.Add(heshbonOPolisa);
+                    Dal.Add(customer);
                 }
 
                 Client client = Dal.GetClient(customer.MISPAR_ZIHUY_LAKOACH);
@@ -103,6 +101,7 @@ namespace MislakaInterface
                 }
                 Dal.SetClientYatzran(customer.KOD_MEZAHE_YATZRAN.ToString(), customer.MISPAR_ZIHUY_LAKOACH.TrimStart('0'), true);
             }
+            Dal.Add(kovetz);
 
         }
 
@@ -223,6 +222,7 @@ namespace MislakaInterface
         private void ParseMaasik(AchzakotInterface.MimshakMutzarNetuneiMutzarYeshutMaasik[] mimshakYeshutMaasik)
         {
             Maasik maasik;
+            int maasikId;
             for (int i = 0; i < mimshakYeshutMaasik.Length; i++)
             {
                 maasik = new Maasik();
@@ -249,7 +249,9 @@ namespace MislakaInterface
                 maasik.TA_DOAR = mimshakYeshutMaasik[i].TADOAR;
                 ParseIshKesherMaasik(mimshakYeshutMaasik[i].IshKesherYeshutMaasik, maasik);
 
-                Dal.SaveMaasik(maasik);
+                maasikId = Dal.SaveMaasik(maasik);
+                maasik.Maasik_Id = maasikId;
+                maasikList.Add(maasik);
             }
         }
 
@@ -277,8 +279,7 @@ namespace MislakaInterface
         }
 
         private HeshbonOPolisa ParseHeshbonOPolisa(AchzakotInterface.MimshakMutzarHeshbonOPolisa mimshakMutzarHeshbonOPolisa,
-                                                   AchzakotInterface.MimshakMutzarNetuneiMutzar netuneiMutzar,
-                                                   Customer customer
+                                                   AchzakotInterface.MimshakMutzarNetuneiMutzar netuneiMutzar
                                                    )
         {
             HeshbonOPolisa heshbonOPolisa = new HeshbonOPolisa();
@@ -344,7 +345,6 @@ namespace MislakaInterface
             ParseKisuim(heshbonOPolisa, mimshakMutzarHeshbonOPolisa.Kisuim);
 
             ParseTaktziv(heshbonOPolisa, mimshakMutzarHeshbonOPolisa.PirteiTaktziv);
-            customer.HeshbonOPolisas.Add(heshbonOPolisa);
             Dal.SaveHeshbonOPolisa(heshbonOPolisa);
             return heshbonOPolisa;
         }
@@ -412,11 +412,19 @@ namespace MislakaInterface
                 {
 
                     taktziv.Oved_MISPAR_BAAL_POLISA_SHEEINO_MEVUTAH = mimshakMutzarHeshbonOPolisaPirteiTaktziv[i].PirteiOved.MISPARBAALPOLISASHEEINOMEVUTAH;
-                   // taktziv.Oved_MPR_MAASIK_BE_YATZRAN = mimshakMutzarHeshbonOPolisaPirteiTaktziv[i].PirteiOved.MPRMAASIKBEYATZRAN;
+                    //taktziv.Oved_MPR_MAASIK_BE_YATZRAN = mimshakMutzarHeshbonOPolisaPirteiTaktziv[i].PirteiOved.MPRMAASIKBEYATZRAN;
                     taktziv.Oved_SHEM_BAAL_POLISA_SHEEINO_MEVUTAH = mimshakMutzarHeshbonOPolisaPirteiTaktziv[i].PirteiOved.SHEMBAALPOLISASHEEINOMEVUTAH;
                     taktziv.Oved_STATUS_MAASIK = mimshakMutzarHeshbonOPolisaPirteiTaktziv[i].PirteiOved.STATUSMAASIK;
                     taktziv.Oved_SUG_BAAL_HAPOLISA_SHE_EINO_HAMEVUTACH = mimshakMutzarHeshbonOPolisaPirteiTaktziv[i].PirteiOved.SUGBAALHAPOLISASHEEINOHAMEVUTACH;
                     taktziv.Oved_SUG_TOCHNIT_O_CHESHBON = mimshakMutzarHeshbonOPolisaPirteiTaktziv[i].PirteiOved.SUGTOCHNITOCHESHBON;
+                    for (int x = 0; x < maasikList.Count; x++)
+                    {
+                        if (maasikList[x].MPR_MAASIK_BE_YATZRAN == mimshakMutzarHeshbonOPolisaPirteiTaktziv[i].PirteiOved.MPRMAASIKBEYATZRAN)
+                        {
+                            taktziv.Maasik_id = maasikList[x].Maasik_Id;
+                            break;
+                        }
+                    }
                 }
                 ParseHafrashot(taktziv, mimshakMutzarHeshbonOPolisaPirteiTaktziv[i].PerutHafrashotLePolisa);
                 ParseDmeiNihul(taktziv, mimshakMutzarHeshbonOPolisaPirteiTaktziv[i].PerutHotzaot.MivneDmeiNihul);

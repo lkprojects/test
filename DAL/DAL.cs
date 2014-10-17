@@ -431,7 +431,7 @@ namespace DAL
             }
         }
 
-        public void SaveCustomer(ref Customer customer )
+        public void SaveCustomer(ref Customer customer)
         {
             int SugMezaheLakoach = customer.SUG_MEZAHE_LAKOACH;
             string MisparZihuyLakoach = customer.MISPAR_ZIHUY_LAKOACH;
@@ -451,6 +451,9 @@ namespace DAL
             if (Customer_check == null)
             {
                 dbCtx.Customers.Add(customer);
+                dbCtx.SaveChanges();
+                dbCtx.Entry(customer).GetDatabaseValues();
+
             }
             else
             {
@@ -482,10 +485,10 @@ namespace DAL
                 Customer_check.MISPAR_YELADIM = customer.MISPAR_YELADIM;
 
                 dbCtx.Entry(Customer_check).State = EntityState.Modified;
-            }         
+            }
         }
 
-        public void SaveMaasik(Maasik maasik)
+        public int SaveMaasik(Maasik maasik)
         {
             Maasik maasik_check =
                     (from m in dbCtx.Maasiks
@@ -514,9 +517,16 @@ namespace DAL
                 maasik_check.HEAROT = maasik.HEAROT;
 
                 dbCtx.Entry(maasik_check).State = EntityState.Modified;
+                return maasik_check.Maasik_Id;
             }
             else
+            {
                 dbCtx.Maasiks.Add(maasik);
+                dbCtx.SaveChanges();
+                dbCtx.Entry(maasik).GetDatabaseValues();
+                return maasik.Maasik_Id;
+            }
+            
         }
 
         public void SaveHeshbonOPolisa(HeshbonOPolisa heshbonOPolisa)
@@ -528,18 +538,19 @@ namespace DAL
                            m.TAARICH_HITZTARFUT_MUTZAR == heshbonOPolisa.TAARICH_HITZTARFUT_MUTZAR
                      select m.HeshbonOPolisa_Id).FirstOrDefault();
 
-            if (heshbonOPolisa_Id >0)
-                //    dbCtx.Entry(heshbonOPolisa).State = EntityState.Modified;      
-                   dbCtx.DeleteHeshbonOPolisa(heshbonOPolisa_Id);
-            //else
-            //if (heshbonOPolisa_check == null)
-            //{
-//            dbCtx.HeshbonOPolisas.Add(heshbonOPolisa);
-//            dbCtx.Entry(heshbonOPolisa).Reload();
-            //}
-            //else
-            //    dbCtx.Entry(heshbonOPolisa).State = EntityState.Modified;      
-            
+            if (heshbonOPolisa_Id > 0)
+                   dbCtx.DeleteHeshbonOPolisa(heshbonOPolisa_Id);            
         }
+
+        public void Add(Customer customer)
+        {
+            dbCtx.Customers.Add(customer);
+        }
+
+        protected void Dispose()
+        {
+            dbCtx.Dispose();
+        }
+
     }
 }

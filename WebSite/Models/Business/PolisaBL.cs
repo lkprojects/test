@@ -26,5 +26,11 @@ namespace WebSite.Models.Business
             List<HeshbonOPolisa> polisaList = _repository.GetPolisas(client.TeudatZehut);
             return polisaList;
         }
+
+        public List<DepositsReport_Result> GetDeposits(string identificationNumber)
+        {
+            return _repository.DepositsReport(identificationNumber);
+        }
+
     }
 }

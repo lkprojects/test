@@ -1206,6 +1206,9 @@
         <Function Name="DeleteHeshbonOPolisa" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="HeshbonOPolisa_Id" Type="int" Mode="In" />
         </Function>
+        <Function Name="DepositsReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdentificationNumber" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="DequeueEvent" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="MISPAR_ZIHUY" Type="varchar" Mode="In" />
         </Function>
@@ -2507,6 +2510,9 @@
             <End Role="Yatzran" EntitySet="Yatzrans" />
             <End Role="IshKesherYatzran" EntitySet="IshKesherYatzrans" />
           </AssociationSet>
+          <FunctionImport Name="DepositsReport" ReturnType="Collection(PensionsModel.DepositsReport_Result)">
+            <Parameter Name="IdentificationNumber" Mode="In" Type="String" />
+          </FunctionImport>
           </EntityContainer>
         <EntityType Name="IshKesherMaasik">
           <Key>
@@ -2875,6 +2881,22 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="DepositsReport_Result">
+          <Property Type="String" Name="DepositMonth" Nullable="true" MaxLength="4000" />
+          <Property Type="String" Name="DepositMonthForSorting" Nullable="true" MaxLength="4000" />
+          <Property Type="Decimal" Name="EmployerRemuneration" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="EmployerCompensations" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="EmployerEducationFund" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="EmployerMisc" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="EmployerDisabilityInsurance" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="EmployerTotal" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="EmployeeRemuneration" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="EmployeeEducationFund" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="EmployeeMisc" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="EmployeeDisabilityInsurance" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="EmployeeTotal" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="Total" Nullable="true" Precision="38" Scale="2" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3681,6 +3703,26 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="DepositsReport" FunctionName="PensionsModel.Store.DepositsReport">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PensionsModel.DepositsReport_Result">
+                <ScalarProperty Name="DepositMonth" ColumnName="DepositMonth" />
+                <ScalarProperty Name="DepositMonthForSorting" ColumnName="DepositMonthForSorting" />
+                <ScalarProperty Name="EmployerRemuneration" ColumnName="EmployerRemuneration" />
+                <ScalarProperty Name="EmployerCompensations" ColumnName="EmployerCompensations" />
+                <ScalarProperty Name="EmployerEducationFund" ColumnName="EmployerEducationFund" />
+                <ScalarProperty Name="EmployerMisc" ColumnName="EmployerMisc" />
+                <ScalarProperty Name="EmployerDisabilityInsurance" ColumnName="EmployerDisabilityInsurance" />
+                <ScalarProperty Name="EmployerTotal" ColumnName="EmployerTotal" />
+                <ScalarProperty Name="EmployeeRemuneration" ColumnName="EmployeeRemuneration" />
+                <ScalarProperty Name="EmployeeEducationFund" ColumnName="EmployeeEducationFund" />
+                <ScalarProperty Name="EmployeeMisc" ColumnName="EmployeeMisc" />
+                <ScalarProperty Name="EmployeeDisabilityInsurance" ColumnName="EmployeeDisabilityInsurance" />
+                <ScalarProperty Name="EmployeeTotal" ColumnName="EmployeeTotal" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

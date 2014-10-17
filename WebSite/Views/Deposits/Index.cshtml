@@ -1,75 +1,177 @@
-﻿@model IEnumerable<DAL.HafkadotMetchilatShana>
+﻿@model List<DAL.DepositsReport_Result>
 
 @{
-    ViewBag.Title = "Index";
-}
+    ViewBag.Title = "הפקדות";
+    int i = 0;
+    string JS = "";
+    string JSShow = "";
+    JS += "var source = {\n";
+    JS += "localdata: [\n";
+    
+    foreach (var deposit in Model)
+    {
+        JS += "[\"" + deposit.DepositMonth + "\"," +
+                      deposit.DepositMonthForSorting + "," +
+                      deposit.EmployeeDisabilityInsurance.ToString() + "," +
+                      deposit.EmployeeEducationFund.ToString() + "," +
+                      deposit.EmployeeMisc.ToString() + "," +
+                      deposit.EmployeeRemuneration.ToString() + "," +
+                      deposit.EmployeeTotal + "," +
+                      deposit.EmployerCompensations + "," +
+                      deposit.EmployerDisabilityInsurance + "," +
+                      deposit.EmployerEducationFund + "," +
+                      deposit.EmployerMisc + "," +
+                      deposit.EmployerRemuneration + "," +
+                      deposit.EmployerTotal + "," +
+                      deposit.Total + "],\n";
+    }
+    bool EmployeeDisabilityInsurance = false, EmployeeEducationFund = false, EmployeeMisc = false, EmployeeRemuneration = false;
+    bool EmployeeTotal = false, EmployerCompensations = false, EmployerDisabilityInsurance = false, EmployerEducationFund = false;
+    bool EmployerMisc = false, EmployerRemuneration = false, EmployerTotal = false, Total = false;
 
-<h2>Index</h2>
+    foreach(var rec in Model)
+    {
+        if (rec.EmployeeDisabilityInsurance > 0)
+        {
+            EmployeeDisabilityInsurance = true;
+        }
+        if (rec.EmployeeEducationFund > 0)
+        {
+            EmployeeEducationFund = true;
+        }
+        if (rec.EmployeeMisc > 0)
+        {
+            EmployeeMisc = true;
+        }
+        if (rec.EmployeeRemuneration > 0)
+        {
+            EmployeeRemuneration = true;
+        }
+        if (rec.EmployeeTotal > 0)
+        {
+            EmployeeTotal = true;
+        }
+        if (rec.EmployerCompensations > 0)
+        {
+            EmployerCompensations = true;
+        }
+        if (rec.EmployerDisabilityInsurance > 0)
+        {
+            EmployerDisabilityInsurance = true;
+        }
+        if (rec.EmployerEducationFund > 0)
+        {
+            EmployerEducationFund = true;
+        }
+        if (rec.EmployerMisc > 0)
+        {
+            EmployerMisc = true;
+        }
+        if (rec.EmployerRemuneration > 0)
+        {
+            EmployerRemuneration = true;
+        }
+        if (rec.EmployerTotal > 0)
+        {
+            EmployerTotal = true;
+        }
+        if (rec.Total > 0)
+        {
+            Total = true;
+        }
+    }
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.TAARICH_ERECH_HAFKADA)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.KOD_SUG_HAFKADA)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SUG_HAFRASHA)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SUG_MAFKID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SCHUM_HAFKADA_SHESHULAM)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CHODESH_SACHAR)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ZMAN_PERAON)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PirteiTaktziv.Oved_MISPAR_BAAL_POLISA_SHEEINO_MEVUTAH)
-        </th>
-        <th></th>
-    </tr>
+    if (!EmployeeDisabilityInsurance) {
+      JSShow += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployeeDisabilityInsurance');";
+    }
+    if (!EmployeeEducationFund) {
+      JSShow += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployeeEducationFund');";
+    }
+    if (!EmployeeMisc) {
+      JSShow += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployeeMisc');";
+    }
+    if (!EmployeeRemuneration) {
+      JSShow += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployeeRemuneration');";
+    }
+    if (!EmployeeTotal) {
+      JSShow += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployeeTotal');";
+    }
+    if (!EmployerCompensations) {
+      JSShow += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployerCompensations');";
+    }
+    if (!EmployerDisabilityInsurance) {
+      JSShow += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployerDisabilityInsurance');";
+    }
+    if (!EmployerEducationFund) {
+      JSShow += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployerEducationFund');";
+    }
+    if (!EmployerMisc) {
+      JSShow += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployerMisc');";
+    }
+    if (!EmployerRemuneration) {
+      JSShow += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployerRemuneration');";
+    }
+    if (!EmployerTotal) {
+      JSShow += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployerTotal');";
+    }
+    if (!Total) {
+      JSShow += " $('#jqxgrid').jqxGrid('hidecolumn', 'Total');";
+    }
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.TAARICH_ERECH_HAFKADA)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.KOD_SUG_HAFKADA)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SUG_HAFRASHA)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SUG_MAFKID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SCHUM_HAFKADA_SHESHULAM)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CHODESH_SACHAR)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ZMAN_PERAON)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PirteiTaktziv.Oved_MISPAR_BAAL_POLISA_SHEEINO_MEVUTAH)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.HafkadotMetchilatShana_Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.HafkadotMetchilatShana_Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.HafkadotMetchilatShana_Id })
-        </td>
-    </tr>
-}
+    // Remove the last comma and newline.
+    JS = JS.Substring(0,JS.Length-2);
 
-</table>
+    JS += "],\n";
+    JS += " datafields: [ \n";
+    JS += "{ name: 'DepositMonth', type: 'string', map: '0'},\n";
+    JS += "{ name: 'DepositMonthForSorting', type: 'string', map: '1' },\n";
+    JS += "{ name: 'EmployeeDisabilityInsurance', type: 'number', map: '2' },\n";
+    JS += "{ name: 'EmployeeEducationFund', type: 'number', map: '3' },\n";
+    JS += "{ name: 'EmployeeMisc', type: 'number', map: '4' },\n";
+    JS += "{ name: 'EmployeeRemuneration', type: 'number', map: '5' },\n";
+    JS += "{ name: 'EmployeeTotal', type: 'number', map: '6' },\n";
+    JS += "{ name: 'EmployerCompensations', type: 'number', map: '7' },\n";
+    JS += "{ name: 'EmployerDisabilityInsurance', type: 'number', map: '8' },\n";
+    JS += "{ name: 'EmployerEducationFund', type: 'number', map: '9' },\n";
+    JS += "{ name: 'EmployerMisc', type: 'number', map: '10' },\n";
+    JS += "{ name: 'EmployerRemuneration', type: 'number', map: '11' },\n";
+    JS += "{ name: 'EmployerTotal', type: 'number', map: '12' },\n";
+    JS += "{ name: 'Total', type: 'number', map: '13' }\n";
+    JS += "],\n";
+    JS += "  datatype: \"array\" };";
+}    
+<script language="JavaScript">
+    $(document).ready(function () {
+        @Html.Raw(JS)
+        var dataAdapter = new $.jqx.dataAdapter(source);
+
+        $("#jqxgrid").jqxGrid(
+        {
+            width: 850,
+            source: dataAdapter,
+            columnsresize: false,
+            sortable: true,
+            columns: [
+              { text: 'Deposit Month', datafield: 'DepositMonth' },
+              { text: 'Deposit Month For Sorting', datafield: 'DepositMonthForSorting' },
+              { text: 'EmployeeDisabilityInsurance', datafield: 'EmployeeDisabilityInsurance' },
+              { text: 'EmployeeEducationFund', datafield: 'EmployeeEducationFund' },
+              { text: 'EmployeeMisc', datafield: 'EmployeeMisc' },
+              { text: 'EmployeeRemuneration', datafield: 'EmployeeRemuneration' },
+              { text: 'EmployeeTotal', datafield: 'EmployeeTotal' },
+              { text: 'EmployerCompensations', datafield: 'EmployerCompensations' },
+              { text: 'EmployerDisabilityInsurance', datafield: 'EmployerDisabilityInsurance' },
+              { text: 'EmployerEducationFund', datafield: 'EmployerEducationFund' },
+              { text: 'EmployerMisc', datafield: 'EmployerMisc' },
+              { text: 'EmployerRemuneration', datafield: 'EmployerRemuneration' },
+              { text: 'EmployerTotal', datafield: 'EmployerTotal' },
+              { text: 'Total', datafield: 'Total' }
+            ]
+        });
+        @Html.Raw(JSShow)
+    });
+</script>
+<div id='jqxWidget'>
+    <div id="jqxgrid">
+    </div>
+</div>

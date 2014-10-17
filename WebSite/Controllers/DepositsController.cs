@@ -7,42 +7,23 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using DAL;
+using WebSite.Models.Business;
 
 namespace WebSite.Controllers
 {
     public class DepositsController : Controller
     {
-        private Entities db = new Entities();
+        private PolisaBL polisaBL = new PolisaBL();
 
         // GET: HafkadotMetchilatShanas
         public ActionResult Index()
         {
-            var hafkadotMetchilatShanas = db.HafkadotMetchilatShanas.Include(h => h.PirteiTaktziv);
-            return View(hafkadotMetchilatShanas.ToList());
+            string id = (string)RouteData.Values["id"];
+            if (id == null || id == "")
+                id = "24416422";
+
+            return View(polisaBL.GetDeposits(id));
         }
 
-        // GET: HafkadotMetchilatShanas/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            HafkadotMetchilatShana hafkadotMetchilatShana = db.HafkadotMetchilatShanas.Find(id);
-            if (hafkadotMetchilatShana == null)
-            {
-                return HttpNotFound();
-            }
-            return View(hafkadotMetchilatShana);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
     }
 }

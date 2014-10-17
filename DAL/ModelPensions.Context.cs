@@ -124,5 +124,14 @@ namespace DAL
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteHeshbonOPolisa", heshbonOPolisa_IdParameter);
         }
+    
+        public virtual ObjectResult<DepositsReport_Result> DepositsReport(string identificationNumber)
+        {
+            var identificationNumberParameter = identificationNumber != null ?
+                new ObjectParameter("IdentificationNumber", identificationNumber) :
+                new ObjectParameter("IdentificationNumber", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<DepositsReport_Result>("DepositsReport", identificationNumberParameter);
+        }
     }
 }

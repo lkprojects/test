@@ -1,0 +1,26 @@
+﻿@model IEnumerable<DAL.HafrashotLePolisa>
+
+
+<script type="text/javascript">
+     $("#ProductTypeBox").jqxDropDownList({ width: 180, source: ProductTypeSource, height: 20, dropDownHeight: 140, rtl: true, selectedIndex: 0 });
+    
+     $(document).ready(function () {
+         var ProductTypeSource = [{ value: "0", label: "<b>  כל סוגי החשבונות  </b>" }, @(Html.Raw(ProductTypeStr))]
+         var ProductTypeLines = [@(Html.Raw(DetailsTableLines))]
+
+         var accountStatusSource = [{ value: "0", label: "<b>  כל מצבי החשבונות  </b>" }, @(Html.Raw(accountStatusStr))]
+         var accountStatusLines = [@(Html.Raw(accountStatusLines))]
+
+         $("#StatusBox").jqxDropDownList({ width: 180, source: accountStatusSource, height: 20, dropDownHeight: 140, rtl: true, selectedIndex: 0 });
+
+         $("#ProductTypeBox").on('select', function (event) {
+             FilterData(ProductTypeLines, accountStatusLines);
+         });
+
+         $("#StatusBox").on('select', function (event) {
+             FilterData(ProductTypeLines, accountStatusLines);
+         });
+
+     });
+</script>
+<div id="ProductTypeBox"></div>
