@@ -185,9 +185,6 @@
     <Compile Include="Sheer.cs">
       <DependentUpon>ModelPensions.tt</DependentUpon>
     </Compile>
-    <Compile Include="sysdiagram.cs">
-      <DependentUpon>ModelPensions.tt</DependentUpon>
-    </Compile>
     <Compile Include="Tosafot.cs">
       <DependentUpon>ModelPensions.tt</DependentUpon>
     </Compile>

@@ -1,0 +1,186 @@
+﻿@model List<DAL.DepositsReport_Result>
+
+@{
+    ViewBag.Title = "הפקדות";
+    int i = 0;
+    string JS = "";
+    string JSHide = "";
+    JS += "var source = {\n";
+    JS += "localdata: [\n";
+
+    foreach (var deposit in Model)
+    {
+        JS += "[\"" + deposit.DepositMonth + "\"," +
+                      deposit.EmployeeDisabilityInsurance + "," +
+                      deposit.EmployeeEducationFund + "," +
+                      deposit.EmployeeMisc + "," +
+                      deposit.EmployeeRemuneration + "," +
+                      deposit.EmployeeTotal + "," +
+                      deposit.EmployerCompensations + "," +
+                      deposit.EmployerDisabilityInsurance + "," +
+                      deposit.EmployerEducationFund + "," +
+                      deposit.EmployerMisc + "," +
+                      deposit.EmployerRemuneration + "," +
+                      deposit.EmployerTotal + "," +
+                      deposit.Total + "],\n";
+    }
+    bool EmployeeDisabilityInsurance = false, EmployeeEducationFund = false, EmployeeMisc = false, EmployeeRemuneration = false;
+    bool EmployeeTotal = false, EmployerCompensations = false, EmployerDisabilityInsurance = false, EmployerEducationFund = false;
+    bool EmployerMisc = false, EmployerRemuneration = false, EmployerTotal = false, Total = false;
+
+    foreach (var rec in Model)
+    {
+        if (rec.EmployeeDisabilityInsurance > 0)
+        {
+            EmployeeDisabilityInsurance = true;
+        }
+        if (rec.EmployeeEducationFund > 0)
+        {
+            EmployeeEducationFund = true;
+        }
+        if (rec.EmployeeMisc > 0)
+        {
+            EmployeeMisc = true;
+        }
+        if (rec.EmployeeRemuneration > 0)
+        {
+            EmployeeRemuneration = true;
+        }
+        if (rec.EmployeeTotal > 0)
+        {
+            EmployeeTotal = true;
+        }
+        if (rec.EmployerCompensations > 0)
+        {
+            EmployerCompensations = true;
+        }
+        if (rec.EmployerDisabilityInsurance > 0)
+        {
+            EmployerDisabilityInsurance = true;
+        }
+        if (rec.EmployerEducationFund > 0)
+        {
+            EmployerEducationFund = true;
+        }
+        if (rec.EmployerMisc > 0)
+        {
+            EmployerMisc = true;
+        }
+        if (rec.EmployerRemuneration > 0)
+        {
+            EmployerRemuneration = true;
+        }
+        if (rec.EmployerTotal > 0)
+        {
+            EmployerTotal = true;
+        }
+        if (rec.Total > 0)
+        {
+            Total = true;
+        }
+    }
+
+    if (!EmployeeDisabilityInsurance)
+    {
+        JSHide += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployeeDisabilityInsurance');";
+    }
+    if (!EmployeeEducationFund)
+    {
+        JSHide += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployeeEducationFund');";
+    }
+    if (!EmployeeMisc)
+    {
+        JSHide += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployeeMisc');";
+    }
+    if (!EmployeeRemuneration)
+    {
+        JSHide += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployeeRemuneration');";
+    }
+    if (!EmployeeTotal)
+    {
+        JSHide += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployeeTotal');";
+    }
+    if (!EmployerCompensations)
+    {
+        JSHide += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployerCompensations');";
+    }
+    if (!EmployerDisabilityInsurance)
+    {
+        JSHide += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployerDisabilityInsurance');";
+    }
+    if (!EmployerEducationFund)
+    {
+        JSHide += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployerEducationFund');";
+    }
+    if (!EmployerMisc)
+    {
+        JSHide += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployerMisc');";
+    }
+    if (!EmployerRemuneration)
+    {
+        JSHide += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployerRemuneration');";
+    }
+    if (!EmployerTotal)
+    {
+        JSHide += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployerTotal');";
+    }
+    if (!Total)
+    {
+        JSHide += " $('#jqxgrid').jqxGrid('hidecolumn', 'Total');";
+    }
+
+    // Remove the last comma and newline.
+    JS = JS.Substring(0, JS.Length - 2);
+
+    JS += "],\n";
+    JS += " datafields: [ \n";
+    JS += "{ name: 'DepositMonth', type: 'string', map: '0'},\n";
+    JS += "{ name: 'EmployeeDisabilityInsurance', type: 'number', map: '1' },\n";
+    JS += "{ name: 'EmployeeEducationFund', type: 'number', map: '2' },\n";
+    JS += "{ name: 'EmployeeMisc', type: 'number', map: '3' },\n";
+    JS += "{ name: 'EmployeeRemuneration', type: 'number', map: '4' },\n";
+    JS += "{ name: 'EmployeeTotal', type: 'number', map: '5' },\n";
+    JS += "{ name: 'EmployerCompensations', type: 'number', map: '6' },\n";
+    JS += "{ name: 'EmployerDisabilityInsurance', type: 'number', map: '7' },\n";
+    JS += "{ name: 'EmployerEducationFund', type: 'number', map: '8' },\n";
+    JS += "{ name: 'EmployerMisc', type: 'number', map: '9' },\n";
+    JS += "{ name: 'EmployerRemuneration', type: 'number', map: '10' },\n";
+    JS += "{ name: 'EmployerTotal', type: 'number', map: '11' },\n";
+    JS += "{ name: 'Total', type: 'number', map: '12' }\n";
+    JS += "],\n";
+    JS += "  datatype: \"array\" };";
+}
+<script language="JavaScript">
+    $(document).ready(function () {
+        @Html.Raw(JS)
+        var dataAdapter = new $.jqx.dataAdapter(source);
+
+        $("#jqxgrid").jqxGrid(
+        {
+            width: 850,
+            source: dataAdapter,
+            columnsresize: false,
+            sortable: true,
+            columns: [
+              { text: 'Deposit Month', datafield: 'DepositMonth' },
+              { text: 'EmployeeDisabilityInsurance', datafield: 'EmployeeDisabilityInsurance', cellsformat: 'D2',cellsalign: 'right' },
+              { text: 'EmployeeEducationFund', datafield: 'EmployeeEducationFund', cellsformat: 'D2', cellsalign: 'right' },
+              { text: 'EmployeeMisc', datafield: 'EmployeeMisc', cellsformat: 'D2', cellsalign: 'right' },
+              { text: 'EmployeeRemuneration', datafield: 'EmployeeRemuneration', cellsformat: 'D2', cellsalign: 'right' },
+              { text: 'EmployeeTotal', datafield: 'EmployeeTotal', cellsformat: 'D2', cellsalign: 'right' },
+              { text: 'EmployerCompensations', datafield: 'EmployerCompensations', cellsformat: 'D2', cellsalign: 'right' },
+              { text: 'EmployerDisabilityInsurance', datafield: 'EmployerDisabilityInsurance', cellsformat: 'D2', cellsalign: 'right' },
+              { text: 'EmployerEducationFund', datafield: 'EmployerEducationFund', cellsformat: 'D2', cellsalign: 'right' },
+              { text: 'EmployerMisc', datafield: 'EmployerMisc', cellsformat: 'D2',cellsalign: 'right'  },
+              { text: 'EmployerRemuneration', datafield: 'EmployerRemuneration', cellsformat: 'D2',cellsalign: 'right'  },
+              { text: 'EmployerTotal', datafield: 'EmployerTotal', cellsformat: 'D2',cellsalign: 'right'  },
+              { text: 'Total', datafield: 'Total', cellsformat: 'D2',cellsalign: 'right'  }
+            ]
+        });
+        @Html.Raw(JSHide)
+    });
+</script>
+<div id='jqxWidget'>
+    <div id="jqxgrid">
+    </div>
+</div>

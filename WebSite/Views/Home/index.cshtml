@@ -1,0 +1,92 @@
+﻿
+@{
+    ViewBag.Title = "index";
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var dataStatCounter =
+        [
+            { Browser: 'Chrome', Share: 45.6 },
+            { Browser: 'IE', Share: 24.6 },
+            { Browser: 'Firefox', Share: 20.4 },
+            { Browser: 'Safari', Share: 5.1 },
+            { Browser: 'Opera', Share: 1.3 },
+            { Browser: 'Other', Share: 3.0 }
+        ];
+
+        var chartSettings = {
+            source: dataStatCounter,
+            title: '',
+            description: 'desc',
+            enableAnimations: false,
+            showLegend: true,
+            showBorderLine: true,
+            padding: { left: 5, top: 5, right: 5, bottom: 5 },
+            titlePadding: { left: 0, top: 0, right: 0, bottom: 10 },
+            colorScheme: 'scheme03',
+            seriesGroups: [
+                {
+                    type: 'pie',
+                    showLegend: true,
+                    enableSeriesToggle: true,
+                    series:
+                        [
+                            {
+                                dataField: 'Share',
+                                displayText: 'Browser',
+                                showLabels: true,
+                                labelRadius: 100,
+                                labelLinesEnabled: true,
+                                labelLinesAngles: true,
+                                labelsAutoRotate: false,
+                                initialAngle: 0,
+                                radius: 75,
+                                minAngle: 0,
+                                maxAngle: 360,
+                                centerOffset: 0,
+                                offsetY: 100,
+                                formatFunction: function (value, itemIdx, serieIndex, groupIndex) {
+                                    if (isNaN(value))
+                                        return value;
+
+                                    return value + '%';
+                                }
+                            }
+                        ]
+                }
+            ]
+        };
+
+        // select container and apply settings
+        var selector = '#chartContainer';
+        $(selector).jqxChart(chartSettings);
+    });
+</script>
+
+<div id='chartContainer' style="width: 400px; height: 250px;">
+</div>
+<!--
+<div style="width:50%; float:right;">
+    <div style="float:right;">
+        <table>
+            <tr><td>צבירה בקיצבה</td><td>500000</td></tr>
+            <tr><td>צבירה למשיכה חד פעמית</td><td>150000</td></tr>
+            <tr><td>צבירה בקרן השתלמות</td><td>80000</td></tr>
+            <tr><td>סך כל הצבירה:</td><td>80000</td></tr>
+        </table>
+    </div>
+    <div id="AccumulationPieChart" style="float:left;">
+    </div>
+</div>
+<div style="width:50%; float:left">
+    תשואה ממוצעת ב-12 החודשים האחרונים
+</div>
+<div style="width:50%; float:right;">
+    דמי ניהול
+</div>
+<div style="width:50%; float:left;">
+    תחזית לזמן פרישה
+</div>
+-->

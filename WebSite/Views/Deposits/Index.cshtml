@@ -1,177 +1,257 @@
-﻿@model List<DAL.DepositsReport_Result>
-
-@{
+﻿@{
     ViewBag.Title = "הפקדות";
-    int i = 0;
-    string JS = "";
-    string JSShow = "";
-    JS += "var source = {\n";
-    JS += "localdata: [\n";
-    
-    foreach (var deposit in Model)
-    {
-        JS += "[\"" + deposit.DepositMonth + "\"," +
-                      deposit.DepositMonthForSorting + "," +
-                      deposit.EmployeeDisabilityInsurance.ToString() + "," +
-                      deposit.EmployeeEducationFund.ToString() + "," +
-                      deposit.EmployeeMisc.ToString() + "," +
-                      deposit.EmployeeRemuneration.ToString() + "," +
-                      deposit.EmployeeTotal + "," +
-                      deposit.EmployerCompensations + "," +
-                      deposit.EmployerDisabilityInsurance + "," +
-                      deposit.EmployerEducationFund + "," +
-                      deposit.EmployerMisc + "," +
-                      deposit.EmployerRemuneration + "," +
-                      deposit.EmployerTotal + "," +
-                      deposit.Total + "],\n";
-    }
-    bool EmployeeDisabilityInsurance = false, EmployeeEducationFund = false, EmployeeMisc = false, EmployeeRemuneration = false;
-    bool EmployeeTotal = false, EmployerCompensations = false, EmployerDisabilityInsurance = false, EmployerEducationFund = false;
-    bool EmployerMisc = false, EmployerRemuneration = false, EmployerTotal = false, Total = false;
+}
+    <link rel="stylesheet" type="text/css" href="http://jqwidgets.com/jquery-widgets-demo/jqwidgets/styles/jqx.base.css" />
+   <script type="text/javascript">
 
-    foreach(var rec in Model)
-    {
-        if (rec.EmployeeDisabilityInsurance > 0)
-        {
-            EmployeeDisabilityInsurance = true;
-        }
-        if (rec.EmployeeEducationFund > 0)
-        {
-            EmployeeEducationFund = true;
-        }
-        if (rec.EmployeeMisc > 0)
-        {
-            EmployeeMisc = true;
-        }
-        if (rec.EmployeeRemuneration > 0)
-        {
-            EmployeeRemuneration = true;
-        }
-        if (rec.EmployeeTotal > 0)
-        {
-            EmployeeTotal = true;
-        }
-        if (rec.EmployerCompensations > 0)
-        {
-            EmployerCompensations = true;
-        }
-        if (rec.EmployerDisabilityInsurance > 0)
-        {
-            EmployerDisabilityInsurance = true;
-        }
-        if (rec.EmployerEducationFund > 0)
-        {
-            EmployerEducationFund = true;
-        }
-        if (rec.EmployerMisc > 0)
-        {
-            EmployerMisc = true;
-        }
-        if (rec.EmployerRemuneration > 0)
-        {
-            EmployerRemuneration = true;
-        }
-        if (rec.EmployerTotal > 0)
-        {
-            EmployerTotal = true;
-        }
-        if (rec.Total > 0)
-        {
-            Total = true;
-        }
-    }
+        function FilterColumns() {
+            var rows = $('#grid').jqxGrid('getboundrows');
+            var EmployeeDisabilityInsurance = false, EmployeeEducationFund = false, EmployeeMisc = false
+            var EmployeeRemuneration = false, EmployeeTotal = false, EmployerDisabilityInsurance = false
+            var EmployerCompensations = false, EmployerEducationFund = false
+            var EmployerMisc = false, EmployerRemuneration = false, EmployerTotal = false
 
-    if (!EmployeeDisabilityInsurance) {
-      JSShow += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployeeDisabilityInsurance');";
-    }
-    if (!EmployeeEducationFund) {
-      JSShow += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployeeEducationFund');";
-    }
-    if (!EmployeeMisc) {
-      JSShow += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployeeMisc');";
-    }
-    if (!EmployeeRemuneration) {
-      JSShow += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployeeRemuneration');";
-    }
-    if (!EmployeeTotal) {
-      JSShow += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployeeTotal');";
-    }
-    if (!EmployerCompensations) {
-      JSShow += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployerCompensations');";
-    }
-    if (!EmployerDisabilityInsurance) {
-      JSShow += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployerDisabilityInsurance');";
-    }
-    if (!EmployerEducationFund) {
-      JSShow += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployerEducationFund');";
-    }
-    if (!EmployerMisc) {
-      JSShow += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployerMisc');";
-    }
-    if (!EmployerRemuneration) {
-      JSShow += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployerRemuneration');";
-    }
-    if (!EmployerTotal) {
-      JSShow += " $('#jqxgrid').jqxGrid('hidecolumn', 'EmployerTotal');";
-    }
-    if (!Total) {
-      JSShow += " $('#jqxgrid').jqxGrid('hidecolumn', 'Total');";
-    }
+            //Find if there are columns that are 
+            for (var i = 0; i < rows.length; i++) {
+                var row = rows[i];
+                if (row.EmployeeDisabilityInsurance != null && row.EmployeeDisabilityInsurance != 0)
+                    EmployeeDisabilityInsurance = true;
+                if (row.EmployeeEducationFund != null && row.EmployeeEducationFund != 0)
+                    EmployeeEducationFund = true;
+                if (row.EmployeeMisc != null && row.EmployeeMisc != 0)
+                    EmployeeMisc = true;
+                if (row.EmployeeRemuneration != null && row.EmployeeRemuneration != 0)
+                    EmployeeRemuneration = true;
+                if (row.EmployeeTotal != null && row.EmployeeTotal != 0)
+                    EmployeeTotal = true;
+                if (row.EmployerDisabilityInsurance != null && row.EmployerDisabilityInsurance != 0)
+                    EmployerDisabilityInsurance = true;
+                if (row.EmployerCompensations != null && row.EmployerCompensations != 0)
+                    EmployerCompensations = true;
+                if (row.EmployerEducationFund != null && row.EmployerEducationFund != 0)
+                    EmployerEducationFund = true;
+                if (row.EmployerMisc != null && row.EmployerMisc != 0)
+                    EmployerMisc = true;
+                if (row.EmployerRemuneration != null && row.EmployerRemuneration != 0)
+                    EmployerRemuneration = true;
+                if (row.EmployerTotal != null && row.EmployerTotal != 0)
+                    EmployerTotal = true;
+            }
+            var HEmployeeDisabilityInsurance = $('#grid').jqxGrid('getcolumnproperty', 'EmployeeDisabilityInsurance', 'hidden');
+            var HEmployeeEducationFund = $('#grid').jqxGrid('getcolumnproperty', 'EmployeeEducationFund', 'hidden');
+            var HEmployeeMisc = $('#grid').jqxGrid('getcolumnproperty', 'EmployeeMisc', 'hidden');
+            var HEmployeeRemuneration = $('#grid').jqxGrid('getcolumnproperty', 'EmployeeRemuneration', 'hidden');
+            var HEmployeeTotal = $('#grid').jqxGrid('getcolumnproperty', 'EmployeeTotal', 'hidden');
+            var HEmployerDisabilityInsurance = $('#grid').jqxGrid('getcolumnproperty', 'EmployerDisabilityInsurance', 'hidden');
+            var HEmployerCompensations = $('#grid').jqxGrid('getcolumnproperty', 'EmployerCompensations', 'hidden');
+            var HEmployerEducationFund = $('#grid').jqxGrid('getcolumnproperty', 'EmployerEducationFund', 'hidden');
+            var HEmployerMisc = $('#grid').jqxGrid('getcolumnproperty', 'EmployerMisc', 'hidden');
+            var HEmployerRemuneration = $('#grid').jqxGrid('getcolumnproperty', 'EmployerRemuneration', 'hidden');
+            var HEmployerTotal = $('#grid').jqxGrid('getcolumnproperty', 'EmployerTotal', 'hidden');
 
-    // Remove the last comma and newline.
-    JS = JS.Substring(0,JS.Length-2);
+            if (rows.length > 0) {
+                if (!EmployeeDisabilityInsurance && !HEmployeeDisabilityInsurance)
+                    $('#grid').jqxGrid('hidecolumn', 'EmployeeDisabilityInsurance');
+                if (!EmployeeEducationFund || !HEmployeeEducationFund)
+                    $('#grid').jqxGrid('hidecolumn', 'EmployeeEducationFund');
+                if (!EmployeeMisc && !HEmployeeMisc)
+                    $('#grid').jqxGrid('hidecolumn', 'EmployeeMisc');
+                if (!EmployeeRemuneration && !HEmployeeRemuneration)
+                    $('#grid').jqxGrid('hidecolumn', 'EmployeeRemuneration');
+                if (!EmployeeTotal && !HEmployeeTotal)
+                    $('#grid').jqxGrid('hidecolumn', 'EmployeeTotal');
+                if (!EmployerDisabilityInsurance && !HEmployerDisabilityInsurance)
+                    $('#grid').jqxGrid('hidecolumn', 'EmployerDisabilityInsurance');
+                if (!EmployerCompensations && !HEmployerCompensations)
+                    $('#grid').jqxGrid('hidecolumn', 'EmployerCompensations');
+                if (!EmployerEducationFund && !HEmployerEducationFund)
+                    $('#grid').jqxGrid('hidecolumn', 'EmployerEducationFund');
+                if (!EmployerMisc && !HEmployerMisc)
+                    $('#grid').jqxGrid('hidecolumn', 'EmployerMisc');
+                if (!EmployerRemuneration && !HEmployerRemuneration)
+                    $('#grid').jqxGrid('hidecolumn', 'EmployerRemuneration');
+                if (!EmployerTotal && !HEmployerTotal)
+                    $('#grid').jqxGrid('hidecolumn', 'EmployerTotal');
+            }
+        }
 
-    JS += "],\n";
-    JS += " datafields: [ \n";
-    JS += "{ name: 'DepositMonth', type: 'string', map: '0'},\n";
-    JS += "{ name: 'DepositMonthForSorting', type: 'string', map: '1' },\n";
-    JS += "{ name: 'EmployeeDisabilityInsurance', type: 'number', map: '2' },\n";
-    JS += "{ name: 'EmployeeEducationFund', type: 'number', map: '3' },\n";
-    JS += "{ name: 'EmployeeMisc', type: 'number', map: '4' },\n";
-    JS += "{ name: 'EmployeeRemuneration', type: 'number', map: '5' },\n";
-    JS += "{ name: 'EmployeeTotal', type: 'number', map: '6' },\n";
-    JS += "{ name: 'EmployerCompensations', type: 'number', map: '7' },\n";
-    JS += "{ name: 'EmployerDisabilityInsurance', type: 'number', map: '8' },\n";
-    JS += "{ name: 'EmployerEducationFund', type: 'number', map: '9' },\n";
-    JS += "{ name: 'EmployerMisc', type: 'number', map: '10' },\n";
-    JS += "{ name: 'EmployerRemuneration', type: 'number', map: '11' },\n";
-    JS += "{ name: 'EmployerTotal', type: 'number', map: '12' },\n";
-    JS += "{ name: 'Total', type: 'number', map: '13' }\n";
-    JS += "],\n";
-    JS += "  datatype: \"array\" };";
-}    
-<script language="JavaScript">
-    $(document).ready(function () {
-        @Html.Raw(JS)
-        var dataAdapter = new $.jqx.dataAdapter(source);
+        var applyFilter = function (datafield) {
+            $("#grid").jqxGrid('clearfilters');
+            var filtertype = 'stringfilter';
+            if (datafield == 'date') filtertype = 'datefilter';
+            if (datafield == 'price' || datafield == 'quantity') filtertype = 'numericfilter';
+        }
 
-        $("#jqxgrid").jqxGrid(
-        {
-            width: 850,
-            source: dataAdapter,
-            columnsresize: false,
-            sortable: true,
-            columns: [
-              { text: 'Deposit Month', datafield: 'DepositMonth' },
-              { text: 'Deposit Month For Sorting', datafield: 'DepositMonthForSorting' },
-              { text: 'EmployeeDisabilityInsurance', datafield: 'EmployeeDisabilityInsurance' },
-              { text: 'EmployeeEducationFund', datafield: 'EmployeeEducationFund' },
-              { text: 'EmployeeMisc', datafield: 'EmployeeMisc' },
-              { text: 'EmployeeRemuneration', datafield: 'EmployeeRemuneration' },
-              { text: 'EmployeeTotal', datafield: 'EmployeeTotal' },
-              { text: 'EmployerCompensations', datafield: 'EmployerCompensations' },
-              { text: 'EmployerDisabilityInsurance', datafield: 'EmployerDisabilityInsurance' },
-              { text: 'EmployerEducationFund', datafield: 'EmployerEducationFund' },
-              { text: 'EmployerMisc', datafield: 'EmployerMisc' },
-              { text: 'EmployerRemuneration', datafield: 'EmployerRemuneration' },
-              { text: 'EmployerTotal', datafield: 'EmployerTotal' },
-              { text: 'Total', datafield: 'Total' }
-            ]
+        $(document).ready(function () {
+            var accountNumber = "0";
+            var url = "AllAccounts/GetAllAccountsFilter";
+            var sourceAccount =
+            {
+                datatype: "json",
+                datafields: [
+                    { name: 'AccountName'},
+                    { name: 'AccountNumber'}
+                ],
+                url: url,
+                async: false
+            };
+
+            var dataAdapter = new $.jqx.dataAdapter(sourceAccount);
+            var fromDate;
+            var toDate;
+
+            $("#AccountDropDown").jqxDropDownList({
+                displayMember: "AccountName",
+                valueMember: "AccountNumber",
+                selectedIndex: 0,
+                width: 200,
+                height: 25,
+                source: dataAdapter
+            });
+            //$("#AccountDropDown").on('select', function (event) {
+                //if (event.args) {
+                //    var item = event.args.item;
+                //    if (item) {
+                //        accountNumber = item.value;
+                //        source.url = 'deposits/getdeposits/' + accountNumber 
+                //        source.url = 'deposits/getdeposits/' + accountNumber +
+                //                     '?' + 'FromDate=' + fromDate +
+                //                     '&' + 'ToDate=' + toDate
+                //        $("#grid").jqxGrid('updatebounddata', 'cells');
+
+                        //var valueelement = $("<div></div>");
+                        //valueelement.text("Value: " + item.value);
+                        //var labelelement = $("<div></div>");
+                        //labelelement.text("Label: " + item.label);
+                    //}
+                //}
+           // });
+
+            var source =
+                {
+                    datatype: "json",
+                    datafields: [
+                        { name: 'DepositMonth', type: 'string' },
+                        { name: 'EmployeeDisabilityInsurance', type: 'number'},
+                        { name: 'EmployeeEducationFund', type: 'number'},
+                        { name: 'EmployeeMisc', type: 'number' },
+                        { name: 'EmployeeRemuneration', type: 'number'},
+                        { name: 'EmployeeTotal', type: 'number'},
+                        { name: 'EmployerCompensations', type: 'number'},
+                        { name: 'EmployerDisabilityInsurance', type: 'number'},
+                        { name: 'EmployerEducationFund', type: 'number'},
+                        { name: 'EmployerMisc', type: 'number'},
+                        { name: 'EmployerRemuneration', type: 'number'},
+                        { name: 'EmployerTotal', type: 'number'},
+                        { name: 'Total', type: 'number'}
+                    ],
+                    url: 'deposits/getdeposits/' + accountNumber
+                };
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            $("#grid").jqxGrid(
+            {
+                width: 850,
+                source: dataAdapter,
+                columnsresize: false,
+                sortable: true,
+                autoheight: true,
+                autorowheight: true,
+                groupsheaderheight: 40,
+                showsortmenuitems: false,
+                rtl: true,
+                columns: [
+                  { text: 'חודש<BR/>הפקדה', datafield: 'DepositMonth', align: 'right', width: '70' },
+                  { text: 'אכ"ע', datafield: 'EmployeeDisabilityInsurance', cellsformat: 'D2', align: 'right', cellsalign: 'right', columngroup: 'Employee' },
+                  { text: 'קרן השתלמות', datafield: 'EmployeeEducationFund', cellsformat: 'D2', align: 'right', cellsalign: 'right', columngroup: 'Employee' },
+                  { text: 'שונות', datafield: 'EmployeeMisc', cellsformat: 'D2', align: 'right', cellsalign: 'right', columngroup: 'Employee' },
+                  { text: 'תקבולים', datafield: 'EmployeeRemuneration', cellsformat: 'D2', align: 'right', cellsalign: 'right', columngroup: 'Employee' },
+                  { text: 'סה"כ', datafield: 'EmployeeTotal', cellsformat: 'D2', align: 'right', cellsalign: 'right', columngroup: 'Employee' },
+                  { text: 'פיצויים', datafield: 'EmployerCompensations', cellsformat: 'D2', align: 'right', cellsalign: 'right', columngroup: 'Employer' },
+                  { text: 'אכ"ע', datafield: 'EmployerDisabilityInsurance', cellsformat: 'D2', align: 'right', cellsalign: 'right', columngroup: 'Employer' },
+                  { text: 'קרן השתלמות', datafield: 'EmployerEducationFund', cellsformat: 'D2', align: 'right', cellsalign: 'right', columngroup: 'Employer' },
+                  { text: 'שונות', datafield: 'EmployerMisc', cellsformat: 'D2', align: 'right', cellsalign: 'right', columngroup: 'Employer' },
+                  { text: 'תקבולים', datafield: 'EmployerRemuneration', cellsformat: 'D2', align: 'right', cellsalign: 'right', columngroup: 'Employer' },
+                  { text: 'סה"כ', datafield: 'EmployerTotal', cellsformat: 'D2', align: 'right', cellsalign: 'right', columngroup: 'Employer' },
+                  { text: 'סה"כ', datafield: 'Total', cellsformat: 'D2', align: 'right', cellsalign: 'right' }
+                ],
+                columngroups: [
+                  { text: 'עובד', align: 'center', name: 'Employee' },
+                  { text: 'מעביד', align: 'center', name: 'Employer' }
+                ]
+            });
+
+            $('#grid').on('bindingcomplete', function (event) {
+                FilterColumns();
+            });
+            
+            var sourceDates;
+            for (var i=0; i<dataAdapter.records.length ; i++)
+            {
+                sourceDates[i] = dataAdapter[i].DepositMonth;
+            }
+            if (dataAdapter.records.length > 0 )
+                sourceDates.sort();
+
+            var dataAdapterDates = new $.jqx.dataAdapter(sourceDates);
+
+            $("#FromDateDropDown").jqxDropDownList({
+                displayMember: "DepositMonth",
+                valueMember: "DepositMonth",
+                selectedIndex: 0,
+                width: 200,
+                height: 25,
+                source: dataAdapterDates
+            });
+            $("#ToDateDropDown").jqxDropDownList({
+                displayMember: "DepositMonth",
+                valueMember: "DepositMonth",
+                selectedIndex: 0,
+                width: 200,
+                height: 25,
+                source: dataAdapterDates
+            });
+
+            $("#FilterButton").on('click', function () {
+                var item1 = $("#AccountDropDown").jqxDropDownList('getSelectedItem');
+                var item2 = $("#FromDateDropDown").jqxDropDownList('getSelectedItem');
+                var item3 = $("#ToDateDropDown").jqxDropDownList('getSelectedItem');
+                accountNumber = item1.value;
+                fromDate = item2.value;
+                toDate = item3.value;
+
+                source.url = 'deposits/getdeposits/' + accountNumber +
+                             '?' + 'FromDate=' + fromDate +
+                             '&' + 'ToDate=' + toDate
+                $("#grid").jqxGrid('updatebounddata', 'cells');
+
+
+
+            });
+
         });
-        @Html.Raw(JSShow)
-    });
-</script>
-<div id='jqxWidget'>
-    <div id="jqxgrid">
+    </script>
+ 
+<style type="text/css">
+.grid-column-header
+{
+    text-align: center;
+    padding: 13px 3px 3px 3px;
+    font-weight: bold;
+    font-size: 12px;
+    font-family: Arial,Helvetica,sans-serif;
+}
+
+</style>
+
+<div style="position:relative; top:-50px;">
+    <div id="filter">
+        <div style="margin-top: 10px;" id="AccountDropDown"></div>
+        <div id="FromDateDropDown"></div>
+        <div id="ToDateDropDown"></div>
+        <div>
+            <input style='margin-top: 20px;' type="submit" value="סנן" id='FilterButton' />
+        </div>
+    </div>
+    <div id="grid">
     </div>
 </div>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using DAL;
+using System.Web.Mvc;
 
 namespace WebSite.Models.Business
 {
@@ -27,10 +28,13 @@ namespace WebSite.Models.Business
             return polisaList;
         }
 
-        public List<DepositsReport_Result> GetDeposits(string identificationNumber)
+        public List<DepositsReport_Result> GetDeposits(string id, string AccountNumber, DateTime FromDate, DateTime ToDate)
         {
-            return _repository.DepositsReport(identificationNumber);
+            DepositsReport_Result depositsReport_Result = new DepositsReport_Result();
+            return _repository.DepositsReport(id, AccountNumber, FromDate, ToDate);
+           
         }
+
 
     }
 }

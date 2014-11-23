@@ -1,0 +1,143 @@
+﻿@model IEnumerable<DAL.Client>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LastStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastFileNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastRecordNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastKodEirua)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TeudatZehut)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Password)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MobilePhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AddressStreetName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AddressStreetNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AddressCity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaritalStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BirthDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InsertDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ModifyDate)
+            </th>
+            <th></th>
+        </tr>
+    
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastFileNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastRecordNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastKodEirua)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TeudatZehut)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Password)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MobilePhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AddressStreetName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AddressStreetNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AddressCity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaritalStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BirthDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InsertDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModifyDate)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.Client_Id }) |
+                @Html.ActionLink("Details", "Details", new { id=item.Client_Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.Client_Id })
+            </td>
+        </tr>
+    }
+    
+    </table>
+</body>
+</html>

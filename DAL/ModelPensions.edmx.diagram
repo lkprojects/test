@@ -36,7 +36,6 @@
         <EntityTypeShape EntityType="PensionsModel.PerutYitrot" Width="1.5" PointX="14.75" PointY="43.375" IsExpanded="true" />
         <EntityTypeShape EntityType="PensionsModel.PirteiTaktziv" Width="1.5" PointX="10.25" PointY="31.5" IsExpanded="true" />
         <EntityTypeShape EntityType="PensionsModel.Sheer" Width="1.5" PointX="5.25" PointY="49.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="PensionsModel.sysdiagram" Width="1.5" PointX="9.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="PensionsModel.Tosafot" Width="1.5" PointX="7.5" PointY="38.875" IsExpanded="true" />
         <EntityTypeShape EntityType="PensionsModel.Tvia" Width="1.5" PointX="5.25" PointY="78.25" IsExpanded="true" />
         <EntityTypeShape EntityType="PensionsModel.YitraLefiGilPrisha" Width="1.5" PointX="5.25" PointY="83.25" IsExpanded="true" />

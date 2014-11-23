@@ -679,16 +679,6 @@
           <Property Name="SHEM-PRATI-SHEERIM" Type="varchar" MaxLength="20" />
           <Property Name="SHEM-MISHPACHA-SHEERIM" Type="varchar" MaxLength="20" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
-        </EntityType>
         <EntityType Name="Tosafot">
           <Key>
             <PropertyRef Name="Tosafot_Id" />
@@ -1208,6 +1198,9 @@
         </Function>
         <Function Name="DepositsReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdentificationNumber" Type="varchar" Mode="In" />
+          <Parameter Name="Account" Type="varchar" Mode="In" />
+          <Parameter Name="FromDate" Type="date" Mode="In" />
+          <Parameter Name="ToDate" Type="date" Mode="In" />
         </Function>
         <Function Name="DequeueEvent" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="MISPAR_ZIHUY" Type="varchar" Mode="In" />
@@ -1254,7 +1247,6 @@
           <EntitySet Name="PerutYitrot" EntityType="Self.PerutYitrot" Schema="Holdings" store:Type="Tables" />
           <EntitySet Name="PirteiTaktziv" EntityType="Self.PirteiTaktziv" Schema="Holdings" store:Type="Tables" />
           <EntitySet Name="Sheer" EntityType="Self.Sheer" Schema="Holdings" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="Holdings" store:Type="Tables" />
           <EntitySet Name="Tosafot" EntityType="Self.Tosafot" Schema="Holdings" store:Type="Tables" />
           <EntitySet Name="Tvia" EntityType="Self.Tvia" Schema="Holdings" store:Type="Tables" />
           <EntitySet Name="YitraLefiGilPrisha" EntityType="Self.YitraLefiGilPrisha" Schema="Holdings" store:Type="Tables" />
@@ -1972,16 +1964,6 @@
           <Property Name="SHEM_MISHPACHA_SHEERIM" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="HeshbonOPolisa" Relationship="PensionsModel.HeshbonOPolisa_Sheer" FromRole="Sheer" ToRole="HeshbonOPolisa" />
         </EntityType>
-        <EntityType Name="sysdiagram">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
         <EntityType Name="Tosafot">
           <Key>
             <PropertyRef Name="Tosafot_Id" />
@@ -2334,7 +2316,6 @@
           <EntitySet Name="PerutYitrots" EntityType="Self.PerutYitrot" />
           <EntitySet Name="PirteiTaktzivs" EntityType="Self.PirteiTaktziv" />
           <EntitySet Name="Sheers" EntityType="Self.Sheer" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
           <EntitySet Name="Tosafots" EntityType="Self.Tosafot" />
           <EntitySet Name="Tvias" EntityType="Self.Tvia" />
           <EntitySet Name="YitraLefiGilPrishas" EntityType="Self.YitraLefiGilPrisha" />
@@ -2512,6 +2493,9 @@
           </AssociationSet>
           <FunctionImport Name="DepositsReport" ReturnType="Collection(PensionsModel.DepositsReport_Result)">
             <Parameter Name="IdentificationNumber" Mode="In" Type="String" />
+            <Parameter Name="Account" Mode="In" Type="String" />
+            <Parameter Name="FromDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ToDate" Mode="In" Type="DateTime" />
           </FunctionImport>
           </EntityContainer>
         <EntityType Name="IshKesherMaasik">
@@ -2883,7 +2867,6 @@
         </Association>
         <ComplexType Name="DepositsReport_Result">
           <Property Type="String" Name="DepositMonth" Nullable="true" MaxLength="4000" />
-          <Property Type="String" Name="DepositMonthForSorting" Nullable="true" MaxLength="4000" />
           <Property Type="Decimal" Name="EmployerRemuneration" Nullable="true" Precision="38" Scale="2" />
           <Property Type="Decimal" Name="EmployerCompensations" Nullable="true" Precision="38" Scale="2" />
           <Property Type="Decimal" Name="EmployerEducationFund" Nullable="true" Precision="38" Scale="2" />
@@ -3447,17 +3430,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="PensionsModel.sysdiagram">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Tosafots">
             <EntityTypeMapping TypeName="PensionsModel.Tosafot">
               <MappingFragment StoreEntitySet="Tosafot">
@@ -3707,7 +3679,6 @@
             <ResultMapping>
               <ComplexTypeMapping TypeName="PensionsModel.DepositsReport_Result">
                 <ScalarProperty Name="DepositMonth" ColumnName="DepositMonth" />
-                <ScalarProperty Name="DepositMonthForSorting" ColumnName="DepositMonthForSorting" />
                 <ScalarProperty Name="EmployerRemuneration" ColumnName="EmployerRemuneration" />
                 <ScalarProperty Name="EmployerCompensations" ColumnName="EmployerCompensations" />
                 <ScalarProperty Name="EmployerEducationFund" ColumnName="EmployerEducationFund" />
@@ -3737,8 +3708,8 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="true" />
-        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>

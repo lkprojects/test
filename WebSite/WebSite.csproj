@@ -138,8 +138,9 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountDetailsController.cs" />
     <Compile Include="Controllers\AllAccountsController.cs" />
-    <Compile Include="Controllers\ClientController.cs" />
+    <Compile Include="Controllers\ClientsController.cs" />
     <Compile Include="Controllers\DepositsController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PolisaController.cs" />
     <Compile Include="Controllers\RegistrationController.cs" />
     <Compile Include="Controllers\TestController.cs" />
@@ -148,6 +149,7 @@
     </Compile>
     <Compile Include="Models\Business\ClientBL.cs" />
     <Compile Include="Models\Business\PolisaBL.cs" />
+    <Compile Include="Models\DynamicQueryable.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\SessionVar.cs" />
     <Compile Include="Models\LUT.cs" />
@@ -327,12 +329,10 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\demos.js" />
-    <Content Include="Scripts\jquery-1.11.1.min.js" />
+    <None Include="Properties\PublishProfiles\PensionsSite.pubxml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
-    <Content Include="Scripts\jquery-ui-1.11.1.js" />
-    <Content Include="Scripts\jquery-ui.min-1.11.1.js" />
     <Content Include="Scripts\jquery.mobile-1.4.3.min.js" />
     <Content Include="Scripts\jquery.mobile-1.4.3.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -440,10 +440,16 @@
     <Content Include="Views\Deposits\Index.cshtml" />
     <Content Include="Views\Shared\Filter\ProductType.cshtml" />
     <Content Include="Views\Test\index.cshtml" />
+    <Content Include="Views\Deposits\index2.cshtml" />
+    <Content Include="Views\Clients\Create.cshtml" />
+    <Content Include="Views\Clients\Delete.cshtml" />
+    <Content Include="Views\Clients\Details.cshtml" />
+    <Content Include="Views\Clients\Edit.cshtml" />
+    <Content Include="Views\Clients\Index.cshtml" />
+    <Content Include="Views\Home\index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Home\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

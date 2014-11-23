@@ -58,7 +58,6 @@ namespace DAL
         public virtual DbSet<PerutYitrot> PerutYitrots { get; set; }
         public virtual DbSet<PirteiTaktziv> PirteiTaktzivs { get; set; }
         public virtual DbSet<Sheer> Sheers { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<Tosafot> Tosafots { get; set; }
         public virtual DbSet<Tvia> Tvias { get; set; }
         public virtual DbSet<YitraLefiGilPrisha> YitraLefiGilPrishas { get; set; }
@@ -125,13 +124,25 @@ namespace DAL
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteHeshbonOPolisa", heshbonOPolisa_IdParameter);
         }
     
-        public virtual ObjectResult<DepositsReport_Result> DepositsReport(string identificationNumber)
+        public virtual ObjectResult<DepositsReport_Result> DepositsReport(string identificationNumber, string account, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate)
         {
             var identificationNumberParameter = identificationNumber != null ?
                 new ObjectParameter("IdentificationNumber", identificationNumber) :
                 new ObjectParameter("IdentificationNumber", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<DepositsReport_Result>("DepositsReport", identificationNumberParameter);
+            var accountParameter = account != null ?
+                new ObjectParameter("Account", account) :
+                new ObjectParameter("Account", typeof(string));
+    
+            var fromDateParameter = fromDate.HasValue ?
+                new ObjectParameter("FromDate", fromDate) :
+                new ObjectParameter("FromDate", typeof(System.DateTime));
+    
+            var toDateParameter = toDate.HasValue ?
+                new ObjectParameter("ToDate", toDate) :
+                new ObjectParameter("ToDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<DepositsReport_Result>("DepositsReport", identificationNumberParameter, accountParameter, fromDateParameter, toDateParameter);
         }
     }
 }

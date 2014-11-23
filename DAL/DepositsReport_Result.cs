@@ -14,7 +14,6 @@ namespace DAL
     public partial class DepositsReport_Result
     {
         public string DepositMonth { get; set; }
-        public string DepositMonthForSorting { get; set; }
         public Nullable<decimal> EmployerRemuneration { get; set; }
         public Nullable<decimal> EmployerCompensations { get; set; }
         public Nullable<decimal> EmployerEducationFund { get; set; }

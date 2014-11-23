@@ -54,9 +54,9 @@ namespace WebSite.Models
             dbCtx.Clients.Add(client);
         }
 
-        public List<DepositsReport_Result> DepositsReport(string identificationNumber)
+        public List<DepositsReport_Result> DepositsReport(string identificationNumber, string AccountNumber, DateTime FromDate, DateTime ToDate)
         {
-            return dbCtx.DepositsReport(identificationNumber).ToList();
+            return dbCtx.DepositsReport(identificationNumber, AccountNumber, FromDate, ToDate).ToList();
         }
     }
 }
